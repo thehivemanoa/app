@@ -10,6 +10,7 @@ const SessionSchema = new SimpleSchema({
   title: String,
   course: String,
   description: { type: String, required: false },
+  date: Date,
   startTime: Date,
   endTime: Date,
   attendees: Array,

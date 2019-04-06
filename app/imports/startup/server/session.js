@@ -10,10 +10,12 @@ function addData(data) {
   const currentDay = dateFns.startOfDay(currentTime);
   const startTime = dateFns.addHours(currentDay, Number(startOffSetFromCurrentDay));
   const endTime = dateFns.addHours(currentDay, Number(endOffSetFromCurrentDay));
+  const date = dateFns.startOfDay(startTime);
   const session = {
     title: data.title,
     course: data.course,
     description: data.description,
+    date: date,
     startTime: startTime,
     endTime: endTime,
     attendees: [data.owner],
