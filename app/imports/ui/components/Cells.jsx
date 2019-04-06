@@ -39,5 +39,5 @@ export default class Cells extends React.Component {
 
 Cells.propTypes = {
   handleDayClick: PropTypes.func.isRequired,
-  month: PropTypes.instaceOf(Date).isRequired,
+  month: PropTypes.object.isRequired,
 };

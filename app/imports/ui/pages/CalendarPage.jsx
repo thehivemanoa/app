@@ -1,6 +1,6 @@
 import React from 'react';
 import dateFns from 'date-fns';
-import { Grid, Menu, Header } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import Calendar from '../components/Calendar';
 import SessionList from '../components/SessionList';
 
@@ -56,10 +56,6 @@ export default class CalendarPage extends React.Component {
   render() {
     return (
         <div>
-          <Menu className="navbar" borderless>
-            <Menu.Item>Waggle</Menu.Item>
-          </Menu>
-
           <Grid className="middle_grid" centered container>
             <Grid.Column width={11}>
               <Calendar selectedDate={this.state.selectedDate}
@@ -74,10 +70,6 @@ export default class CalendarPage extends React.Component {
                            selectedDate={this.state.selectedDate}/>
             </Grid.Column>
           </Grid>
-
-          <div className="footer_background">
-            <Header as="h1">Hello</Header>
-          </div>
         </div>
     );
   }

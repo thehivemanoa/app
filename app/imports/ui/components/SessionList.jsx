@@ -40,7 +40,7 @@ export default class SessionList extends React.Component {
 }
 
 SessionList.propTypes = {
-  selectedDate: PropTypes.instanceOf(Date).isRequired,
+  selectedDate: PropTypes.object.isRequired,
   handlePreviousDayClick: PropTypes.func.isRequired,
   handleNextDayClick: PropTypes.func.isRequired,
 };
