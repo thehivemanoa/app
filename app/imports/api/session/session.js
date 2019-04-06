@@ -9,10 +9,11 @@ const Sessions = new Mongo.Collection('Sessions');
 const SessionSchema = new SimpleSchema({
   title: String,
   course: String,
-  description: String,
+  description: { type: String, required: false },
   startTime: Date,
   endTime: Date,
-  attendeeIds: Array,
+  attendees: Array,
+  'attendees.$': String,
   owner: String,
 }, { tracker: Tracker });
 
