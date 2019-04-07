@@ -30,14 +30,18 @@ class CalendarPage extends React.Component {
   }
 
   handlePreviousMonthClick() {
+    const month = dateFns.addMonths(this.state.month, -1);
     this.setState({
-      month: dateFns.addMonths(this.state.month, -1),
+      selectedDate: month,
+      month: month,
     });
   }
 
   handleNextMonthClick() {
+    const month = dateFns.addMonths(this.state.month, 1);
     this.setState({
-      month: dateFns.addMonths(this.state.month, 1),
+      selectedDate: month,
+      month: month,
     });
   }
 

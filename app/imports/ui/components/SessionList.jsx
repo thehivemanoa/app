@@ -19,7 +19,7 @@ export default class SessionList extends React.Component {
             <Card.Header>
               <Grid columns="equal">
                 <Grid.Column>
-                  <Button onClick={this.props.handlePreviousDayClick}>
+                  <Button onClick={this.props.handlePreviousDayClick} style={{ backgroundColor: 'Transparent' }}>
                       <Icon name="chevron left" />
                   </Button>
                 </Grid.Column>
@@ -29,7 +29,7 @@ export default class SessionList extends React.Component {
                 </Grid.Column>
 
                 <Grid.Column>
-                  <Button onClick={this.props.handleNextDayClick} floated="right">
+                  <Button onClick={this.props.handleNextDayClick} style={{ backgroundColor: 'Transparent' }} floated="right">
                     <Icon name="chevron right" />
                   </Button>
                 </Grid.Column>

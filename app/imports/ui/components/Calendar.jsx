@@ -8,7 +8,7 @@ import Cells from './Cells';
 export default class Calendar extends React.Component {
   render() {
     return (
-        <Container>
+        <Container style={{ paddingTop: '15px' }}>
           <List>
             <List.Item>
               <Grid>

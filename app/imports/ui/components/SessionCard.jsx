@@ -23,14 +23,15 @@ export default class SessionCard extends React.Component {
       backgroundColor: colors[this.props.session.course],
       verticalAlign: 'middle',
       height: '100%',
-      position: 'relative',
+      padding: '10px',
+      // position: 'relative',
     };
     const headerStyle = {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%,-50%)',
-      textAlign: 'center',
+      // position: 'absolute',
+      // top: '50%',
+      // left: '50%',
+      // transform: 'translate(-50%,-50%)',
+      // textAlign: 'left',
     };
     const headerButtonStyle = {
       position: 'absolute',
@@ -52,7 +53,7 @@ export default class SessionCard extends React.Component {
             <Grid>
               <Grid.Row style={headerRowStyle}>
                 <Grid.Column width={10} style={headerColumnStyle}>
-                  <Header as="h4" style={headerStyle}>{this.props.session.title}</Header>
+                  <Header as="h5" style={headerStyle}>{this.props.session.title}</Header>
                 </Grid.Column>
                 <Grid.Column width={6} style={headerColumnStyle}>
                   <Button style={headerButtonStyle}>Join</Button>
@@ -62,7 +63,7 @@ export default class SessionCard extends React.Component {
             <Grid>
               <Grid.Row centered columns="equal" style={{ paddingTop: '10px', paddingBottom: '10px' }}>
                 <Grid.Column>
-                  <p style={{ textAlign: 'center' }}>{`${formattedStartTime} - ${formattedEndTime}`}</p>
+                  <p style={{ textAlign: 'left' }}>{`${formattedStartTime} - ${formattedEndTime}`}</p>
                 </Grid.Column>
                 <Grid.Column width={1}><Icon name="user times"/></Grid.Column>
                 <Grid.Column width={1}>1</Grid.Column>

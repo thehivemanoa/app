@@ -14,6 +14,7 @@ export default class CalendarHeader extends React.Component {
       left: '50%',
       transform: 'translate(-50%, 0)',
       margin: '0',
+      backgroundColor: 'Transparent',
     };
 
     const month_header = {
