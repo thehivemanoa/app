@@ -15,60 +15,59 @@ export default class SessionCard extends React.Component {
         ` ${dateFns.format(startTime, 'a')}`;
     const formattedEndTime = `${dateFns.format(endTime, 'h')}:${dateFns.format(endTime, 'mm')}` +
         ` ${dateFns.format(endTime, 'a')}`;
-    const royalCountStyle = {
-      paddingRight: '20%',
+    const headerRowStyle = {
+      padding: '0px',
+      height: '40px',
     };
-    const workerCountStyle = {
-      paddingLeft: '20%',
-    };
-    const timeStyle = {};
-    const joinButtonStyle = {
-      float: 'right',
-    };
-    const courseStyle = {
+    const headerColumnStyle = {
       backgroundColor: colors[this.props.session.course],
       verticalAlign: 'middle',
       height: '100%',
       position: 'relative',
     };
-    const courseTextStyle = {
-      position: 'relative',
+    const headerStyle = {
+      position: 'absolute',
       top: '50%',
       left: '50%',
       transform: 'translate(-50%,-50%)',
       textAlign: 'center',
     };
+    const headerButtonStyle = {
+      position: 'absolute',
+      top: '50%',
+      left: '55%',
+      transform: 'translate(-50%,-50%)',
+      backgroundColor: 'white',
+      color: 'black',
+      height: '25px',
+      width: '90px',
+      verticalAlign: 'middle',
+      textAlign: 'center',
+      padding: 0,
+    };
 
     return (
         <Card fluid>
           <Card.Content>
-            <Grid verticalAlign="middle">
-              <Grid.Row style={{ padding: 0, height: '30px' }}>
-                <Grid.Column style={courseStyle} width={5}>
-                  <p style={courseTextStyle}>{this.props.session.course}</p>
+            <Grid>
+              <Grid.Row style={headerRowStyle}>
+                <Grid.Column width={10} style={headerColumnStyle}>
+                  <Header as="h4" style={headerStyle}>{this.props.session.title}</Header>
                 </Grid.Column>
-                <Grid.Column width={11}>{this.props.session.title}</Grid.Column>
-              </Grid.Row>
-              <Grid.Row columns={6} style={{ paddingTop: '5px', paddingBottom: '5px', height: '30px', }} centered>
-                <Grid.Column style={{ paddingBottom: '5px' }}>
-                  <Icon name="user times" style={{ float: 'right' }}/>
-                </Grid.Column>
-                <Grid.Column style={{ padding: '3px' }}>
-                  <Header as="h5" style={{ float: 'left' }}>1</Header>
-                </Grid.Column>
-                <Grid.Column style={{ paddingBottom: '5px' }}>
-                  <Icon name="user times" style={{ float: 'right' }}/>
-                </Grid.Column>
-                <Grid.Column style={{ padding: '3px' }}>
+                <Grid.Column width={6} style={headerColumnStyle}>
+                  <Button style={headerButtonStyle}>Join</Button>
                 </Grid.Column>
               </Grid.Row>
-              <Grid.Row columns={2} style={{ padding: 0 }}>
-                <Grid.Column verticalAlign="middle">
-                  <p>{`${formattedStartTime} - ${formattedEndTime}`}</p>
+            </Grid>
+            <Grid>
+              <Grid.Row centered columns="equal" style={{ paddingTop: '10px', paddingBottom: '10px' }}>
+                <Grid.Column>
+                  <p style={{ textAlign: 'center' }}>{`${formattedStartTime} - ${formattedEndTime}`}</p>
                 </Grid.Column>
-                <Grid.Column style={{ padding: 3 }}>
-                  <Button style={{ float: 'right' }}>Join</Button>
-                </Grid.Column>
+                <Grid.Column width={1}><Icon name="user times"/></Grid.Column>
+                <Grid.Column width={1}>1</Grid.Column>
+                <Grid.Column width={1}><Icon name="user times"/></Grid.Column>
+                <Grid.Column width={1}>0</Grid.Column>
               </Grid.Row>
             </Grid>
           </Card.Content>
