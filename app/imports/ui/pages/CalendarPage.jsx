@@ -1,10 +1,14 @@
 import React from 'react';
 import dateFns from 'date-fns';
-import { Grid } from 'semantic-ui-react';
+import { Meteor } from 'meteor/meteor';
+import { Grid, Loader } from 'semantic-ui-react';
+import { withTracker } from 'meteor/react-meteor-data';
+import PropTypes from 'prop-types';
+import { Sessions } from '../../api/session/session';
 import Calendar from '../components/Calendar';
 import SessionList from '../components/SessionList';
 
-export default class CalendarPage extends React.Component {
+class CalendarPage extends React.Component {
   constructor(props) {
     super(props);
     const initialDate = new Date();
@@ -54,11 +58,16 @@ export default class CalendarPage extends React.Component {
   }
 
   render() {
+    return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
+  }
+
+  renderPage() {
     return (
         <div>
           <Grid className="middle_grid" centered container>
             <Grid.Column width={11}>
               <Calendar selectedDate={this.state.selectedDate}
+                        sessions={this.props.sessions}
                         month={this.state.month}
                         handlePreviousMonthClick={this.handlePreviousMonthClick}
                         handleNextMonthClick={this.handleNextMonthClick}
@@ -66,6 +75,7 @@ export default class CalendarPage extends React.Component {
             </Grid.Column>
             <Grid.Column width={5}>
               <SessionList handleNextDayClick={this.handleNextDayClick}
+                           sessions={this.props.sessions}
                            handlePreviousDayClick={this.handlePreviousDayClick}
                            selectedDate={this.state.selectedDate}/>
             </Grid.Column>
@@ -74,3 +84,17 @@ export default class CalendarPage extends React.Component {
     );
   }
 }
+
+CalendarPage.propTypes = {
+  sessions: PropTypes.array.isRequired,
+  ready: PropTypes.bool.isRequired,
+};
+
+export default withTracker(() => {
+  // Get access to Stuff documents.
+  const subscription = Meteor.subscribe('Sessions');
+  return {
+    sessions: Sessions.find({}).fetch(),
+    ready: subscription.ready(),
+  };
+})(CalendarPage);

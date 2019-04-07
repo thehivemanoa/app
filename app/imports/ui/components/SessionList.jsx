@@ -40,6 +40,7 @@ export default class SessionList extends React.Component {
 }
 
 SessionList.propTypes = {
+  sessions: PropTypes.array.isRequired,
   selectedDate: PropTypes.object.isRequired,
   handlePreviousDayClick: PropTypes.func.isRequired,
   handleNextDayClick: PropTypes.func.isRequired,

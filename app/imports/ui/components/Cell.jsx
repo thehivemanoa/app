@@ -14,6 +14,7 @@ export default class Cell extends React.Component {
 }
 
 Cell.propTypes = {
+  sessions: PropTypes.array.isRequired,
   handleDayClick: PropTypes.func.isRequired,
   date: PropTypes.object.isRequired,
 };

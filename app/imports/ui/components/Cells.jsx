@@ -14,11 +14,12 @@ export default class Cells extends React.Component {
     while (!dateFns.isAfter(startOfCurrentWeek, startOfLastWeek)) {
       const days = [];
       for (let i = 0; i < 7; i++) {
-        const currentDay = dateFns.addDays(startOfCurrentWeek, i);
+        const date = dateFns.addDays(startOfCurrentWeek, i);
         days.push(
-            <Cell key={currentDay}
-                  date={currentDay}
-                  handleDayClick={() => this.props.handleDayClick(currentDay)} />,
+            <Cell key={date}
+                  date={date}
+                  sessions={this.props.sessions.filter(session => dateFns.isSameDay(session.startTime, date))}
+                  handleDayClick={() => this.props.handleDayClick(date)} />,
         );
       }
       weeks.push(
@@ -38,6 +39,7 @@ export default class Cells extends React.Component {
 }
 
 Cells.propTypes = {
+  sessions: PropTypes.array.isRequired,
   handleDayClick: PropTypes.func.isRequired,
   month: PropTypes.object.isRequired,
 };

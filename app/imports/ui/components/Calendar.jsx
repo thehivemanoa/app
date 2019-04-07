@@ -20,6 +20,7 @@ export default class Calendar extends React.Component {
             </List.Item>
             <List.Item>
               <Cells month={this.props.month}
+                     sessions={this.props.sessions}
                      handleDayClick={this.props.handleDayClick}/>
             </List.Item>
           </List>
@@ -29,6 +30,7 @@ export default class Calendar extends React.Component {
 }
 
 Calendar.propTypes = {
+  sessions: PropTypes.array.isRequired,
   month: PropTypes.object.isRequired,
   handlePreviousMonthClick: PropTypes.func.isRequired,
   handleNextMonthClick: PropTypes.func.isRequired,
