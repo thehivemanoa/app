@@ -62,9 +62,12 @@ class CalendarPage extends React.Component {
   }
 
   renderPage() {
+    const middleGridStyle = {
+      minWidth: '1200px',
+    };
     return (
         <div>
-          <Grid className="middle_grid" centered container>
+          <Grid style={middleGridStyle} centered container>
             <Grid.Column width={11}>
               <Calendar selectedDate={this.state.selectedDate}
                         sessions={this.props.sessions}
@@ -75,7 +78,10 @@ class CalendarPage extends React.Component {
             </Grid.Column>
             <Grid.Column width={5}>
               <SessionList handleNextDayClick={this.handleNextDayClick}
-                           sessions={this.props.sessions}
+                           sessions={this.props.sessions.filter(session => dateFns.isSameDay(
+                               session.startTime,
+                               this.state.selectedDate,
+                           ))}
                            handlePreviousDayClick={this.handlePreviousDayClick}
                            selectedDate={this.state.selectedDate}/>
             </Grid.Column>

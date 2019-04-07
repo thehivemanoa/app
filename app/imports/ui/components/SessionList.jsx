@@ -2,6 +2,7 @@ import React from 'react';
 import dateFns from 'date-fns';
 import PropTypes from 'prop-types';
 import { Card, Header, Grid, Button, Icon } from 'semantic-ui-react';
+import SessionCard from './SessionCard';
 
 export default class SessionList extends React.Component {
   render() {
@@ -10,6 +11,7 @@ export default class SessionList extends React.Component {
     const month = dateFns.format(date, 'MMM');
     const dayOfTheMonth = dateFns.format(date, 'DD');
     const formattedDate = `${dayOfTheWeek}, ${month} ${dayOfTheMonth} `;
+    const events = this.props.sessions.map((session, index) => <SessionCard key={index} session={session} />);
 
     return (
         <Card className="session_list" fluid>
@@ -33,6 +35,11 @@ export default class SessionList extends React.Component {
                 </Grid.Column>
               </Grid>
             </Card.Header>
+          </Card.Content>
+          <Card.Content>
+              <Card.Group>
+                {events}
+              </Card.Group>
           </Card.Content>
         </Card>
     );
