@@ -1,8 +1,10 @@
 import React from 'react';
 import dateFns from 'date-fns';
 import PropTypes from 'prop-types';
-import { Card, Header, Grid, Button, Icon } from 'semantic-ui-react';
+import { Card, Header, Grid, Button, Icon, Divider } from 'semantic-ui-react';
 import SessionCard from './SessionCard';
+
+const _ = require('underscore');
 
 export default class SessionList extends React.Component {
   render() {
@@ -11,7 +13,20 @@ export default class SessionList extends React.Component {
     const month = dateFns.format(date, 'MMM');
     const dayOfTheMonth = dateFns.format(date, 'DD');
     const formattedDate = `${dayOfTheWeek}, ${month} ${dayOfTheMonth} `;
-    const events = this.props.sessions.map((session, index) => <SessionCard key={index} session={session} />);
+    const courses = _.groupBy(this.props.sessions, 'course');
+    let groups = _.mapObject(courses, function (sessions, course) {
+      const sessionCards = _.map(sessions, (session, index) => <SessionCard key={index} session={session} fluid/>);
+      return (
+          <div style={{ width: '100%' }}>
+            <Divider horizontal>{course}</Divider>
+            <Card.Group key={course} fluid>
+              {sessionCards}
+            </Card.Group>
+          </div>
+      );
+    });
+    groups = _.values(groups);
+    // const events = this.props.sessions.map((session, index) => <SessionCard key={index} session={session} />);
 
     return (
         <Card className="session_list" fluid>
@@ -20,7 +35,7 @@ export default class SessionList extends React.Component {
               <Grid columns="equal">
                 <Grid.Column>
                   <Button onClick={this.props.handlePreviousDayClick} style={{ backgroundColor: 'Transparent' }}>
-                      <Icon name="chevron left" />
+                    <Icon name="chevron left"/>
                   </Button>
                 </Grid.Column>
 
@@ -29,17 +44,16 @@ export default class SessionList extends React.Component {
                 </Grid.Column>
 
                 <Grid.Column>
-                  <Button onClick={this.props.handleNextDayClick} style={{ backgroundColor: 'Transparent' }} floated="right">
-                    <Icon name="chevron right" />
+                  <Button onClick={this.props.handleNextDayClick} style={{ backgroundColor: 'Transparent' }}
+                          floated="right">
+                    <Icon name="chevron right"/>
                   </Button>
                 </Grid.Column>
               </Grid>
             </Card.Header>
           </Card.Content>
           <Card.Content>
-              <Card.Group>
-                {events}
-              </Card.Group>
+            {groups}
           </Card.Content>
         </Card>
     );
