@@ -3,95 +3,79 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
-import { Menu, Header, Dropdown, Grid } from 'semantic-ui-react';
+import { Menu, Dropdown } from 'semantic-ui-react';
 import { Roles } from 'meteor/alanning:roles';
 
 /** The NavBar appears at the top of every page. Rendered by the App Layout component. */
 class NavBar extends React.Component {
-  render() {
-    const menuStyle = {
-      marginBottom: '10px',
-      background: 'radial-gradient(circle closest-corner, yellow, #f06d06)',
-    };
+  state = { activeItem: 'home' }
 
-    const titleStyle = {
-      color: '#020202',
-      fontFamily: 'Bubblegum Sans',
-    };
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
+  render() {
+    const { activeItem } = this.state
 
     return (
         <div>
           {this.props.currentUser === '' ? (
-              <div style={menuStyle}>
-                <Grid columns='equal' padded>
-                  <Grid.Row>
-                    <Grid.Column/>
-                    <Grid.Column textAlign='center'>
-                      <Header style={titleStyle} as='h1'>WAGGLE</Header>
-                    </Grid.Column>
-                    <Grid.Column textAlign='right'>
-                      {this.props.currentUser === '' ? (
-                          <Dropdown text="Login" pointing="top right" icon={'user'}>
-                            <Dropdown.Menu>
-                              <Dropdown.Item icon="user" text="Sign In" as={NavLink} exact to="/signin"/>
-                            </Dropdown.Menu>
-                          </Dropdown>
-                      ) : (
-                          <Dropdown text={this.props.currentUser} pointing="top right" icon={'user'}>
-                            <Dropdown.Menu>
-                              <Dropdown.Item icon="settings" text="Edit Profile" as={NavLink} exact to="/signout"/>
-                              <Dropdown.Item icon="sign out" text="Sign Out" as={NavLink} exact to="/signout"/>
-                            </Dropdown.Menu>
-                          </Dropdown>
-                      )}
-                    </Grid.Column>
-                  </Grid.Row>
-                </Grid>
-              </div>
+              <Menu pointing secondary>
+                <Menu.Item
+                    name='home'
+                    active={activeItem === 'home'}
+                    onClick={this.handleItemClick}
+                    as={NavLink}
+                    exact to="/"
+                />
+                <Menu.Item
+                    name='about'
+                    active={activeItem === 'about'}
+                    onClick={this.handleItemClick}
+                />
+                <Menu.Item
+                    name='join'
+                    active={activeItem === 'join'}
+                    onClick={this.handleItemClick}
+                />
+                <Menu.Item
+                    name='contact'
+                    active={activeItem === 'contact'}
+                    onClick={this.handleItemClick}
+                />
+                <Menu.Menu position='right'>
+                  {this.props.currentUser === '' ? (
+                      <Menu.Item
+                          name='Sign in'
+                          as={NavLink}
+                          exact to="/signin"
+                      />
+                  ) : (
+                      <Dropdown item text={this.props.currentUser}>
+                        <Dropdown.Menu>
+                          <Dropdown.Item icon='edit' text='Edit Profile' as={NavLink} exact to='/signout'/>
+                          <Dropdown.Item icon='sign-out' text='Sign Out' as={NavLink} exact to='/signout'/>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                  )}
+                </Menu.Menu>
+              </Menu>
           ) : (
-              <div style={menuStyle}>
-                <Grid columns='equal'>
-                  <Grid.Row>
-                    <Grid.Column textAlign='left'>
-                      <Header style={titleStyle} as='h1'>WAGGLE</Header>
-                    </Grid.Column>
-                    <Grid.Column textAlign='center'>
-                      <Grid columns='equal'>
-                        <Grid.Row textAlign='center'>
-                          <Grid.Column>
-                            <Header>STUFF</Header>
-                          </Grid.Column>
-                          <Grid.Column>
-                            <Header>STUFF</Header>
-                          </Grid.Column>
-                          <Grid.Column>
-                            <Header>STUFF</Header>
-                          </Grid.Column>
-                          <Grid.Column>
-                            <Header>STUFF</Header>
-                          </Grid.Column>
-                        </Grid.Row>
-                      </Grid>
-                    </Grid.Column>
-                    <Grid.Column textAlign='right'>
-                      {this.props.currentUser === '' ? (
-                          <Dropdown text="Login" pointing="top right" icon={'user'}>
-                            <Dropdown.Menu>
-                              <Dropdown.Item icon="user" text="Sign In" as={NavLink} exact to="/signin"/>
-                            </Dropdown.Menu>
-                          </Dropdown>
-                      ) : (
-                          <Dropdown text={this.props.currentUser} pointing="top right" icon={'user'}>
-                            <Dropdown.Menu>
-                              <Dropdown.Item icon="settings" text="Edit Profile" as={NavLink} exact to="/signout"/>
-                              <Dropdown.Item icon="sign out" text="Sign Out" as={NavLink} exact to="/signout"/>
-                            </Dropdown.Menu>
-                          </Dropdown>
-                      )}
-                    </Grid.Column>
-                  </Grid.Row>
-                </Grid>
-              </div>
+              <Menu pointing secondary>
+                <Menu.Item
+                    name='home'
+                    active={activeItem === 'home'}
+                    onClick={this.handleItemClick}
+                    as={NavLink}
+                    exact to="/"
+                />
+                <Menu.Menu position='right'>
+                  <Dropdown item text={this.props.currentUser}>
+                    <Dropdown.Menu>
+                      <Dropdown.Item icon='edit' text='Edit Profile' as={NavLink} exact to='/signout'/>
+                      <Dropdown.Item icon='sign-out' text='Sign Out' as={NavLink} exact to='/signout'/>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Menu.Menu>
+              </Menu>
           )}
         </div>
     );
