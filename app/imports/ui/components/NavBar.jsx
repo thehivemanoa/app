@@ -39,12 +39,12 @@ class NavBar extends React.Component {
   /** Handle Signup submission using Meteor's account mechanism. */
 
   render() {
-    const menuStyle = { borderRadius: '0', height: '50px' };
+    const menuStyle = { borderRadius: '0', height: '50px', backgroundColor: '#0C1B32',};
 
     const popupStyle = {
       borderRadius: '0',
       width: '200px',
-      backgroundColor: '#1B1C1D',
+      backgroundColor: '#0C1B32',
       border: 'none',
     };
 
@@ -56,7 +56,10 @@ class NavBar extends React.Component {
         <div>
           {this.props.currentUser === '' ? (
               <Menu style={menuStyle} attached="top" borderless inverted>
-                <Menu.Item style={{ left: '45%' }}>
+                <Menu.Item>
+                  <Header inverted>Icon Here</Header>
+                </Menu.Item>
+                <Menu.Item>
                   <Header style={titleStyle} inverted color={'yellow'} as={'a'} href={"/"}>Waggle</Header>
                 </Menu.Item>
                 <Menu.Menu position='right'>
@@ -90,7 +93,10 @@ class NavBar extends React.Component {
               </Menu>
           ) : (
               <Menu style={menuStyle} attached="top" borderless inverted>
-                <Menu.Item style={{ left: '45%' }}>
+                <Menu.Item>
+                  <Header inverted>Icon Here</Header>
+                </Menu.Item>
+                <Menu.Item>
                   <Header inverted color={'yellow'} as='h1'>Waggle</Header>
                 </Menu.Item>
                 <Menu.Menu position='right'>
