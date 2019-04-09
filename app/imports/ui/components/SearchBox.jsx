@@ -1,39 +1,43 @@
 import React from 'react';
-import { Header, Card, List, Checkbox, Divider, Input, Label } from 'semantic-ui-react';
+import { Header, Card, List } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import HideSearchResults from './HideSearchResults';
+import FilterCourses from './FilterCourses';
+import FilterDateAndTime from './FilterDateAndTime';
 
 export default class SearchResults extends React.Component {
   render() {
     return (
         <Card>
-          <Card.Content>
-            <Header as="h5">Hello</Header>
+          <Card.Content style={{ textAlign: 'center' }}>
+            <Header as="h4" style={{ display: 'inline-block' }}>
+              Search
+            </Header>
           </Card.Content>
           <Card.Content>
             <List>
-              <List.Item>
-                <Divider horizontal>Hide</Divider>
-                <Checkbox label="Hide joined sessions" />
-                <Checkbox label="Hide conflicting sessions" />
-              </List.Item>
-              <List.Item>
-                <Divider horizontal>Courses</Divider>
-                <Input list='courses' placeholder='Choose courses...' />
-                <datalist id='courses'>
-                  <option value='ICS 311' />
-                  <option value='ICS 314' />
-                </datalist>
-                <Checkbox label="Add my courses" />
-                <Label.Group>
-                  <Label>ICS 311</Label>
-                  <Label>ICS 314</Label>
-                </Label.Group>
-              </List.Item>
-              <List.Item>
-                <Divider horizontal>Date and Time</Divider>
-              </List.Item>
+              <HideSearchResults toggleJoined={this.props.toggleJoined}
+                                 toggleConflicting={this.props.toggleConflicting}/>
+              <FilterCourses addCourse={this.props.addCourse}
+                             courses={this.props.courses}
+                             deleteCourse={this.props.deleteCourse}/>
+              <FilterDateAndTime setDateRange={this.props.setDateRange}
+                                 setStartTime={this.props.setStartTime}
+                                 setEndTime={this.props.setEndTime}/>
             </List>
           </Card.Content>
         </Card>
     );
   }
 }
+
+SearchResults.propTypes = {
+  toggleJoined: PropTypes.func.isRequired,
+  toggleConflicting: PropTypes.func.isRequired,
+  addCourse: PropTypes.func.isRequired,
+  deleteCourse: PropTypes.func.isRequired,
+  setDateRange: PropTypes.func.isRequired,
+  setStartTime: PropTypes.func.isRequired,
+  setEndTime: PropTypes.func.isRequired,
+  courses: PropTypes.object.isRequired,
+};
