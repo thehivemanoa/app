@@ -1,48 +1,109 @@
 import React from 'react';
-import '../../../client/style.css';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Image, Header, Segment, Form } from 'semantic-ui-react';
 
 /** A simple static component to render some text for the landing page. */
 class Landing extends React.Component {
   render() {
-    const message = {
-      marginTop: '20px'
-    };
-
     return (
-        <div>
-          <div className="backgroundImage">
-            <div className="landingText">
-              <div className="landingBorder">
-                WAGGLE
-              </div>
-            </div>
-          </div>
+        <Grid verticalAlign='middle' textAlign='center'>
+          <Grid.Row style={{ backgroundColor: '#081B34', padding: '56px 168px' }}>
+            <Grid.Column width={9}>
+              <Image src={'https://semantic-ui.com/images/wireframe/image.png'} style={{ width: '500px' }}/>
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <Header as={'h2'} textAlign="center" style={{ color: 'white' }}>
+                Register your account
+              </Header>
+              <Form onSubmit={this.handleSubmit}>
+                <Segment stacked>
+                  <Form.Input
+                      label="Email"
+                      icon="user"
+                      iconPosition="left"
+                      name="email"
+                      type="email"
+                      placeholder="E-mail address"
+                      onChange={this.handleChange}
+                  />
+                  <Form.Input
+                      label="Password"
+                      icon="lock"
+                      iconPosition="left"
+                      name="password"
+                      placeholder="Password"
+                      type="password"
+                      onChange={this.handleChange}
+                  />
+                  <Form.Button content="Submit" style={{ backgroundColor: '#FAA952' }}/>
+                </Segment>
+              </Form>
+            </Grid.Column>
+          </Grid.Row>
 
-          <div style={message}>
-            <Grid verticalAlign='middle' textAlign='center' container>
-              <Grid.Column width={4}>
-                Logo Here
-              </Grid.Column>
+          <Grid.Row columns={2} style={{ backgroundColor: 'white', padding: '56px' }}>
+            <Grid.Column width={5}>
+              <Header as={'h2'}>What is Waggle?</Header>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vitae augue eget augue dignissim
+                porta id vel lorem. Integer et lacus tempor, lacinia magna vehicula, gravida ante. Nulla facilisi.
+                Curabitur semper, elit sed dignissim vehicula, mi velit viverra orci, id tristique erat tellus ac
+                ligula. Praesent vehicula sodales nisl. Duis sed magna nisi. Morbi eleifend a velit ac luctus.
+                Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+              </p>
+            </Grid.Column>
+            <Grid.Column width={7}>
+              <Image src={'https://semantic-ui.com/images/wireframe/image.png'} style={{ width: '500px' }}/>
+            </Grid.Column>
+          </Grid.Row>
 
-              <Grid.Column width={8}>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab aliquam dignissimos ducimus fuga illo
-                  impedit iure nesciunt odio quis. Accusamus consequatur corporis dignissimos dolor, dolores eius
-                  facere,
-                  ipsam itaque, libero pariatur placeat possimus quidem quisquam quod recusandae rem voluptates. Aperiam
-                  assumenda atque commodi earum in minus odit perferendis provident voluptas! Cum dignissimos eligendi
-                  harum
-                  ipsa laboriosam magnam nihil suscipit tenetur vero voluptates? Commodi cumque debitis deleniti
-                  doloremque
-                  doloribus exercitationem expedita facilis fugit illo impedit inventore laboriosam laborum, libero
-                  minus,
-                  mollitia nisi porro possimus quae quam quasi quia ratione recusandae, tempore temporibus tenetur ut
-                  vero
-                  vitae! A at autem esse repellendus.</p>
-              </Grid.Column>
-            </Grid>
-          </div>
-        </div>
+          <Grid.Row style={{ backgroundColor: 'yellow', padding: '56px 168px' }}>
+            <Grid.Column width={7}>
+              <Image src={'https://semantic-ui.com/images/wireframe/image.png'} style={{ width: '500px' }}/>
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <Header as={'h2'}>Schedule a session</Header>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vitae augue eget augue dignissim
+                porta id vel lorem. Integer et lacus tempor, lacinia magna vehicula, gravida ante. Nulla facilisi.
+                Curabitur semper, elit sed dignissim vehicula, mi velit viverra orci, id tristique erat tellus ac
+                ligula. Praesent vehicula sodales nisl. Duis sed magna nisi. Morbi eleifend a velit ac luctus.
+                Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+              </p>
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row style={{ backgroundColor: 'white', padding: '56px 168px' }}>
+            <Grid.Column width={5}>
+              <Header as={'h2'}>Discover new study sessions and plan ahead</Header>
+              <p>
+                Waggle’s built-in calendar manages to be detailed without being overcrowded, making it easy to browse
+                new
+                study sessions. Read through the descriptions and look over an exhaustive list of the attendees to find
+                out which sessions work for you. Once you’ve made a decision, you can join or leave with the click of a
+                button.
+              </p>
+            </Grid.Column>
+            <Grid.Column width={7}>
+              <Image src={'../images/calendar-page-v1.PNG'} style={{ width: '500px' }}/>
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row style={{ backgroundColor: 'black', padding: '56px 168px' }}>
+            <Grid.Column width={7}>
+              <Image src={'https://semantic-ui.com/images/wireframe/image.png'} style={{ width: '500px' }}/>
+            </Grid.Column>
+            <Grid.Column width={5}>
+              <Header as={'h2'} style={{ color: 'white' }}>Move up the leaderboard</Header>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vitae augue eget augue dignissim
+                porta id vel lorem. Integer et lacus tempor, lacinia magna vehicula, gravida ante. Nulla facilisi.
+                Curabitur semper, elit sed dignissim vehicula, mi velit viverra orci, id tristique erat tellus ac
+                ligula. Praesent vehicula sodales nisl. Duis sed magna nisi. Morbi eleifend a velit ac luctus.
+                Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+              </p>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
     );
   }
 }

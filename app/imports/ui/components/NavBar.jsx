@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
 import { Menu, Header, Popup, Icon, Button, Modal, Form } from 'semantic-ui-react';
-import { Roles } from 'meteor/alanning:roles';
+// import { Roles } from 'meteor/alanning:roles';
 
 /** The NavBar appears at the top of every page. Rendered by the App Layout component. */
 class NavBar extends React.Component {
@@ -39,7 +39,7 @@ class NavBar extends React.Component {
   /** Handle Signup submission using Meteor's account mechanism. */
 
   render() {
-    const menuStyle = { borderRadius: '0', height: '50px', backgroundColor: '#0C1B32',};
+    const menuStyle = { borderRadius: '0', height: '50px', backgroundColor: '#0C1B32' };
 
     const popupStyle = {
       borderRadius: '0',
@@ -60,7 +60,7 @@ class NavBar extends React.Component {
                   <Header inverted>Icon Here</Header>
                 </Menu.Item>
                 <Menu.Item>
-                  <Header style={titleStyle} inverted color={'yellow'} as={'a'} href={"/"}>Waggle</Header>
+                  <Header style={titleStyle} inverted color={'yellow'} as={'a'} href={'/'}>Waggle</Header>
                 </Menu.Item>
                 <Menu.Menu position='right'>
                   <Modal trigger={<Menu.Item>Log In</Menu.Item>}>
