@@ -93,7 +93,7 @@ class SearchPage extends React.Component {
 
   renderPage() {
     return (
-        <Grid container>
+        <Grid container style={{ marginTop: '120px' }}>
           <Grid.Column width={11}>
             <SearchResults sessions={this.props.sessions}/>
           </Grid.Column>

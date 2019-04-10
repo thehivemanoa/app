@@ -68,6 +68,7 @@ class CalendarPage extends React.Component {
   renderPage() {
     const middleGridStyle = {
       minWidth: '1200px',
+      marginTop: '120px',
     };
     return (
         <div>

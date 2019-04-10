@@ -1,55 +1,33 @@
 import React from 'react';
 import dateFns from 'date-fns';
 import PropTypes from 'prop-types';
-import { Table, Button } from 'semantic-ui-react';
+import { Divider, List, Card } from 'semantic-ui-react';
+import SessionCardWithDate from './SessionCardWithDate';
+import SessionCard from './SessionCard';
 
 const _ = require('underscore');
 
 export default class SearchResults extends React.Component {
   render() {
-    const iteratee = function (session) {
-      const startTime = session.startTime;
-      const endTime = session.endTime;
-      const formattedStartTime = `${dateFns.format(startTime, 'h')}:${dateFns.format(startTime, 'mm')}` +
-          ` ${dateFns.format(startTime, 'a')}`;
-      const formattedEndTime = `${dateFns.format(endTime, 'h')}:${dateFns.format(endTime, 'mm')}` +
-          ` ${dateFns.format(endTime, 'a')}`;
-      const formattedDate = `${dateFns.format(startTime, 'M')}-${dateFns.format(startTime, 'D')}-` +
-          `${dateFns.format(startTime, 'YY')}`;
+    const courses = _.groupBy(this.props.sessions, 'course');
+    let groups = _.mapObject(courses, function (sessions, course) {
+      const sessionCards = _.map(sessions, (session, index) => <SessionCardWithDate key={index}
+                                                                                    session={session}/>);
       return (
-          <Table.Row key={`${session.owner}: ${session.title}`}>
-            <Table.Cell>{session.title}</Table.Cell>
-            <Table.Cell>{session.course}</Table.Cell>
-            <Table.Cell>{formattedDate}</Table.Cell>
-            <Table.Cell>{formattedStartTime}</Table.Cell>
-            <Table.Cell>{formattedEndTime}</Table.Cell>
-            <Table.Cell>0</Table.Cell>
-            <Table.Cell>1</Table.Cell>
-            <Table.Cell><Button>Join</Button></Table.Cell>
-           </Table.Row>
+          <List.Item style={{ width: '100%' }} key={course}>
+            <Divider horizontal>{course}</Divider>
+            <Card.Group key={course} fluid>
+              {sessionCards}
+            </Card.Group>
+          </List.Item>
       );
-    };
-
-    const sessions = _.map(this.props.sessions, iteratee);
+    });
+    groups = _.values(groups)
 
     return (
-        <Table singleLine fluid>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Title</Table.HeaderCell>
-              <Table.HeaderCell>Course</Table.HeaderCell>
-              <Table.HeaderCell>Date</Table.HeaderCell>
-              <Table.HeaderCell>Start Time</Table.HeaderCell>
-              <Table.HeaderCell>End Time</Table.HeaderCell>
-              <Table.HeaderCell>Worker Bees</Table.HeaderCell>
-              <Table.HeaderCell>Royal Bees</Table.HeaderCell>
-              <Table.HeaderCell>Join or Leave</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {sessions}
-          </Table.Body>
-        </Table>
+      <List>
+        {groups}
+      </List>
     );
   }
 }
