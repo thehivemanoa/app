@@ -101,16 +101,40 @@ class NavBar extends React.Component {
                 <Menu.Item>
                   <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
                 </Menu.Item>
+                <Menu.Item as={NavLink} exact to='/'
+                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}
+                           position='right'>Home</Menu.Item>
                 <Menu.Item as={NavLink} exact to='/Calendar'
                            style={{ color: 'rgba(255, 255, 255, 0.9)' }}
-                           position ='right'>Create a Session</Menu.Item>
+                >Create a Session</Menu.Item>
+                <Menu.Item as={NavLink} exact to='/Calendar'
+                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}
+                >Calendar</Menu.Item>
+                <Menu.Item as={NavLink} exact to=''
+                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}
+                >Leaderboard</Menu.Item>
                 <Menu.Menu>
-                  <Menu.Item as={'a'} href={''} style={{ color: 'rgba(255, 255, 255, 0.9)' }}>View
-                    Profile
-                  </Menu.Item>
-                  <Menu.Item as={'a'} onClick={Meteor.logout}
-                             exact to="/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                    Log Out
+                  <Menu.Item>
+                    <Popup basic
+                           on={'click'}
+                           horizontalOffset={15}
+                           verticalOffset={-4}
+                           style={popupStyle}
+                           trigger={
+                             <Button inverted icon size={'mini'} color={'yellow'}>
+                               <Icon name={'bars'}/>
+                             </Button>
+                           }
+                    >
+                      <Menu vertical borderless secondary>
+                        <Menu.Item as={'a'} href={''} style={{ color: 'rgba(255, 255, 255, 0.9)' }}>View
+                          Profile</Menu.Item>
+                        <Menu.Item as={'a'} onClick={Meteor.logout}
+                                   exact to="/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                          Log Out
+                        </Menu.Item>
+                      </Menu>
+                    </Popup>
                   </Menu.Item>
                 </Menu.Menu>
               </div>
