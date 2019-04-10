@@ -5,6 +5,10 @@ html, body {
   height: 100%;
 }
 
+body {
+  margin-top: 114px!important;
+}
+
 .landing-page {
   font-family: 'Montserrat', sans-serif !important;
 }
@@ -31,8 +35,7 @@ h2 {
 
 .blue-bg {
   background-color: #081B34;
-  height: 94vh;
-  margin-top: 50px;
+  height: 86vh;
   padding: 15vh 0vh 25vh 0vh;
   color: whitesmoke;
   margin-top: 50px;
