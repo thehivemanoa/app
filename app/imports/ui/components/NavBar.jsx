@@ -101,7 +101,9 @@ class NavBar extends React.Component {
                 <Menu.Item>
                   <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
                 </Menu.Item>
-                <Menu.Item as={NavLink} exact to='/CalendarPage' style={{ color: 'rgba(255, 255, 255, 0.9)' }}position ='right'>Create a Session</Menu.Item>
+                <Menu.Item as={NavLink} exact to='/Calendar'
+                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}
+                           position ='right'>Create a Session</Menu.Item>
                 <Menu.Menu>
                   <Menu.Item>
                     <Popup basic
