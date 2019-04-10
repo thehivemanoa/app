@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+html, body {
+  height: 100%;
+}
+
+.landing-page, h2 {
+  font-family: 'Montserrat', sans-serif !important;
+  letter-spacing: 1.5px;
+}
+
+.blue-bg {
+  background-color: #081B34;
+  height: 94vh;
+  padding: 20vh 0vh 20vh 0vh;
+  color: whitesmoke;
+  margin-top: 50px;
+}
+
+.white-bg {
+  background-color: white;
+  height: 70vh;
+  padding: 20vh 0vh 20vh 0vh;
+}
+
+.yellow-bg {
+  background-color: #fff53f;
+  height: 70vh;
+  padding: 20vh 0vh 20vh 0vh;
+}
+
+.black-bg {
+  background-color: #020202;
+  height: 70vh;
+  padding: 0vh 10vh 20vh 0vh;
+  color: whitesmoke;
+}
+
+.backgroundImage {
+  background-image: url("https://images.pexels.com/photos/1472841/pexels-photo-1472841.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  min-height: 75vh;
+  opacity: 0.7;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.landingText {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  color: #000;
+  font-size: 27px;
+  letter-spacing: 8px;
+}
+
+.landingText .landingBorder {
+  background-color: #020202;
+  color: #ffed51;
+  padding: 20px;
+  margin-left: 40%;
+  margin-right: 40%;
+}
+
+textarea:focus, input:focus {
+  color: whitesmoke !important;
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+.navbarBackground {
+  background-color: #ffed51;
+}
+
+.ui.inverted.menu .item {
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 2px;
+}
