@@ -58,7 +58,7 @@ class Landing extends React.Component {
               <Grid.Column width={5}>
                 <Header as={'landing-header'}>What is Waggle?</Header>
                 <p className="landing-text">
-                  Waggle provides ICS students of UH Manoa  a platform to easily organize in-person study groups for their classes, or help other students with coursework and projects.
+                  Waggle provides ICS students of UH Manoa a platform to easily organize in-person study groups for their classes, or help other students with coursework and projects.
                 </p>
               </Grid.Column>
               <Grid.Column width={7}>
@@ -103,7 +103,8 @@ class Landing extends React.Component {
               <Grid.Column width={5}>
                 <Header as={'landing-header'} style={{ color: 'white' }}>Move up the leaderboard</Header>
                 <p className="landing-text">
-                  The more you Waggle, the more honey you collect!<br/>Join and create study sessions to level up and move up the leaderboard!
+                  The more you Waggle, the more honey you collect!<br/>
+                  Join and create study sessions to level up and move up the leaderboard!
                 </p>
               </Grid.Column>
             </Grid.Row>
