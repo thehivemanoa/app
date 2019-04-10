@@ -6,10 +6,10 @@ html, body {
 }
 
 body {
-  margin-top: 114px!important;
+  margin-top: 134px !important;
 }
 
-.landing-page {
+.landing-page, .profile-page {
   font-family: 'Montserrat', sans-serif !important;
 }
 
@@ -38,7 +38,9 @@ h2 {
   height: 86vh;
   padding: 15vh 0vh 25vh 0vh;
   color: whitesmoke;
-  margin-top: 50px;
+  position: relative;
+  top: -17px;
+  z-index: 99;
 }
 
 .white-bg {
@@ -98,4 +100,9 @@ h2 {
 .footerButton {
   background-color: #faa952 !important;
   margin: 21px 7px !important;
+}
+
+.ui.menu > .item:first-child {
+  padding-bottom: 0px !important;
+  padding-top:15px !important;
 }

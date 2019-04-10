@@ -38,7 +38,7 @@ class NavBar extends React.Component {
   }
 
   render() {
-    const menuStyle = { borderRadius: '0', padding: '5px 25px 5px 25px', backgroundColor: '#081B34' };
+    const menuStyle = { borderRadius: '0', padding: '5px 25px 5px 25px', backgroundColor: '#081B34', alignItems: 'baseline' };
 
     const popupStyle = {
       borderRadius: '0',
@@ -58,7 +58,7 @@ class NavBar extends React.Component {
         <div>
           {this.props.currentUser === '' ? (
               <div className="ui borderless top fixed menu" style={menuStyle}>
-                <Menu.Item>
+                <Menu.Item id='toplogo'>
                   <Image size="tiny" src="images/white-inverted-logo.png"/>
                 </Menu.Item>
                 <Menu.Item>
@@ -127,8 +127,7 @@ class NavBar extends React.Component {
                            }
                     >
                       <Menu vertical borderless secondary>
-                        <Menu.Item as={'a'} href={''} style={{ color: 'rgba(255, 255, 255, 0.9)' }}>View
-                          Profile</Menu.Item>
+                        <Menu.Item as={NavLink} exact to='/profile' style={{ color: 'rgba(255, 255, 255, 0.9)' }}>View Profile</Menu.Item>
                         <Menu.Item as={'a'} onClick={Meteor.logout}
                                    exact to="/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
                           Log Out
