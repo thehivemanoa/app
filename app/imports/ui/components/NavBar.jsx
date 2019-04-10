@@ -45,7 +45,7 @@ class NavBar extends React.Component {
       width: '175px',
       backgroundColor: '#081B34',
       border: 'none',
-      textAlign: 'right'
+      textAlign: 'right',
     };
 
     const titleStyle = {
@@ -65,13 +65,13 @@ class NavBar extends React.Component {
                   <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
                 </Menu.Item>
                 <Menu.Menu position='right'>
-                  <Modal trigger={<Menu.Item style={{ color: 'white' }}>Log In</Menu.Item>}>
+                  <Modal id='login-modal' trigger={<Menu.Item style={{ color: 'white' }}>Log In</Menu.Item>}>
                     <Modal.Header>Login to your account</Modal.Header>
                     <Modal.Content>
                       <Form onSubmit={this.handleSubmit}>
                         <Form.Input
                             label="Email"
-                            icon="user"s
+                            icon="user"
                             iconPosition="left"
                             name="email"
                             type="email"
@@ -87,7 +87,7 @@ class NavBar extends React.Component {
                             type="password"
                             onChange={this.handleChange}
                         />
-                        <Form.Button content="Submit"/>
+                        <Form.Button content="Submit">Log In</Form.Button>
                       </Form>
                     </Modal.Content>
                   </Modal>
@@ -119,8 +119,10 @@ class NavBar extends React.Component {
                           Session</Menu.Item>
                         <Menu.Item as={'a'} href={''} style={{ color: 'rgba(255, 255, 255, 0.9)' }}>View
                           Profile</Menu.Item>
-                        <Menu.Item as={NavLink} exact to="/signout" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Log
-                          Out</Menu.Item>
+                        <Menu.Item as={NavLink} onClick={Meteor.logout}
+                                   exact to="/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                          Log Out
+                        </Menu.Item>
                       </Menu>
                     </Popup>
                   </Menu.Item>
