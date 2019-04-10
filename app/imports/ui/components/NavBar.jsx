@@ -101,7 +101,8 @@ class NavBar extends React.Component {
                 <Menu.Item>
                   <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
                 </Menu.Item>
-                <Menu.Menu position='right'>
+                <Menu.Item as={NavLink} exact to='/CalendarPage' style={{ color: 'rgba(255, 255, 255, 0.9)' }}position ='right'>Create a Session</Menu.Item>
+                <Menu.Menu>
                   <Menu.Item>
                     <Popup basic
                            on={'click'}
@@ -115,11 +116,9 @@ class NavBar extends React.Component {
                            }
                     >
                       <Menu vertical borderless secondary>
-                        <Menu.Item as={'a'} href={''} style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Create a
-                          Session</Menu.Item>
                         <Menu.Item as={'a'} href={''} style={{ color: 'rgba(255, 255, 255, 0.9)' }}>View
                           Profile</Menu.Item>
-                        <Menu.Item as={NavLink} onClick={Meteor.logout}
+                        <Menu.Item as={'a'} onClick={Meteor.logout}
                                    exact to="/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
                           Log Out
                         </Menu.Item>
