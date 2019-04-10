@@ -1,11 +1,18 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
 html, body {
   height: 100%;
+}
+
+.landing-page, h2 {
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 .blue-bg {
   background: linear-gradient(to bottom right, #0c1b32 0%, #336699 100%);
   height: 94vh;
   padding: 20vh 0vh 20vh 0vh;
+  color: whitesmoke;
 }
 
 .white-bg {
@@ -23,7 +30,8 @@ html, body {
 .black-bg {
   background-color: #020202;
   height: 70vh;
-  padding: 20vh 0vh 20vh 0vh;
+  padding: 0vh 10vh 20vh 0vh;
+  color: whitesmoke;
 }
 
 .backgroundImage {
@@ -52,6 +60,11 @@ html, body {
   padding: 20px;
   margin-left: 40%;
   margin-right: 40%;
+}
+
+textarea:focus, input:focus {
+  color: whitesmoke !important;
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 .navbarBackground {
