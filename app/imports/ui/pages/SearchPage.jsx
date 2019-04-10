@@ -1,4 +1,5 @@
 import React from 'react';
+import dateFns from 'date-fns';
 import { Meteor } from 'meteor/meteor';
 import { Loader, Grid } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -10,14 +11,17 @@ import { Sessions } from '../../api/session/session';
 class SearchPage extends React.Component {
   constructor(props) {
     super(props);
+    let currentDate = new Date();
+    currentDate = dateFns.startOfDay(currentDate);
     this.state = {
       hideJoined: true,
       hideConflicting: true,
-      courses: { 'ICS 311': null },
-      startDate: null,
-      endDate: null,
+      courses: {},
+      endDate: currentDate,
+      startDate: currentDate,
       startTime: null,
       endTime: null,
+      course: '',
     };
     this.toggleJoined = this.toggleJoined.bind(this);
     this.toggleConflicting = this.toggleConflicting.bind(this);
@@ -26,6 +30,7 @@ class SearchPage extends React.Component {
     this.setDateRange = this.setDateRange.bind(this);
     this.setStartTime = this.setStartTime.bind(this);
     this.setEndTime = this.setEndTime.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   toggleJoined() {
@@ -45,6 +50,7 @@ class SearchPage extends React.Component {
     newCourses[course] = null;
     this.setState({
       courses: newCourses,
+      course: '',
     });
   }
 
@@ -75,19 +81,28 @@ class SearchPage extends React.Component {
     });
   }
 
+  handleChange(event, { name, value }) {
+    this.setState({
+      [name]: value,
+    });
+  }
+
   render() {
     return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
   renderPage() {
     return (
-        <Grid>
+        <Grid container>
           <Grid.Column width={11}>
-            <SearchResults/>
+            <SearchResults sessions={this.props.sessions}/>
           </Grid.Column>
           <Grid.Column width={5}>
             <SearchBox toggleJoined={this.toggleJoined}
+                       endDate={this.state.endDate}
                        courses={this.state.courses}
+                       course={this.state.course}
+                       handleChange={this.handleChange}
                        toggleConflicting={this.toggleConflicting}
                        addCourse={this.addCourse}
                        deleteCourse={this.deleteCourse}
