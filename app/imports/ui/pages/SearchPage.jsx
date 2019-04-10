@@ -16,7 +16,7 @@ class SearchPage extends React.Component {
     this.state = {
       hideJoined: true,
       hideConflicting: true,
-      courses: {},
+      courses: { 'ICS 311': null, 'ICS 314': null },
       endDate: currentDate,
       startDate: currentDate,
       startTime: null,
