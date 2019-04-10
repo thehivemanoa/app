@@ -76,8 +76,12 @@ h2 {
   margin-right: 40%;
 }
 
-textarea:focus, input:focus {
+#registration-form textarea:focus, #registration-form input:focus {
   color: whitesmoke !important;
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+#login-modal textarea:focus, #login-modal input:focus {
   font-family: 'Montserrat', sans-serif !important;
 }
 

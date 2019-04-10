@@ -65,13 +65,13 @@ class NavBar extends React.Component {
                   <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
                 </Menu.Item>
                 <Menu.Menu position='right'>
-                  <Modal trigger={<Menu.Item style={{ color: 'white' }}>Log In</Menu.Item>}>
+                  <Modal id='login-modal' trigger={<Menu.Item style={{ color: 'white' }}>Log In</Menu.Item>}>
                     <Modal.Header>Login to your account</Modal.Header>
                     <Modal.Content>
                       <Form onSubmit={this.handleSubmit}>
                         <Form.Input
                             label="Email"
-                            icon="user"s
+                            icon="user"
                             iconPosition="left"
                             name="email"
                             type="email"
@@ -87,7 +87,7 @@ class NavBar extends React.Component {
                             type="password"
                             onChange={this.handleChange}
                         />
-                        <Form.Button content="Submit"/>
+                        <Form.Button content="Submit">Log In</Form.Button>
                       </Form>
                     </Modal.Content>
                   </Modal>

@@ -17,7 +17,7 @@ class Landing extends React.Component {
 
                 <Grid.Column>
                   <h2><Icon id="triangle-icon" fitted name='triangle right'/> Register Now!</h2>
-                  <Form inverted>
+                  <Form id='registration-form' inverted>
                     <Form.Field>
                       <label>First Name</label>
                       <Input fluid transparent placeholder='First Name'/>
