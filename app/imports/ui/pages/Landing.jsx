@@ -6,7 +6,7 @@ class Landing extends React.Component {
   render() {
     return (
         <Grid verticalAlign='middle' textAlign='center' style={{ marginTop: '0' }}>
-          <Grid.Row style={{ backgroundColor: '#081B34', padding: '28px 168px 56px 168px' }}>
+          <Grid.Row className="blue-bg">
             <Grid.Column width={9}>
               <Image src={'https://semantic-ui.com/images/wireframe/image.png'} style={{ width: '500px' }}/>
             </Grid.Column>

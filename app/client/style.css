@@ -2,6 +2,12 @@ html, body {
   height: 100%;
 }
 
+.blue-bg {
+  background: linear-gradient(to bottom right, #0c1b32 0%, #336699 100%);
+  height: 94vh;
+  padding: 20vh 0vh 20vh 0vh;
+}
+
 .backgroundImage {
   background-image: url("https://images.pexels.com/photos/1472841/pexels-photo-1472841.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
   min-height: 75vh;
