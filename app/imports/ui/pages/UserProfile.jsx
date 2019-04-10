@@ -19,30 +19,31 @@ class ListStuff extends React.Component {
     return (
         <div className="profile-page">
 
-          <!-- 2 column grid -->
-          <!-- column 1 = profile card-->
-          <!-- **** PROFILE CARD **** -->
-          <!--  profile picture (popup edit pfp modal) -->
-          <!--  Banner with user name -->
-          <!--  Honey pot with level -->
-          <!--  current/total XP -->
-          <!--  Progress Bar-->
+          /* 2 column grid */
+          /* column 1 = profile card*/
+          /***** PROFILE CARD *****/
+          /* profile picture (popup edit pfp modal) */
+          /* Banner with user name */
+          /* Honey pot with level */
+          /* current/total XP */
+          /* Progress Bar*/
 
-          <!--  column 2 = 2 rows = My Courses and Account Information -->
-          <!--  scroll bar? -->
-          <!-- **** MY COURSES **** -->
-          <!--  Header -->
-          <!--  thick divider line -->
-          <!--  course cards = colored course number, bee status, edit pop modal -->
-          <!--  add course button --> popup modal -->
+          /* column 2 = 2 rows = My Courses and Account Information */
+          /* scroll bar? */
+          /***** MY COURSES *****/
+          /* Header */
+          /* thick divider line */
+          /* course cards = colored course number, bee status, edit pop modal */
+          /* add course button --> popup modal */
 
-          <!-- **** ACCOUNT INFORMATION **** -->
-          <!--  Header -->
-          <!--  thick divider line -->
-          <!--  Name: [user's name], edit button->modal -->
-          <!--  Email Address: [user's email], edit button->modal -->
-          <!--  Change Password button -> modal -->
-          <!--  Terminate account button + warning icon -> modal -->
+          /***** ACCOUNT INFORMATION *****/
+          /* Header */
+          /* thick divider line */
+          /* Name: [user's name], edit button->modal */
+          /* Email Address: [user's email], edit button->modal */
+          /* Change Password button -> modal */
+          /* Terminate account button + warning icon -> modal */
+
         </div>
     );
   }
