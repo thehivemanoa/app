@@ -117,6 +117,16 @@ class NavBar extends React.Component {
                           Session</Menu.Item>
                         <Menu.Item as={'a'} href={''} style={{ color: 'rgba(255, 255, 255, 0.9)' }}>View
                           Profile</Menu.Item>
+                        <Menu.Item as={NavLink}
+                                   activeClassName="active"
+                                   exact to="/calendar"
+                                   style={{ color: 'rgba(255, 255, 255, 0.9)' }}
+                                   key='calendar'>Calendar</Menu.Item>
+                        <Menu.Item as={NavLink}
+                                   activeClassName="active"
+                                   exact to="/search"
+                                   style={{ color: 'rgba(255, 255, 255, 0.9)' }}
+                                   key='search' inverted>Search</Menu.Item>
                         <Menu.Item as={NavLink} exact to="/signout" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Log
                           Out</Menu.Item>
                       </Menu>
