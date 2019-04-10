@@ -52,7 +52,7 @@ export default class SessionList extends React.Component {
               </Grid>
             </Card.Header>
           </Card.Content>
-          <Card.Content>
+          <Card.Content style={{ paddingTop: 0 }}>
             {groups}
           </Card.Content>
         </Card>
