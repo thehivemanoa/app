@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
-import { Menu, Header, Popup, Icon, Button, Modal, Form } from 'semantic-ui-react';
+import { Menu, Header, Popup, Icon, Button, Modal, Form, Image } from 'semantic-ui-react';
+
 // import { Roles } from 'meteor/alanning:roles';
 
 /** The NavBar appears at the top of every page. Rendered by the App Layout component. */
@@ -36,20 +37,21 @@ class NavBar extends React.Component {
     });
   }
 
-  /** Handle Signup submission using Meteor's account mechanism. */
-
   render() {
-    const menuStyle = { borderRadius: '0', height: '50px', backgroundColor: '#0C1B32' };
+    const menuStyle = { borderRadius: '0', padding: '5px 25px 5px 25px', backgroundColor: '#081B34' };
 
     const popupStyle = {
       borderRadius: '0',
-      width: '200px',
-      backgroundColor: '#0C1B32',
+      width: '175px',
+      backgroundColor: '#081B34',
       border: 'none',
+      textAlign: 'right'
     };
 
     const titleStyle = {
-      fontSize: '25px',
+      fontSize: '50px',
+      fontWeight: 300,
+      fontFamily: 'Montserrat',
     };
 
     return (
@@ -57,19 +59,19 @@ class NavBar extends React.Component {
           {this.props.currentUser === '' ? (
               <div className="ui borderless top fixed menu" style={menuStyle}>
                 <Menu.Item>
-                  <Header inverted>Icon Here</Header>
+                  <Image size="tiny" src="images/white-inverted-logo.png"/>
                 </Menu.Item>
                 <Menu.Item>
-                  <Header style={titleStyle} inverted color={'yellow'} as={'a'} href={'/'}>Waggle</Header>
+                  <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
                 </Menu.Item>
                 <Menu.Menu position='right'>
-                  <Modal trigger={<Menu.Item>Log In</Menu.Item>}>
+                  <Modal trigger={<Menu.Item style={{ color: 'white' }}>Log In</Menu.Item>}>
                     <Modal.Header>Login to your account</Modal.Header>
                     <Modal.Content>
                       <Form onSubmit={this.handleSubmit}>
                         <Form.Input
                             label="Email"
-                            icon="user"
+                            icon="user"s
                             iconPosition="left"
                             name="email"
                             type="email"
@@ -94,10 +96,10 @@ class NavBar extends React.Component {
           ) : (
               <div className="ui borderless top fixed menu" style={menuStyle}>
                 <Menu.Item>
-                  <Header inverted>Icon Here</Header>
+                  <Image size="tiny" src="images/white-inverted-logo.png"/>
                 </Menu.Item>
                 <Menu.Item>
-                  <Header inverted color={'yellow'} as='h1'>Waggle</Header>
+                  <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
                 </Menu.Item>
                 <Menu.Menu position='right'>
                   <Menu.Item>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Image, Header, Divider, Input, Form, Button, Checkbox, Container } from 'semantic-ui-react';
+import { Grid, Image, Header, Divider, Input, Form, Button, Checkbox, Container, Icon } from 'semantic-ui-react';
 
 /** A simple static component to render some text for the landing page. */
 class Landing extends React.Component {
@@ -11,12 +11,12 @@ class Landing extends React.Component {
               <Grid columns={2} divided>
                 <Grid.Column>
                   <div className="ui center aligned container">
-                    <Image src={'https://semantic-ui.com/images/wireframe/image.png'} style={{ width: '500px' }}/>
+                    <Image src='/images/landing-bees.png'/>
                   </div>
                 </Grid.Column>
 
                 <Grid.Column>
-                  <h2>Register Now!</h2>
+                  <h2><Icon id="triangle-icon" fitted name='triangle right'/> Register Now!</h2>
                   <Form inverted>
                     <Form.Field>
                       <label>First Name</label>
@@ -38,14 +38,14 @@ class Landing extends React.Component {
 
                     <Form.Field>
                       <label>Password</label>
-                      <Input fluid transparent placeholder='password'/>
+                      <Input fluid transparent placeholder='Password'/>
                     </Form.Field>
                     <Divider/>
 
                     <Form.Field>
                       <Checkbox label='I agree to the Terms and Conditions'/>
                     </Form.Field>
-                    <Button type='submit'>Submit</Button>
+                    <Button id='register-button' type='submit'>Submit</Button>
                   </Form>
                 </Grid.Column>
               </Grid>
