@@ -8,6 +8,24 @@ html, body {
   padding: 20vh 0vh 20vh 0vh;
 }
 
+.white-bg {
+  background-color: white;
+  height: 70vh;
+  padding: 20vh 0vh 20vh 0vh;
+}
+
+.yellow-bg {
+  background-color: #fff53f;
+  height: 70vh;
+  padding: 20vh 0vh 20vh 0vh;
+}
+
+.black-bg {
+  background-color: #020202;
+  height: 70vh;
+  padding: 20vh 0vh 20vh 0vh;
+}
+
 .backgroundImage {
   background-image: url("https://images.pexels.com/photos/1472841/pexels-photo-1472841.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
   min-height: 75vh;

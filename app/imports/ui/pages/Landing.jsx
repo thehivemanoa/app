@@ -40,7 +40,7 @@ class Landing extends React.Component {
             </Grid.Column>
           </Grid.Row>
 
-          <Grid.Row columns={2} style={{ backgroundColor: 'white', padding: '56px' }}>
+          <Grid.Row columns={2} className="white-bg">
             <Grid.Column width={5}>
               <Header as={'h2'}>What is Waggle?</Header>
               <p>
@@ -56,7 +56,7 @@ class Landing extends React.Component {
             </Grid.Column>
           </Grid.Row>
 
-          <Grid.Row style={{ backgroundColor: 'yellow', padding: '56px 168px' }}>
+          <Grid.Row className="yellow-bg">
             <Grid.Column width={7}>
               <Image src={'https://semantic-ui.com/images/wireframe/image.png'} style={{ width: '500px' }}/>
             </Grid.Column>
@@ -72,7 +72,7 @@ class Landing extends React.Component {
             </Grid.Column>
           </Grid.Row>
 
-          <Grid.Row style={{ backgroundColor: 'white', padding: '56px 168px' }}>
+          <Grid.Row className="white-bg">
             <Grid.Column width={5}>
               <Header as={'h2'}>Discover new study sessions and plan ahead</Header>
               <p>
@@ -88,7 +88,7 @@ class Landing extends React.Component {
             </Grid.Column>
           </Grid.Row>
 
-          <Grid.Row style={{ backgroundColor: 'black', padding: '56px 168px' }}>
+          <Grid.Row className="black-bg">
             <Grid.Column width={7}>
               <Image src={'https://semantic-ui.com/images/wireframe/image.png'} style={{ width: '500px' }}/>
             </Grid.Column>
