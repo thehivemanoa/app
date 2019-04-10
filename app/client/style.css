@@ -96,3 +96,8 @@ textarea:focus, input:focus {
 #triangle-icon {
   color: #faa952;
 }
+
+.footerButton {
+  background-color: #faa952 !important;
+  margin: 7px !important;
+}

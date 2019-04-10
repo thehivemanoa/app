@@ -71,7 +71,7 @@ class NavBar extends React.Component {
                       <Form onSubmit={this.handleSubmit}>
                         <Form.Input
                             label="Email"
-                            icon="user"
+                            icon="user"s
                             iconPosition="left"
                             name="email"
                             type="email"
