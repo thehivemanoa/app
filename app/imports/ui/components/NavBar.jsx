@@ -45,7 +45,7 @@ class NavBar extends React.Component {
       width: '175px',
       backgroundColor: '#081B34',
       border: 'none',
-      textAlign: 'right'
+      textAlign: 'right',
     };
 
     const titleStyle = {
