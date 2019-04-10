@@ -55,7 +55,7 @@ class NavBar extends React.Component {
     return (
         <div>
           {this.props.currentUser === '' ? (
-              <Menu style={menuStyle} attached="top" borderless inverted>
+              <div className="ui borderless top fixed menu" style={menuStyle}>
                 <Menu.Item>
                   <Header inverted>Icon Here</Header>
                 </Menu.Item>
@@ -90,9 +90,9 @@ class NavBar extends React.Component {
                     </Modal.Content>
                   </Modal>
                 </Menu.Menu>
-              </Menu>
+              </div>
           ) : (
-              <Menu style={menuStyle} attached="top" borderless inverted>
+              <div className="ui borderless top fixed menu" style={menuStyle}>
                 <Menu.Item>
                   <Header inverted>Icon Here</Header>
                 </Menu.Item>
@@ -123,7 +123,7 @@ class NavBar extends React.Component {
                     </Popup>
                   </Menu.Item>
                 </Menu.Menu>
-              </Menu>
+              </div>
           )}
         </div>
     );
