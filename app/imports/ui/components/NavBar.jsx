@@ -105,27 +105,12 @@ class NavBar extends React.Component {
                            style={{ color: 'rgba(255, 255, 255, 0.9)' }}
                            position ='right'>Create a Session</Menu.Item>
                 <Menu.Menu>
-                  <Menu.Item>
-                    <Popup basic
-                           on={'click'}
-                           horizontalOffset={15}
-                           verticalOffset={-4}
-                           style={popupStyle}
-                           trigger={
-                             <Button inverted icon size={'mini'} color={'yellow'}>
-                               <Icon name={'bars'}/>
-                             </Button>
-                           }
-                    >
-                      <Menu vertical borderless secondary>
-                        <Menu.Item as={'a'} href={''} style={{ color: 'rgba(255, 255, 255, 0.9)' }}>View
-                          Profile</Menu.Item>
-                        <Menu.Item as={'a'} onClick={Meteor.logout}
-                                   exact to="/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                          Log Out
-                        </Menu.Item>
-                      </Menu>
-                    </Popup>
+                  <Menu.Item as={'a'} href={''} style={{ color: 'rgba(255, 255, 255, 0.9)' }}>View
+                    Profile
+                  </Menu.Item>
+                  <Menu.Item as={'a'} onClick={Meteor.logout}
+                             exact to="/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                    Log Out
                   </Menu.Item>
                 </Menu.Menu>
               </div>
