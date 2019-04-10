@@ -18,22 +18,32 @@ class ListStuff extends React.Component {
   renderPage() {
     return (
         <div className="profile-page">
-          <Container>
-            <Header as="h2" textAlign="center">List Stuff</Header>
-            <Table celled>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell>Name</Table.HeaderCell>
-                  <Table.HeaderCell>Quantity</Table.HeaderCell>
-                  <Table.HeaderCell>Condition</Table.HeaderCell>
-                  <Table.HeaderCell>Edit</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
-                {this.props.stuffs.map((stuff) => <StuffItem key={stuff._id} stuff={stuff}/>)}
-              </Table.Body>
-            </Table>
-          </Container>
+
+          /* 2 column grid */
+          /* column 1 = profile card*/
+          /***** PROFILE CARD *****/
+          /* profile picture (popup edit pfp modal) */
+          /* Banner with user name */
+          /* Honey pot with level */
+          /* current/total XP */
+          /* Progress Bar*/
+
+          /* column 2 = 2 rows = My Courses and Account Information */
+          /* scroll bar? */
+          /***** MY COURSES *****/
+          /* Header */
+          /* thick divider line */
+          /* course cards = colored course number, bee status, edit pop modal */
+          /* add course button --> popup modal */
+
+          /***** ACCOUNT INFORMATION *****/
+          /* Header */
+          /* thick divider line */
+          /* Name: [user's name], edit button->modal */
+          /* Email Address: [user's email], edit button->modal */
+          /* Change Password button -> modal */
+          /* Terminate account button + warning icon -> modal */
+
         </div>
     );
   }
