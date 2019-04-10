@@ -9,7 +9,7 @@ html, body {
 }
 
 .blue-bg {
-  background: linear-gradient(to bottom right, #0c1b32 0%, #336699 100%);
+  background-color: #081B34;
   height: 94vh;
   padding: 20vh 0vh 20vh 0vh;
   color: whitesmoke;
