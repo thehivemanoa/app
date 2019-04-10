@@ -66,7 +66,7 @@ class NavBar extends React.Component {
                 </Menu.Item>
                 <Menu.Menu position='right'>
                   <Modal id='login-modal' trigger={<Menu.Item style={{ color: 'white' }}>Log In</Menu.Item>}>
-                    <Modal.Header>Login to your account</Modal.Header>
+                    <Modal.Header>Log in to your account</Modal.Header>
                     <Modal.Content>
                       <Form onSubmit={this.handleSubmit}>
                         <Form.Input
