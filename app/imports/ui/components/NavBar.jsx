@@ -65,7 +65,7 @@ class NavBar extends React.Component {
                   <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
                 </Menu.Item>
                 <Menu.Menu position='right'>
-                  <Modal trigger={<Menu.Item inverted>Log In</Menu.Item>}>
+                  <Modal trigger={<Menu.Item style={{ color: 'white' }}>Log In</Menu.Item>}>
                     <Modal.Header>Login to your account</Modal.Header>
                     <Modal.Content>
                       <Form onSubmit={this.handleSubmit}>
