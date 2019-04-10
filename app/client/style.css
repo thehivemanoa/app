@@ -1,25 +1,37 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,300,400');
+@import url('https://fonts.googleapis.com/css?family=Raleway');
 
 html, body {
   height: 100%;
 }
 
-.landing-page, h2 {
+.landing-page {
   font-family: 'Montserrat', sans-serif !important;
-  letter-spacing: 1.5px;
+}
+
+.ui.menu .item {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: lighter !important;
+  letter-spacing: 1.7px;
+}
+
+h2 {
+  font-family: 'Raleway', sans-serif !important;
+  letter-spacing: 2px;
 }
 
 .blue-bg {
   background-color: #081B34;
   height: 94vh;
-  padding: 20vh 0vh 20vh 0vh;
+  margin-top: 50px;
+  padding: 15vh 0vh 25vh 0vh;
   color: whitesmoke;
   margin-top: 50px;
 }
 
 .white-bg {
   background-color: white;
-  height: 70vh;
+  height: 100vh;
   padding: 20vh 0vh 20vh 0vh;
 }
 
@@ -73,7 +85,19 @@ textarea:focus, input:focus {
   background-color: #ffed51;
 }
 
-.ui.inverted.menu .item {
+#register-button {
+  background-color: #faa952 !important;
+  color: #081B34 !important;
   font-family: 'Montserrat', sans-serif;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
+  border-radius: 1px !important;
+}
+
+#triangle-icon {
+  color: #faa952;
+}
+
+.footerButton {
+  background-color: #faa952 !important;
+  margin: 7px !important;
 }
