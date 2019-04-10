@@ -6,7 +6,7 @@ html, body {
 }
 
 body {
-  margin-top: 134px !important;
+  margin-top: 150px !important;
 }
 
 .landing-page, .profile-page {
@@ -39,7 +39,7 @@ h2 {
   padding: 15vh 0vh 25vh 0vh;
   color: whitesmoke;
   position: relative;
-  top: -17px;
+  top: -33px;
   z-index: 99;
 }
 
