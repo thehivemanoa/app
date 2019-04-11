@@ -3,6 +3,7 @@ import { Sessions, SessionSchema } from '/imports/api/session/session';
 import { Segment } from 'semantic-ui-react';
 import AutoForm from 'uniforms-semantic/AutoForm';
 import TextField from 'uniforms-semantic/TextField';
+import LongTextField from 'uniforms-semantic/LongTextField';
 import DateField from 'uniforms-semantic/DateField';
 import SubmitField from 'uniforms-semantic/SubmitField';
 import HiddenField from 'uniforms-semantic/HiddenField';
@@ -54,10 +55,10 @@ class AddSession extends React.Component {
           <Segment>
             <TextField label={'Title'} name={'title'}/>
             <TextField label={'Course'} name={'course'}/>
-            <TextField label={'Description'} name={'description'}/>
+            <LongTextField label={'Description'} name={'description'}/>
             <DateField label={'Date'} name={'date'}/>
-            <TextField label={'Start Time'} name={'startTime'}/>
-            <TextField label={'End Time'} name={'endTime'}/>
+            <DateField label={'Start Time'} name={'startTime'}/>
+            <DateField label={'End Time'} name={'endTime'}/>
             <TextField label={'Attendees'} name={'attendees'}/>
             <SubmitField value='Submit'/>
             <ErrorsField/>
