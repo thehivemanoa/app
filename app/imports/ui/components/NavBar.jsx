@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
 import { Menu, Header, Popup, Icon, Button, Modal, Form, Image } from 'semantic-ui-react';
+import { Roles } from 'meteor/alanning:roles';
 
 // import { Roles } from 'meteor/alanning:roles';
 
@@ -38,7 +39,12 @@ class NavBar extends React.Component {
   }
 
   render() {
-    const menuStyle = { borderRadius: '0', padding: '5px 25px 5px 25px', backgroundColor: '#081B34', alignItems: 'baseline' };
+    const menuStyle = {
+      borderRadius: '0',
+      padding: '5px 25px 5px 25px',
+      backgroundColor: '#081B34',
+      alignItems: 'baseline',
+    };
 
     const popupStyle = {
       borderRadius: '0',
@@ -55,64 +61,65 @@ class NavBar extends React.Component {
     };
 
     return (
-        <div>
+        <Menu className="ui borderless top fixed menu" style={menuStyle}>
+          <Menu.Item id='toplogo'>
+            <Image size="tiny" src="images/white-inverted-logo.png"/>
+          </Menu.Item>
+          <Menu.Item>
+            <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
+          </Menu.Item>
+
           {this.props.currentUser === '' ? (
-              <div className="ui borderless top fixed menu" style={menuStyle}>
-                <Menu.Item id='toplogo'>
-                  <Image size="tiny" src="images/white-inverted-logo.png"/>
-                </Menu.Item>
-                <Menu.Item>
-                  <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
-                </Menu.Item>
-                <Menu.Menu position='right'>
-                  <Modal id='login-modal' trigger={<Menu.Item style={{ color: 'white' }}>Log In</Menu.Item>}>
-                    <Modal.Header>Log in to your account</Modal.Header>
-                    <Modal.Content>
-                      <Form onSubmit={this.handleSubmit}>
-                        <Form.Input
-                            label="Email"
-                            icon="user"
-                            iconPosition="left"
-                            name="email"
-                            type="email"
-                            placeholder="E-mail address"
-                            onChange={this.handleChange}
-                        />
-                        <Form.Input
-                            label="Password"
-                            icon="lock"
-                            iconPosition="left"
-                            name="password"
-                            placeholder="Password"
-                            type="password"
-                            onChange={this.handleChange}
-                        />
-                        <Form.Button content="Submit">Log In</Form.Button>
-                      </Form>
-                    </Modal.Content>
-                  </Modal>
-                </Menu.Menu>
-              </div>
-          ) : (
-              <div className="ui borderless top fixed menu" style={menuStyle}>
-                <Menu.Item>
-                  <Image size="tiny" src="images/white-inverted-logo.png"/>
-                </Menu.Item>
-                <Menu.Item>
-                  <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
-                </Menu.Item>
-                <Menu.Item as={NavLink} exact to='/'
+              <Menu.Menu position='right'>
+                <Modal id='login-modal' trigger={<Menu.Item style={{ color: 'white' }}>Log In</Menu.Item>}>
+                  <Modal.Header>Log in to your account</Modal.Header>
+                  <Modal.Content>
+                    <Form onSubmit={this.handleSubmit}>
+                      <Form.Input
+                          label="Email"
+                          icon="user"
+                          iconPosition="left"
+                          name="email"
+                          type="email"
+                          placeholder="E-mail address"
+                          onChange={this.handleChange}
+                      />
+                      <Form.Input
+                          label="Password"
+                          icon="lock"
+                          iconPosition="left"
+                          name="password"
+                          placeholder="Password"
+                          type="password"
+                          onChange={this.handleChange}
+                      />
+                      <Form.Button content="Submit">Log In</Form.Button>
+                    </Form>
+                  </Modal.Content>
+                </Modal>
+              </Menu.Menu>
+
+          ) : ''}
+
+          {this.props.currentUser ? (
+              <Menu.Menu position={'right'}>
+                <Menu.Item as={NavLink} exact to='/' content={'Home'}
                            style={{ color: 'rgba(255, 255, 255, 0.9)' }}
-                           position='right'>Home</Menu.Item>
-                <Menu.Item as={NavLink} exact to='/Calendar'
-                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}
-                >Create a Session</Menu.Item>
-                <Menu.Item as={NavLink} exact to='/Calendar'
-                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}
-                >Calendar</Menu.Item>
-                <Menu.Item as={NavLink} exact to=''
-                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}
-                >Leaderboard</Menu.Item>
+                           position='right'/>
+
+                <Menu.Item as={NavLink} exact to='/Calendar' content={'Create a Session'}
+                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                <Menu.Item as={NavLink} exact to='/Calendar' content={'Calendar'}
+                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                <Menu.Item as={NavLink} exact to='' content={'Leaderboard'}
+                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                {Roles.userIsInRole(Meteor.userId(), 'admin') ? (
+                    <Menu.Item as={NavLink} exact to="/admin" content={'Admin'}
+                               style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+                ) : ''}
                 <Menu.Menu>
                   <Menu.Item>
                     <Popup basic
@@ -127,7 +134,8 @@ class NavBar extends React.Component {
                            }
                     >
                       <Menu vertical borderless secondary>
-                        <Menu.Item as={NavLink} exact to='/profile' style={{ color: 'rgba(255, 255, 255, 0.9)' }}>View Profile</Menu.Item>
+                        <Menu.Item as={NavLink} exact to='/profile' style={{ color: 'rgba(255, 255, 255, 0.9)' }}>View
+                          Profile</Menu.Item>
                         <Menu.Item as={'a'} onClick={Meteor.logout}
                                    exact to="/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
                           Log Out
@@ -136,9 +144,9 @@ class NavBar extends React.Component {
                     </Popup>
                   </Menu.Item>
                 </Menu.Menu>
-              </div>
-          )}
-        </div>
+              </Menu.Menu>
+          ) : ''}
+        </Menu>
     );
   }
 }
@@ -146,7 +154,6 @@ class NavBar extends React.Component {
 /** Declare the types of all properties. */
 NavBar.propTypes = {
   currentUser: PropTypes.string,
-  location: PropTypes.object,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
