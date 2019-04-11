@@ -1,26 +1,73 @@
 {
   "defaultAccounts": [
-    { "email": "admin@foo.com", "password": "changeme", "role": "admin" },
-    { "email": "john@foo.com", "password": "changeme" }
-  ],
-
-  "defaultData": [
-    { "name": "Basket", "quantity": 3, "owner": "john@foo.com", "condition": "excellent" },
-    { "name": "Bicycle", "quantity": 2, "owner": "john@foo.com", "condition": "poor" },
-    { "name": "Banana", "quantity": 2, "owner": "admin@foo.com", "condition": "good" },
-    { "name": "Boogie Board", "quantity": 2, "owner": "admin@foo.com", "condition": "excellent" }
+    {
+      "email": "admin@foo.com",
+      "password": "changeme",
+      "role": "admin"
+    },
+    {
+      "email": "john@foo.com",
+      "password": "changeme"
+    },
+    {
+      "email": "jhun@foo.com",
+      "password": "changeme"
+    }
   ],
 
   "defaultSessions": [
-    { "title": "Digits 6" , "course": "ICS 314" , "description": "" , "startOffSetFromCurrentDay": "15",
-      "endOffSetFromCurrentDay": "16" , "owner": "john@foo.com" },
-    { "title": "HW #12" , "course": "ICS 311" , "description": "" , "startOffSetFromCurrentDay": "15.5",
-      "endOffSetFromCurrentDay": "16.5", "owner": "john@foo.com" },
-    { "title": "Midterm exam" , "course": "ICS 311" , "description": "" , "startOffSetFromCurrentDay": "16",
-      "endOffSetFromCurrentDay": "18" , "owner": "john@foo.com" },
-    { "title": "Digits 7" , "course": "ICS 314" , "description": "" ,  "startOffSetFromCurrentDay": "18",
-      "endOffSetFromCurrentDay": "20" , "owner": "john@foo.com" },
-    { "title": "HW #13" , "course": "ICS 311" , "description": "" ,  "startOffSetFromCurrentDay": "36",
-      "endOffSetFromCurrentDay": "38" , "owner": "john@foo.com" }
+    {
+      "title": "Digits 6",
+      "course": "ICS 314",
+      "description": "",
+      "startOffSetFromCurrentDay": "15",
+      "endOffSetFromCurrentDay": "16",
+      "owner": "john@foo.com"
+    },
+    {
+      "title": "HW #12",
+      "course": "ICS 311",
+      "description": "",
+      "startOffSetFromCurrentDay": "15.5",
+      "endOffSetFromCurrentDay": "16.5",
+      "owner": "john@foo.com"
+    },
+    {
+      "title": "Midterm exam",
+      "course": "ICS 311",
+      "description": "",
+      "startOffSetFromCurrentDay": "16",
+      "endOffSetFromCurrentDay": "18",
+      "owner": "john@foo.com"
+    },
+    {
+      "title": "Digits 7",
+      "course": "ICS 314",
+      "description": "",
+      "startOffSetFromCurrentDay": "18",
+      "endOffSetFromCurrentDay": "20",
+      "owner": "john@foo.com"
+    },
+    {
+      "title": "HW #13",
+      "course": "ICS 311",
+      "description": "",
+      "startOffSetFromCurrentDay": "36",
+      "endOffSetFromCurrentDay": "38",
+      "owner": "john@foo.com"
+    }
+  ],
+
+  "defaultProfiles": [
+    {
+      "firstName": "Jhun",
+      "lastName": "Domingo",
+      "courses": [],
+      "joinedSession": [],
+      "createdSession": [],
+      "level": "0",
+      "image": "https://philipmjohnson.github.io/images/philip2.jpeg",
+      "owner": "jhun@foo.com"
+    }
   ]
 }
