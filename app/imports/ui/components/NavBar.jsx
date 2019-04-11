@@ -38,7 +38,12 @@ class NavBar extends React.Component {
   }
 
   render() {
-    const menuStyle = { borderRadius: '0', padding: '5px 25px 5px 25px', backgroundColor: '#081B34', alignItems: 'baseline' };
+    const menuStyle = {
+      borderRadius: '0',
+      padding: '5px 25px 5px 25px',
+      backgroundColor: '#081B34',
+      alignItems: 'baseline',
+    };
 
     const popupStyle = {
       borderRadius: '0',
@@ -104,7 +109,7 @@ class NavBar extends React.Component {
                 <Menu.Item as={NavLink} exact to='/'
                            style={{ color: 'rgba(255, 255, 255, 0.9)' }}
                            position='right'>Home</Menu.Item>
-                <Menu.Item as={NavLink} exact to='/Calendar'
+                <Menu.Item as={NavLink} exact to='/addsession'
                            style={{ color: 'rgba(255, 255, 255, 0.9)' }}
                 >Create a Session</Menu.Item>
                 <Menu.Item as={NavLink} exact to='/Calendar'
@@ -127,7 +132,11 @@ class NavBar extends React.Component {
                            }
                     >
                       <Menu vertical borderless secondary>
-                        <Menu.Item as={NavLink} exact to='/profile' style={{ color: 'rgba(255, 255, 255, 0.9)' }}>View Profile</Menu.Item>
+                        <Menu.Item as={NavLink}
+                                   exact to='/profile'
+                                   style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                          View Profile
+                        </Menu.Item>
                         <Menu.Item as={'a'} onClick={Meteor.logout}
                                    exact to="/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
                           Log Out
