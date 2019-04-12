@@ -86,38 +86,13 @@
       "description": "Problem analysis and design, team-oriented development, quality assurance, configuration management, project planning."
     }
   ],
+
   "defaultProfiles": [
     {
       "firstName": "Jhun",
       "lastName": "Domingo",
-      "courses": [
-        {
-          "course": "ICS 111",
-          "description": "Overview of the fundamentals of computer science emphasizing problem solving, algorithm development, implementation, and debugging/testing using an object-oriented programming language."
-        },
-        {
-          "course": "ICS 141",
-          "description": "Includes logic, sets, functions, matrices, algorithmic concepts, mathematical reasoning, recursion, counting techniques, and probability theory."
-        }
-      ],
-      "joinedSession": [
-        {
-          "course": "ICS 111",
-          "description": "Overview of the fundamentals of computer science emphasizing problem solving, algorithm development, implementation, and debugging/testing using an object-oriented programming language."
-        },
-        {
-          "course": "ICS 141",
-          "description": "Includes logic, sets, functions, matrices, algorithmic concepts, mathematical reasoning, recursion, counting techniques, and probability theory."
-        }
-      ],
-      "createdSession": [
-        {
-          "course": "ICS 314",
-          "description": "Problem analysis and design, team-oriented development, quality assurance, configuration management, project planning."
-        }
-      ],
-      "level": "0",
-      "exp": "0",
+      "level": 0,
+      "exp": 0,
       "image": "https://philipmjohnson.github.io/images/philip2.jpeg",
       "owner": "jhun@foo.com"
     }

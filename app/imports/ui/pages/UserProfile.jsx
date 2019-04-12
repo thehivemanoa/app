@@ -2,7 +2,6 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Loader, Grid, Divider } from 'semantic-ui-react';
 import { Profiles } from '/imports/api/profiles/profiles';
-import StuffItem from '/imports/ui/components/StuffItem';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 
@@ -55,7 +54,6 @@ class UserProfile extends React.Component {
 
 /** Require an array of Stuff documents in the props. */
 UserProfile.propTypes = {
-  courses: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 

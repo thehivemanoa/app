@@ -9,13 +9,10 @@ const Profiles = new Mongo.Collection('Profiles');
 const ProfileSchema = new SimpleSchema({
   firstName: String,
   lastName: String,
-  courses: [Object],
-  joinedSessions: [Object],
-  createdSessions: [Object],
   level: Number,
   exp: Number,
   image: String,
-  owner: String
+  owner: String,
 }, { tracker: Tracker });
 
 /** Attach this schema to the collection. */
