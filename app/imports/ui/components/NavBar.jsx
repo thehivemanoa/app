@@ -140,8 +140,8 @@ class NavBar extends React.Component {
                           View Profile
                         </Menu.Item>
 
-                        <Menu.Item as={'a'} onClick={Meteor.logout}
-                                   exact to="/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                        <Menu.Item as={NavLink} onClick={Meteor.logout}
+                                   exact to="/#/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
                           Log Out
                         </Menu.Item>
                       </Menu>
