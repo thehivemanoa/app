@@ -1,5 +1,7 @@
 import React from 'react';
-import { Sessions, SessionSchema } from '/imports/api/session/session';
+import { Meteor } from 'meteor/meteor';
+import PropTypes from 'prop-types';
+import { Bert } from 'meteor/themeteorchef:bert';
 import { Segment } from 'semantic-ui-react';
 import AutoForm from 'uniforms-semantic/AutoForm';
 import TextField from 'uniforms-semantic/TextField';
@@ -9,8 +11,8 @@ import DateField from 'uniforms-semantic/DateField';
 import SubmitField from 'uniforms-semantic/SubmitField';
 import HiddenField from 'uniforms-semantic/HiddenField';
 import ErrorsField from 'uniforms-semantic/ErrorsField';
-import { Bert } from 'meteor/themeteorchef:bert';
-import { Meteor } from 'meteor/meteor';
+import { Sessions, SessionSchema } from '/imports/api/session/session';
+
 
 /** Renders the Page for adding a document. */
 class AddSession extends React.Component {
@@ -49,13 +51,13 @@ class AddSession extends React.Component {
   }
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
-
   render() {
     return (
         <AutoForm ref={(ref) => { this.formRef = ref; }} schema={SessionSchema} onSubmit={this.submit}>
           <Segment>
             <TextField label={'Title'} name={'title'}/>
-            <SelectField label={'Course'} name={'course'} allowedValues={['ICS 211', 'ICS 311', 'ICS 314  ']}/>
+            <SelectField label={'Course'} name={'course'}
+                         allowedValues={this.props.courses.map((object) => object.course)}/>
             <LongTextField label={'Description'} name={'description'}/>
             <DateField label={'Date'} name={'date'}/>
             <DateField label={'Start Time'} name={'startTime'}/>
@@ -69,5 +71,9 @@ class AddSession extends React.Component {
     );
   }
 }
+
+AddSession.propTypes = {
+  courses: PropTypes.array.isRequired,
+};
 
 export default AddSession;
