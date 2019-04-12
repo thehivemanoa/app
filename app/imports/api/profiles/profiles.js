@@ -12,11 +12,13 @@ const ProfileSchema = new SimpleSchema({
   courses: Array,
   'courses.$.title': String,
   'courses.$.status': String,
+  'courses.$.color': String,
   joinedSessions: Array,
   'joinedCourses.$.courses': String,
   createdSessions: Array,
   'createdCourses.$.courses': String,
   level: Number,
+  exp: Number,
   image: String,
   owner: String
 }, { tracker: Tracker });
