@@ -43,8 +43,9 @@ class AddSession extends React.Component {
 
   /** On submit, insert the data. */
   submit(data) {
-    const { title, course, description, date, startTime, endTime, attendees } = data;
+    const { title, course, description, date, startTime, endTime } = data;
     const owner = Meteor.user().username;
+    const attendees = owner;
     Sessions.insert({
       title, course, description, date, startTime, endTime, attendees, owner }, this.insertCallback);
     console.log(date);
@@ -62,9 +63,9 @@ class AddSession extends React.Component {
             <DateField label={'Date'} name={'date'}/>
             <DateField label={'Start Time'} name={'startTime'}/>
             <DateField label={'End Time'} name={'endTime'}/>
-            <TextField label={'Attendees'} name={'attendees'}/>
             <SubmitField value='Submit'/>
             <ErrorsField/>
+            <HiddenField name={'attendees'} value={'fakeuser@foo.com'}/>
             <HiddenField name='owner' value={'fakeuser@foo.com'}/>
           </Segment>
         </AutoForm>
