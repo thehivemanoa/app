@@ -14,7 +14,6 @@
       "password": "changeme"
     }
   ],
-
   "defaultSessions": [
     {
       "title": "Digits 6",
@@ -57,7 +56,36 @@
       "owner": "john@foo.com"
     }
   ],
-
+  "defaultCourses": [
+    {
+      "course": "ICS 111",
+      "description": "Overview of the fundamentals of computer science emphasizing problem solving, algorithm development, implementation, and debugging/testing using an object-oriented programming language."
+    },
+    {
+      "course": "ICS 141",
+      "description": "Includes logic, sets, functions, matrices, algorithmic concepts, mathematical reasoning, recursion, counting techniques, and probability theory."
+    },
+    {
+      "course": "ICS 211",
+      "description": "Reinforce and strengthen problem-solving skills using abstract data types and introduce software development practices. Emphasize the use of searching and sorting algorithms and their complexity, recursion, object-oriented programming, and data structures."
+    },
+    {
+      "course": "ICS 212",
+      "description": "Program organization paradigms, programming environments, implementation of a module from specifications, the C and C++ programming languages."
+    },
+    {
+      "course": "ICS 241",
+      "description": "ICS 241 - Discrete Mathematics for Computer Science II - University of Hawaii at Manoa Includes program correctness, recurrence relations and their solutions, relations and their properties, divide and conquer relations, graph theory, trees and their applications, Boolean algebra, introduction to formal languages and automata theory."
+    },
+    {
+      "course": "ICS 311",
+      "description": "Design and correctness of algorithms, including divide-and-conquer, greedy and dynamic programming methods. Complexity analyses using recurrence relations, probabilistic methods, and NP-completeness. Applications to order statistics, disjoint sets, B-trees and balanced trees, graphs, network flows, and string matching."
+    },
+    {
+      "course": "ICS 314",
+      "description": "Problem analysis and design, team-oriented development, quality assurance, configuration management, project planning."
+    }
+  ],
   "defaultProfiles": [
     {
       "firstName": "Jhun",
