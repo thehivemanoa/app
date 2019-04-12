@@ -60,7 +60,7 @@ UserProfile.propTypes = {
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
-export default withTracker(() => {
+/** export default withTracker(() => {
   // Get access to Profile documents.
   const subscription = Meteor.subscribe('Profiles');
   return {
@@ -70,4 +70,7 @@ export default withTracker(() => {
 
   // Get access to Profile documents.
 
-})(UserProfile);
+})(UserProfile); */
+
+
+export default(UserProfile);
