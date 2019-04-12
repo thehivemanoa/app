@@ -1,25 +1,51 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,300,400');
+@import url('https://fonts.googleapis.com/css?family=Raleway');
 
 html, body {
   height: 100%;
 }
 
-.landing-page, h2 {
+body {
+  margin-top: 150px !important;
+}
+
+.landing-page, .profile-page {
   font-family: 'Montserrat', sans-serif !important;
-  letter-spacing: 1.5px;
+}
+
+.landing-text {
+  font-size: 20px;
+}
+
+landing-header {
+  font-size: 32px;
+  line-height: 1.25em;
+}
+
+.ui.menu .item {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: lighter !important;
+  letter-spacing: 1.7px;
+}
+
+h2 {
+  font-family: 'Raleway', sans-serif !important;
+  letter-spacing: 2px;
 }
 
 .blue-bg {
   background-color: #081B34;
-  height: 94vh;
-  padding: 20vh 0vh 20vh 0vh;
+  height: 86vh;
+  padding: 15vh 0vh 25vh 0vh;
   color: whitesmoke;
-  margin-top: 50px;
+  position: relative;
+  top: -33px;
+  z-index: 99;
 }
 
 .white-bg {
   background-color: white;
-  height: 70vh;
+  height: 100vh;
   padding: 20vh 0vh 20vh 0vh;
 }
 
@@ -46,26 +72,12 @@ html, body {
   background-attachment: fixed;
 }
 
-.landingText {
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  text-align: center;
-  color: #000;
-  font-size: 27px;
-  letter-spacing: 8px;
-}
-
-.landingText .landingBorder {
-  background-color: #020202;
-  color: #ffed51;
-  padding: 20px;
-  margin-left: 40%;
-  margin-right: 40%;
-}
-
-textarea:focus, input:focus {
+#registration-form textarea:focus, #registration-form input:focus {
   color: whitesmoke !important;
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+#login-modal textarea:focus, #login-modal input:focus {
   font-family: 'Montserrat', sans-serif !important;
 }
 
@@ -73,7 +85,24 @@ textarea:focus, input:focus {
   background-color: #ffed51;
 }
 
-.ui.inverted.menu .item {
+#register-button {
+  background-color: #faa952 !important;
+  color: #081B34 !important;
   font-family: 'Montserrat', sans-serif;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
+  border-radius: 1px !important;
+}
+
+#triangle-icon {
+  color: #faa952;
+}
+
+.footerButton {
+  background-color: #faa952 !important;
+  margin: 21px 7px !important;
+}
+
+.ui.menu > .item:first-child {
+  padding-bottom: 0px !important;
+  padding-top:15px !important;
 }
