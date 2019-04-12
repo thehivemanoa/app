@@ -107,7 +107,7 @@ class NavBar extends React.Component {
                            style={{ color: 'rgba(255, 255, 255, 0.9)' }}
                            position='right'/>
 
-                <Menu.Item as={NavLink} exact to='/Calendar' content={'Create a Session'}
+                <Menu.Item as={NavLink} exact to='/addsession' content={'Create a Session'}
                            style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
 
                 <Menu.Item as={NavLink} exact to='/Calendar' content={'Calendar'}
