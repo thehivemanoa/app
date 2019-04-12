@@ -14,7 +14,7 @@ export default class CourseCard extends React.Component {
       height: '40px',
     };
     const headerColumnStyle = {
-      backgroundColor: colors[this.props.session.course],
+      backgroundColor: colors[this.props.course.course],
       verticalAlign: 'middle',
       height: '100%',
       padding: '10px',
@@ -47,7 +47,7 @@ export default class CourseCard extends React.Component {
             <Grid>
               <Grid.Row style={headerRowStyle}>
                 <Grid.Column width={10} style={headerColumnStyle}>
-                  <Header as="h5" style={headerStyle}>{this.props.session.title}</Header>
+                  <Header as="h5" style={headerStyle}>{this.props.course.title}</Header>
                 </Grid.Column>
                 <Grid.Column width={6} style={headerColumnStyle}>
                   <Button style={headerButtonStyle}>Edit</Button>
@@ -72,5 +72,5 @@ export default class CourseCard extends React.Component {
 }
 
 CourseCard.propTypes = {
-  session: PropTypes.object.isRequired,
+  course: PropTypes.object.isRequired,
 };

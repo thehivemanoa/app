@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Header, List, Grid, Button, Icon } from 'semantic-ui-react';
+import { Card, Header, Grid, Button, Icon } from 'semantic-ui-react';
 import dateFns from 'date-fns';
 
 export default class SessionCard extends React.Component {
