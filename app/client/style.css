@@ -5,8 +5,21 @@ html, body {
   height: 100%;
 }
 
-.landing-page {
+body {
+  margin-top: 150px !important;
+}
+
+.landing-page, .profile-page {
   font-family: 'Montserrat', sans-serif !important;
+}
+
+.landing-text {
+  font-size: 20px;
+}
+
+landing-header {
+  font-size: 32px;
+  line-height: 1.25em;
 }
 
 .ui.menu .item {
@@ -22,11 +35,12 @@ h2 {
 
 .blue-bg {
   background-color: #081B34;
-  height: 94vh;
-  margin-top: 50px;
+  height: 86vh;
   padding: 15vh 0vh 25vh 0vh;
   color: whitesmoke;
-  margin-top: 50px;
+  position: relative;
+  top: -33px;
+  z-index: 99;
 }
 
 .white-bg {
@@ -58,26 +72,12 @@ h2 {
   background-attachment: fixed;
 }
 
-.landingText {
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  text-align: center;
-  color: #000;
-  font-size: 27px;
-  letter-spacing: 8px;
-}
-
-.landingText .landingBorder {
-  background-color: #020202;
-  color: #ffed51;
-  padding: 20px;
-  margin-left: 40%;
-  margin-right: 40%;
-}
-
-textarea:focus, input:focus {
+#registration-form textarea:focus, #registration-form input:focus {
   color: whitesmoke !important;
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+#login-modal textarea:focus, #login-modal input:focus {
   font-family: 'Montserrat', sans-serif !important;
 }
 
@@ -99,5 +99,10 @@ textarea:focus, input:focus {
 
 .footerButton {
   background-color: #faa952 !important;
-  margin: 7px !important;
+  margin: 21px 7px !important;
+}
+
+.ui.menu > .item:first-child {
+  padding-bottom: 0px !important;
+  padding-top:15px !important;
 }
