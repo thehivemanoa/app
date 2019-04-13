@@ -8,13 +8,19 @@ const _ = require('underscore');
 
 export default class SearchResults extends React.Component {
   render() {
-    const sessionCards = _.map(this.props.sessions, (session, index) => <SessionCardFlat key={index}
-                                                                              session={session}/>);
+    const n = this.props.sessions.length;
+    let sessionCards = _.map(this.props.sessions,
+        (session, index) => {
+          return <SessionCardFlat key={index}
+                                  index={n - index}
+                                  session={session}/>;
+        });
+    sessionCards = _.flatten(sessionCards);
 
     return (
-      <Card.Group>
-        {sessionCards}
-      </Card.Group>
+        <List>
+          {sessionCards}
+        </List>
     );
   }
 }
