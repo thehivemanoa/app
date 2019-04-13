@@ -26,8 +26,8 @@ export default class CalendarRangeSelector extends React.Component {
 
     return (
         <Grid container>
-          <Grid.Row style={{ display: 'inline-block' }}>
-            <Header as="h4" textAlign="center">{dateFns.format(this.props.month, 'MMMM')}</Header>
+          <Grid.Row style={{ display: 'inline-block', paddingBottom: '2px' }}>
+            <Header as="h4" textAlign="center" style={{ backgroundColor: '#E0E1E2' }}>{dateFns.format(this.props.month, 'MMMM')}</Header>
           </Grid.Row>
           <Grid.Row style={calendarContainerStyle}>
             <Grid.Column width={1} style={buttonContainerStyle}>
