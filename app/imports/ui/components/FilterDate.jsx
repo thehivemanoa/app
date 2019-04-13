@@ -6,15 +6,24 @@ import CalendarRangeSelector from './CalendarRangeSelector';
 export default class FilterDate extends React.Component {
   render() {
     return (
-        <List.Item>
+        <List.Item style={{ marginBottom: '30px' }}>
           <Divider horizontal>Date</Divider>
-          <CalendarRangeSelector setDateRange={this.props.setDateRange} endDate={this.props.endDate}/>
+          <CalendarRangeSelector isInRange={this.props.isInRange}
+                                 setFromDate={this.props.setFromDate}
+                                 setToDate={this.props.setToDate}
+                                 startDate={this.props.startDate}
+                                 endDate={this.props.endDate}
+                                 month={this.props.month} />
         </List.Item>
     );
   }
 }
 
 FilterDate.propTypes = {
-  setDateRange: PropTypes.func.isRequired,
+  month: PropTypes.object.isRequired,
+  isInRange: PropTypes.func.isRequired,
+  setToDate: PropTypes.func.isRequired,
+  setFromDate: PropTypes.func.isRequired,
+  startDate: PropTypes.object.isRequired,
   endDate: PropTypes.object.isRequired,
 };

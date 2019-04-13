@@ -22,7 +22,7 @@ export default class CalendarRangeSelector extends React.Component {
     return (
         <Grid container>
           <Grid.Row style={{ display: 'inline-block' }}>
-            <Header as="h4" textAlign="center">{dateFns.format(this.props.endDate, 'MMMM')}</Header>
+            <Header as="h4" textAlign="center">{dateFns.format(this.props.month, 'MMMM')}</Header>
           </Grid.Row>
           <Grid.Row style={calendarContainerStyle}>
             <Grid.Column width={1} style={buttonContainerStyle}>
@@ -31,8 +31,13 @@ export default class CalendarRangeSelector extends React.Component {
             <Grid.Column width={1} style={buttonContainerStyle}>
               <Button style={buttonStyle}>{'\u221E'}</Button>
             </Grid.Column>
-            <Grid.Column width={12} style={{ padding: '13px' }}>
-              <TinyCalendar endDate={this.props.endDate}/>
+            <Grid.Column width={12} style={{ paddingRight: '13px', paddingLeft: '13px', paddingBottom: '13px', paddingTop: '13px' }}>
+              <TinyCalendar month={this.props.month}
+                            isInRange={this.props.isInRange}
+                            endDate={this.props.endDate}
+                            startDate={this.props.startDate}
+                            setFromDate={this.props.setFromDate}
+                            setToDate={this.props.setToDate}/>
             </Grid.Column>
             <Grid.Column width={1} style={buttonContainerStyle}>
               <Button style={buttonStyle}>{'\u221E'}</Button>
@@ -47,6 +52,10 @@ export default class CalendarRangeSelector extends React.Component {
 }
 
 CalendarRangeSelector.propTypes = {
-  setDateRange: PropTypes.func.isRequired,
+  month: PropTypes.object.isRequired,
+  isInRange: PropTypes.func.isRequired,
+  setToDate: PropTypes.func.isRequired,
+  setFromDate: PropTypes.func.isRequired,
+  startDate: PropTypes.object.isRequired,
   endDate: PropTypes.object.isRequired,
 };

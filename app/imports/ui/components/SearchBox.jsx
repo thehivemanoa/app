@@ -24,8 +24,12 @@ export default class SearchResults extends React.Component {
                              course={this.props.course}
                              courses={this.props.courses}
                              deleteCourse={this.props.deleteCourse}/>
-              <FilterDate setDateRange={this.props.setDateRange}
-                          endDate={this.props.endDate}/>
+              <FilterDate setFromDate={this.props.setFromDate}
+                          isInRange={this.props.isInRange}
+                          setToDate={this.props.setToDate}
+                          startDate={this.props.startDate}
+                          endDate={this.props.endDate}
+                          month={this.props.month}/>
               <FilterTime setStartTime={this.props.setStartTime}
                           setEndTime={this.props.setEndTime}/>
             </List>
@@ -36,15 +40,19 @@ export default class SearchResults extends React.Component {
 }
 
 SearchResults.propTypes = {
+  month: PropTypes.object.isRequired,
+  isInRange: PropTypes.func.isRequired,
   toggleJoined: PropTypes.func.isRequired,
   toggleConflicting: PropTypes.func.isRequired,
   addCourse: PropTypes.func.isRequired,
   deleteCourse: PropTypes.func.isRequired,
-  setDateRange: PropTypes.func.isRequired,
+  setFromDate: PropTypes.func.isRequired,
+  setToDate: PropTypes.func.isRequired,
   setStartTime: PropTypes.func.isRequired,
   setEndTime: PropTypes.func.isRequired,
   courses: PropTypes.object.isRequired,
   handleChange: PropTypes.func.isRequired,
   course: PropTypes.string.isRequired,
+  startDate: PropTypes.object.isRequired,
   endDate: PropTypes.object.isRequired,
 };

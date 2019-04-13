@@ -13,24 +13,46 @@ class SearchPage extends React.Component {
     super(props);
     let currentDate = new Date();
     currentDate = dateFns.startOfDay(currentDate);
+    const month = dateFns.startOfMonth(currentDate);
     this.state = {
       hideJoined: true,
       hideConflicting: true,
       courses: { 'ICS 311': null, 'ICS 314': null },
       endDate: currentDate,
       startDate: currentDate,
+      fromDate: currentDate,
+      toDate: currentDate,
       startTime: null,
       endTime: null,
       course: '',
+      isMouseDown: false,
+      month: month,
     };
     this.toggleJoined = this.toggleJoined.bind(this);
     this.toggleConflicting = this.toggleConflicting.bind(this);
     this.deleteCourse = this.deleteCourse.bind(this);
     this.addCourse = this.addCourse.bind(this);
-    this.setDateRange = this.setDateRange.bind(this);
-    this.setStartTime = this.setStartTime.bind(this);
-    this.setEndTime = this.setEndTime.bind(this);
+    this.setFromDate = this.setFromDate.bind(this);
+    this.setToDate = this.setToDate.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
+    this.isInRange = this.isInRange.bind(this);
+  }
+
+
+  componentDidMount() {
+    document.addEventListener('mouseup', this.onMouseUp);
+  }
+
+  componentWillUnmount() {
+    document.remove('mouseup', this.onMouseUp);
+  }
+
+  onMouseUp() {
+    console.log('mouse up');
+    this.setState({
+      isMouseDown: false,
+    });
   }
 
   toggleJoined() {
@@ -62,23 +84,37 @@ class SearchPage extends React.Component {
     });
   }
 
-  setDateRange(startDate, endDate) {
+  setFromDate(fromDate) {
+    console.log('mouse down');
     this.setState({
-      startDate: startDate,
-      endDate: endDate,
+      startDate: fromDate,
+      endDate: fromDate,
+      fromDate: fromDate,
+      isMouseDown: true,
     });
   }
 
-  setStartTime(startTime) {
-    this.setState({
-      startTime: startTime,
-    });
+  setToDate(toDate) {
+    if (this.state.isMouseDown) {
+      let startDate;
+      let endDate;
+      if (dateFns.isBefore(toDate, this.state.fromDate)) {
+        startDate = toDate;
+        endDate = this.state.fromDate;
+      } else {
+        endDate = toDate;
+        startDate = this.state.fromDate;
+      }
+      this.setState({
+        startDate: startDate,
+        endDate: endDate,
+        toDate: toDate,
+      });
+    }
   }
 
-  setEndTime(endTime) {
-    this.setState({
-      endTime: endTime,
-    });
+  isInRange(date) {
+    return !(dateFns.isBefore(date, this.state.startDate) || dateFns.isAfter(date, this.state.endDate));
   }
 
   handleChange(event, { name, value }) {
@@ -99,6 +135,8 @@ class SearchPage extends React.Component {
           </Grid.Column>
           <Grid.Column width={5}>
             <SearchBox toggleJoined={this.toggleJoined}
+                       isInRange={this.isInRange}
+                       startDate={this.state.startDate}
                        endDate={this.state.endDate}
                        courses={this.state.courses}
                        course={this.state.course}
@@ -106,8 +144,10 @@ class SearchPage extends React.Component {
                        toggleConflicting={this.toggleConflicting}
                        addCourse={this.addCourse}
                        deleteCourse={this.deleteCourse}
-                       setDateRange={this.setDateRange}
+                       setFromDate={this.setFromDate}
+                       setToDate={this.setToDate}
                        setStartTime={this.setStartTime}
+                       month={this.state.month}
                        setEndTime={this.setEndTime}/>
           </Grid.Column>
         </Grid>

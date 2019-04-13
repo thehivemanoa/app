@@ -1,29 +1,22 @@
 import React from 'react';
 import dateFns from 'date-fns';
 import PropTypes from 'prop-types';
-import { Grid, Button } from 'semantic-ui-react';
+import { Grid, Button, Container } from 'semantic-ui-react';
+import TinyCell from './TinyCell';
 
 export default class TinyCalendar extends React.Component {
   render() {
-    const dateStyle = {
-      height: '15px',
-      width: '100%',
-      backgroundColor: 'Transparent',
-      padding: 0,
-      margin: 0,
-    };
     const dateContainerStyle = {
       padding: 0,
+      height: '30px',
     };
     const weekContainerStyle = {
-      paddingTop: '3px',
-      paddingBottom: '3px',
+      padding: 0,
     };
 
     const weeks = [];
-    const month = dateFns.startOfMonth(this.props.endDate);
-    const startOfFirstWeek = dateFns.startOfWeek(month);
-    const startOfLastWeek = dateFns.startOfWeek(dateFns.endOfMonth(month));
+    const startOfFirstWeek = dateFns.startOfWeek(this.props.month);
+    const startOfLastWeek = dateFns.startOfWeek(dateFns.endOfMonth(this.props.month));
     let startOfCurrentWeek = startOfFirstWeek;
     while (!dateFns.isAfter(startOfCurrentWeek, startOfLastWeek)) {
       const days = [];
@@ -31,7 +24,10 @@ export default class TinyCalendar extends React.Component {
         const date = dateFns.addDays(startOfCurrentWeek, i);
         days.push(
             <Grid.Column key={date} style={dateContainerStyle}>
-              <Button style={dateStyle}>{dateFns.format(date, 'D')}</Button>
+              <TinyCell date={date}
+                        isInRange={this.props.isInRange(date)}
+                        setFromDate={() => this.props.setFromDate(date)}
+                        setToDate={() => this.props.setToDate(date)} />
             </Grid.Column>,
         );
       }
@@ -44,13 +40,18 @@ export default class TinyCalendar extends React.Component {
     }
 
     return (
-        <Grid>
-          {weeks}
-        </Grid>
+          <Grid fluid>
+            {weeks}
+          </Grid>
     );
   }
 }
 
 TinyCalendar.propTypes = {
+  month: PropTypes.object.isRequired,
+  isInRange: PropTypes.func.isRequired,
+  setToDate: PropTypes.func.isRequired,
+  setFromDate: PropTypes.func.isRequired,
   endDate: PropTypes.object.isRequired,
+  startDate: PropTypes.object.isRequired,
 };
