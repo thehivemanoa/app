@@ -86,7 +86,7 @@ class SearchPage extends React.Component {
     this.setState({
       month: newMonth,
     });
-    this.timerId = setTimeout(() => this.timer(x), 800);
+    this.timerId = setTimeout(() => this.timer(x), 500);
   }
 
   onMouseUp() {
