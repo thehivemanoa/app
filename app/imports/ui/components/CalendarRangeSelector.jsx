@@ -18,7 +18,10 @@ export default class CalendarRangeSelector extends React.Component {
       padding: 0,
     };
     const buttonContainerStyle = {
-      padding: 0,
+      paddingTop: 0,
+      paddingBottom: 0,
+      paddingLeft: '1px',
+      paddingRight: '1px',
     };
 
     return (
@@ -35,7 +38,7 @@ export default class CalendarRangeSelector extends React.Component {
                       onMouseUp={this.props.mouseUpChangeMonth}
                       onClick={() => this.props.changeMonth(-1)}/>
             </Grid.Column>
-            <Grid.Column width={1} style={{ padding: 0 }}>
+            <Grid.Column width={1} style={buttonContainerStyle}>
               <Button style={buttonStyle}
                       onMouseDown={() => this.props.setFromDate(minDate)}
                       onMouseEnter={() => this.props.setToDate(minDate)}
