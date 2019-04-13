@@ -9,6 +9,11 @@ export default class FilterDate extends React.Component {
         <List.Item style={{ marginBottom: '30px' }}>
           <Divider horizontal>Date</Divider>
           <CalendarRangeSelector isInRange={this.props.isInRange}
+                                 pressNextMonth={this.props.pressNextMonth}
+                                 pressPreviousMonth={this.props.pressPreviousMonth}
+                                 mouseUpChangeMonth={this.props.mouseUpChangeMonth}
+                                 mouseLeaveChangeMonth={this.props.mouseLeaveChangeMonth}
+                                 changeMonth={this.props.changeMonth}
                                  setFromDate={this.props.setFromDate}
                                  setToDate={this.props.setToDate}
                                  startDate={this.props.startDate}
@@ -26,4 +31,9 @@ FilterDate.propTypes = {
   setFromDate: PropTypes.func.isRequired,
   startDate: PropTypes.object.isRequired,
   endDate: PropTypes.object.isRequired,
+  pressPreviousMonth: PropTypes.func.isRequired,
+  pressNextMonth: PropTypes.func.isRequired,
+  mouseUpChangeMonth: PropTypes.func.isRequired,
+  mouseLeaveChangeMonth: PropTypes.func.isRequired,
+  changeMonth: PropTypes.func.isRequired,
 };

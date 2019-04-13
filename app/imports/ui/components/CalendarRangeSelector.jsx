@@ -6,14 +6,16 @@ import TinyCalendar from './TinyCalendar';
 
 export default class CalendarRangeSelector extends React.Component {
   render() {
+    const minDate = new Date(-8640000000000000);
+    const maxDate = new Date(8640000000000000);
     const buttonStyle = {
       height: '100%',
       width: '100%',
       padding: 0,
+      borderRadius: 0,
     };
     const calendarContainerStyle = {
       padding: 0,
-      height: '110px',
     };
     const buttonContainerStyle = {
       padding: 0,
@@ -26,12 +28,22 @@ export default class CalendarRangeSelector extends React.Component {
           </Grid.Row>
           <Grid.Row style={calendarContainerStyle}>
             <Grid.Column width={1} style={buttonContainerStyle}>
-              <Button icon="chevron left" style={buttonStyle}/>
+              <Button icon="chevron left"
+                      style={buttonStyle}
+                      onMouseEnter={this.props.pressPreviousMonth}
+                      onMouseLeave={this.props.mouseLeaveChangeMonth}
+                      onMouseUp={this.props.mouseUpChangeMonth}
+                      onClick={() => this.props.changeMonth(-1)}/>
             </Grid.Column>
-            <Grid.Column width={1} style={buttonContainerStyle}>
-              <Button style={buttonStyle}>{'\u221E'}</Button>
+            <Grid.Column width={1} style={{ padding: 0 }}>
+              <Button style={buttonStyle}
+                      onMouseDown={() => this.props.setFromDate(minDate)}
+                      onMouseEnter={() => this.props.setToDate(minDate)}
+                      fluid>
+                {'-\u221E'}
+              </Button>
             </Grid.Column>
-            <Grid.Column width={12} style={{ paddingRight: '13px', paddingLeft: '13px', paddingBottom: '13px', paddingTop: '13px' }}>
+            <Grid.Column width={12} style={{ padding: '13px' }}>
               <TinyCalendar month={this.props.month}
                             isInRange={this.props.isInRange}
                             endDate={this.props.endDate}
@@ -40,10 +52,20 @@ export default class CalendarRangeSelector extends React.Component {
                             setToDate={this.props.setToDate}/>
             </Grid.Column>
             <Grid.Column width={1} style={buttonContainerStyle}>
-              <Button style={buttonStyle}>{'\u221E'}</Button>
+              <Button style={buttonStyle}
+                      onMouseDown={() => this.props.setFromDate(maxDate)}
+                      onMouseEnter={() => this.props.setToDate(maxDate)}
+                      fluid>
+                {'\u221E'}
+              </Button>
             </Grid.Column>
             <Grid.Column width={1} style={buttonContainerStyle}>
-              <Button icon="chevron right" style={buttonStyle}/>
+              <Button icon="chevron right"
+                      style={buttonStyle}
+                      onMouseEnter={this.props.pressNextMonth}
+                      onMouseLeave={this.props.mouseLeaveChangeMonth}
+                      onMouseUp={this.props.mouseUpChangeMonth}
+                      onClick={() => this.props.changeMonth(1)}/>
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -58,4 +80,9 @@ CalendarRangeSelector.propTypes = {
   setFromDate: PropTypes.func.isRequired,
   startDate: PropTypes.object.isRequired,
   endDate: PropTypes.object.isRequired,
+  pressPreviousMonth: PropTypes.func.isRequired,
+  pressNextMonth: PropTypes.func.isRequired,
+  mouseUpChangeMonth: PropTypes.func.isRequired,
+  mouseLeaveChangeMonth: PropTypes.func.isRequired,
+  changeMonth: PropTypes.func.isRequired,
 };

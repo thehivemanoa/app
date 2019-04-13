@@ -37,8 +37,12 @@ class SearchPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.isInRange = this.isInRange.bind(this);
+    this.pressNextMonth = this.pressNextMonth.bind(this);
+    this.pressPreviousMonth = this.pressPreviousMonth.bind(this);
+    this.mouseUpChangeMonth = this.mouseUpChangeMonth.bind(this);
+    this.mouseLeaveChangeMonth = this.mouseLeaveChangeMonth.bind(this);
+    this.changeMonth = this.changeMonth.bind(this);
   }
-
 
   componentDidMount() {
     document.addEventListener('mouseup', this.onMouseUp);
@@ -46,6 +50,43 @@ class SearchPage extends React.Component {
 
   componentWillUnmount() {
     document.remove('mouseup', this.onMouseUp);
+  }
+
+  pressNextMonth() {
+    if (this.state.isMouseDown) {
+      this.timerId = setTimeout(() => this.timer(1), 1000);
+    }
+  }
+
+  pressPreviousMonth() {
+    if (this.state.isMouseDown) {
+      this.timerId = setTimeout(() => this.timer(-1), 1000);
+    }
+  }
+
+  mouseUpChangeMonth() {
+    clearTimeout(this.timerId);
+  }
+
+  mouseLeaveChangeMonth() {
+    if (this.state.isMouseDown) {
+      clearTimeout(this.timerId);
+    }
+  }
+
+  changeMonth(x) {
+    const newMonth = dateFns.addMonths(this.state.month, x);
+    this.setState({
+      month: newMonth,
+    });
+  }
+
+  timer(x) {
+    const newMonth = dateFns.addMonths(this.state.month, x);
+    this.setState({
+      month: newMonth,
+    });
+    this.timerId = setTimeout(() => this.timer(x), 800);
   }
 
   onMouseUp() {
@@ -135,6 +176,11 @@ class SearchPage extends React.Component {
           </Grid.Column>
           <Grid.Column width={5}>
             <SearchBox toggleJoined={this.toggleJoined}
+                       pressNextMonth={this.pressNextMonth}
+                       pressPreviousMonth={this.pressPreviousMonth}
+                       mouseUpChangeMonth={this.mouseUpChangeMonth}
+                       mouseLeaveChangeMonth={this.mouseLeaveChangeMonth}
+                       changeMonth={this.changeMonth}
                        isInRange={this.isInRange}
                        startDate={this.state.startDate}
                        endDate={this.state.endDate}

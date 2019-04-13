@@ -14,8 +14,7 @@ export default class TinyCell extends React.Component {
       borderRadius: 0,
     };
     if (this.props.isInRange) {
-      style.backgroundColor = 'rgb(8,27,52)';
-      style.color = 'white';
+      delete style.backgroundColor;
     }
 
     return (

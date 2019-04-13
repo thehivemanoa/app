@@ -40,7 +40,7 @@ export default class TinyCalendar extends React.Component {
     }
 
     return (
-          <Grid fluid>
+          <Grid>
             {weeks}
           </Grid>
     );

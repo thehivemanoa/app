@@ -25,6 +25,11 @@ export default class SearchResults extends React.Component {
                              courses={this.props.courses}
                              deleteCourse={this.props.deleteCourse}/>
               <FilterDate setFromDate={this.props.setFromDate}
+                          pressNextMonth={this.props.pressNextMonth}
+                          pressPreviousMonth={this.props.pressPreviousMonth}
+                          mouseUpChangeMonth={this.props.mouseUpChangeMonth}
+                          mouseLeaveChangeMonth={this.props.mouseLeaveChangeMonth}
+                          changeMonth={this.props.changeMonth}
                           isInRange={this.props.isInRange}
                           setToDate={this.props.setToDate}
                           startDate={this.props.startDate}
@@ -55,4 +60,9 @@ SearchResults.propTypes = {
   course: PropTypes.string.isRequired,
   startDate: PropTypes.object.isRequired,
   endDate: PropTypes.object.isRequired,
+  pressPreviousMonth: PropTypes.func.isRequired,
+  pressNextMonth: PropTypes.func.isRequired,
+  mouseUpChangeMonth: PropTypes.func.isRequired,
+  mouseLeaveChangeMonth: PropTypes.func.isRequired,
+  changeMonth: PropTypes.func.isRequired,
 };
