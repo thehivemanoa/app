@@ -40,7 +40,7 @@ export default class TinyCalendar extends React.Component {
     }
 
     return (
-          <Grid>
+          <Grid style={{ paddingTop: '1px', paddingLeft: '2px', paddingRight: '1px' }}>
             {weeks}
           </Grid>
     );

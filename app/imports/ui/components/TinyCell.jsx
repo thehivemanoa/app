@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 export default class TinyCell extends React.Component {
   render() {
     const style = {
-      height: '100%',
-      width: '100%',
+      height: '96%',
+      width: '96%',
       backgroundColor: 'Transparent',
       padding: 0,
       margin: 0,
