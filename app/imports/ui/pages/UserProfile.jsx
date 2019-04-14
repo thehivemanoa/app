@@ -18,32 +18,32 @@ class UserProfile extends React.Component {
     return (
         <div className="profile-page">
 
-          /* 2 column grid */
+          {/** 2 column grid */}
           <Grid columns={2} divided>
             <Grid.Column>
-              /***** PROFILE CARD *****/
-              /* profile picture (popup edit pfp modal) */
-              /* Banner with user name */
-              /* Honey pot with level */
-              /* current/total XP */
-              /* Progress Bar*/
+              { /** *** PROFILE CARD **** */}
+              {/** profile picture (popup edit pfp modal) */}
+              {/** Banner with user name */}
+              {/** Honey pot with level */}
+              {/** current/total XP */}
+              {/** Progress Bar */}
             </Grid.Column>
             <Grid.Column>
-              /* column 2 = 2 rows = My Courses and Account Information */
-              /* scroll bar? */
+              {/** column 2 = 2 rows = My Courses and Account Information */}
+              {/** scroll bar? */}
               <Grid.Row>
-                /***** MY COURSES *****/
+                {/** *** MY COURSES **** */}
                 <Divider><h2>MY COURSES</h2></Divider>
-                /* course cards = colored course number, bee status, edit pop modal */
-                /* add course button --> popup modal */
+                {/** course cards = colored course number, bee status, edit pop modal */}
+                {/** add course button --> popup modal */}
               </Grid.Row>
               <Grid.Row>
-                /***** ACCOUNT INFORMATION *****/
+                {/** *** ACCOUNT INFORMATION **** */}
                 <Divider><h2>ACCOUNT INFORMATION</h2></Divider>
-                /* Name: [user's name], edit button->modal */
-                /* Email Address: [user's email], edit button->modal */
-                /* Change Password button -> modal */
-                /* Terminate account button + warning icon -> modal */
+                {/** Name: [user's name], edit button->modal */}
+                {/** Email Address: [user's email], edit button->modal */}
+                {/** Change Password button -> modal */}
+                {/** Terminate account button + warning icon -> modal */}
               </Grid.Row>
             </Grid.Column>
           </Grid>
