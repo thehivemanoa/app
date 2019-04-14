@@ -34,6 +34,10 @@ export default class SearchResults extends React.Component {
                           setToDate={this.props.setToDate}
                           startDate={this.props.startDate}
                           endDate={this.props.endDate}
+                          startDateText={this.props.startDateText}
+                          endDateText={this.props.endDateText}
+                          handleChange={this.props.handleChange}
+                          handleDateSubmit={this.props.handleDateSubmit}
                           month={this.props.month}/>
               <FilterTime setStartTime={this.props.setStartTime}
                           setEndTime={this.props.setEndTime}/>
@@ -65,4 +69,7 @@ SearchResults.propTypes = {
   mouseUpChangeMonth: PropTypes.func.isRequired,
   mouseLeaveChangeMonth: PropTypes.func.isRequired,
   changeMonth: PropTypes.func.isRequired,
+  startDateText: PropTypes.string.isRequired,
+  endDateText: PropTypes.string.isRequired,
+  handleDateSubmit: PropTypes.func.isRequired,
 };

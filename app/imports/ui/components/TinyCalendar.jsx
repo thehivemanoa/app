@@ -1,17 +1,19 @@
 import React from 'react';
 import dateFns from 'date-fns';
 import PropTypes from 'prop-types';
-import { Grid, Button, Container } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import TinyCell from './TinyCell';
 
 export default class TinyCalendar extends React.Component {
   render() {
     const dateContainerStyle = {
       padding: 0,
-      height: '30px',
+      height: '25px',
+      textAlign: 'center',
     };
     const weekContainerStyle = {
       padding: 0,
+      display: 'inline-block',
     };
 
     const weeks = [];
