@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Header, Image, Grid, Button, Icon } from 'semantic-ui-react';
+import { Card, Header, Image, Grid, Button, Icon, Button } from 'semantic-ui-react';
 import dateFns from 'date-fns';
 
 export default class ProfileCard extends React.Component {
@@ -11,15 +11,19 @@ export default class ProfileCard extends React.Component {
             <Grid>
               <Grid.Row>
                 /* profile picture (popup edit pfp modal) */
-                <Image src={}/>
-                <Icon/> // add edit button
+                <div className="ui placeholder">
+                  <div className="image"></div>
+                </div>
+                <Button>Edit</Button>
               </Grid.Row>
               <Grid.Row>
                 /* Banner with user name */
+                <Header as={"h2"}>Name</Header>
               </Grid.Row>
               <Grid.Row columns={2}>
                 <Grid.Column>
                   /* Honey pot with level */
+                  <Icon name="star outline"> //replace with honey
                 </Grid.Column>
                 <Grid.Column>
                   <Grid.Row>
