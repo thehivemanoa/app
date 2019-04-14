@@ -27,9 +27,11 @@ export default class ProfileCard extends React.Component {
                 <Grid.Column>
                   <Grid.Row>
                     {/** current/total XP */}
+                    <Header as={"h2"}>current/total</Header>
                   </Grid.Row>
                   <Grid.Row>
                     {/** Progress Bar*/}
+                    <Header as={"h2"}>progress bar here</Header>
                   </Grid.Row>
                 </Grid.Column>
               </Grid.Row>
