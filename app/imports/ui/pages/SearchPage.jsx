@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Loader, Grid } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
+import { Bert } from 'meteor/themeteorchef:bert';
 import SearchResults from '../components/SearchResults';
 import SearchBox from '../components/SearchBox';
 import { Sessions } from '../../api/session/session';
@@ -13,7 +14,10 @@ class SearchPage extends React.Component {
     super(props);
     let currentDate = new Date();
     currentDate = dateFns.startOfDay(currentDate);
+    const startOfDay = dateFns.startOfDay(currentDate);
+    const endOfDay = dateFns.endOfDay(currentDate);
     const month = dateFns.startOfMonth(currentDate);
+    const formattedDate = this.formatDate(currentDate);
     this.state = {
       hideJoined: true,
       hideConflicting: true,
@@ -27,6 +31,11 @@ class SearchPage extends React.Component {
       course: '',
       isMouseDown: false,
       month: month,
+      startDateText: formattedDate,
+      endDateText: formattedDate,
+      startTimeText: startOfDay,
+      endTimeText: endOfDay,
+      sortBy: '',
     };
     this.toggleJoined = this.toggleJoined.bind(this);
     this.toggleConflicting = this.toggleConflicting.bind(this);
@@ -42,6 +51,8 @@ class SearchPage extends React.Component {
     this.mouseUpChangeMonth = this.mouseUpChangeMonth.bind(this);
     this.mouseLeaveChangeMonth = this.mouseLeaveChangeMonth.bind(this);
     this.changeMonth = this.changeMonth.bind(this);
+    this.handleDateSubmit = this.handleDateSubmit.bind(this);
+    this.handleTimeSubmit = this.handleTimeSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -125,12 +136,26 @@ class SearchPage extends React.Component {
     });
   }
 
+  formatDate(date) {
+    const minDate = new Date(-8639999999999999);
+    const maxDate = new Date(8640000000000000);
+    if (dateFns.isSameSecond(date, minDate)) {
+      return '-\u221E';
+    }
+    if (dateFns.isSameDay(date, maxDate)) {
+      return '\u221E';
+    }
+    return `${dateFns.format(date, 'M')}/${dateFns.format(date, 'D')}/${dateFns.format(date, 'YYYY')}`;
+  }
+
   setFromDate(fromDate) {
-    console.log('mouse down');
+    const formattedDate = this.formatDate(fromDate);
     this.setState({
       startDate: fromDate,
       endDate: fromDate,
       fromDate: fromDate,
+      startDateText: formattedDate,
+      endDateText: formattedDate,
       isMouseDown: true,
     });
   }
@@ -146,10 +171,14 @@ class SearchPage extends React.Component {
         endDate = toDate;
         startDate = this.state.fromDate;
       }
+      const formattedStartDate = this.formatDate(startDate);
+      const formattedEndDate = this.formatDate(endDate);
       this.setState({
         startDate: startDate,
         endDate: endDate,
         toDate: toDate,
+        startDateText: formattedStartDate,
+        endDateText: formattedEndDate,
       });
     }
   }
@@ -162,6 +191,32 @@ class SearchPage extends React.Component {
     this.setState({
       [name]: value,
     });
+  }
+
+  stringToDate(string) {
+    const formattedDate = string.trim().split('/');
+    return new Date(formattedDate[2], formattedDate[0], formattedDate[1]);
+  }
+
+  handleDateSubmit() {
+    const startDate = this.stringToDate(this.state.startDateText);
+    const endDate = this.stringToDate(this.state.endDateText);
+    if (dateFns.isValid(startDate) && dateFns.isValid(endDate)) {
+      this.setState({
+        startDate: startDate,
+        endDate: endDate,
+      });
+    } else {
+      Bert.alert({ type: 'danger', message: 'At least one of start date and end date is invalid' });
+    }
+  }
+
+  handleTimeSubmit() {
+    console.log('hello');
+  }
+
+  formatTime(time) {
+    return `${dateFns.format(time, 'h')}:${dateFns.format(time, 'mm')} ${dateFns.format(time, 'a')}`;
   }
 
   render() {
@@ -192,9 +247,10 @@ class SearchPage extends React.Component {
                        deleteCourse={this.deleteCourse}
                        setFromDate={this.setFromDate}
                        setToDate={this.setToDate}
-                       setStartTime={this.setStartTime}
                        month={this.state.month}
-                       setEndTime={this.setEndTime}/>
+                       startDateText={this.state.startDateText}
+                       endDateText={this.state.endDateText}
+                       handleDateSubmit={this.handleDateSubmit}/>
           </Grid.Column>
         </Grid>
     );

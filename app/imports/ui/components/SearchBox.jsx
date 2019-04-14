@@ -1,10 +1,11 @@
 import React from 'react';
-import { Header, Card, List } from 'semantic-ui-react';
+import { Header, Card, List, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import HideSearchResults from './HideSearchResults';
 import FilterCourses from './FilterCourses';
 import FilterDate from './FilterDate';
 import FilterTime from './FilterTime';
+import SortByOptions from './SortByOptions';
 
 export default class SearchResults extends React.Component {
   render() {
@@ -34,9 +35,13 @@ export default class SearchResults extends React.Component {
                           setToDate={this.props.setToDate}
                           startDate={this.props.startDate}
                           endDate={this.props.endDate}
+                          startDateText={this.props.startDateText}
+                          endDateText={this.props.endDateText}
+                          handleChange={this.props.handleChange}
+                          handleDateSubmit={this.props.handleDateSubmit}
                           month={this.props.month}/>
-              <FilterTime setStartTime={this.props.setStartTime}
-                          setEndTime={this.props.setEndTime}/>
+              <FilterTime handleChange={this.props.handleChange}/>
+              <SortByOptions handleChange={this.props.handleChange}/>
             </List>
           </Card.Content>
         </Card>
@@ -53,8 +58,6 @@ SearchResults.propTypes = {
   deleteCourse: PropTypes.func.isRequired,
   setFromDate: PropTypes.func.isRequired,
   setToDate: PropTypes.func.isRequired,
-  setStartTime: PropTypes.func.isRequired,
-  setEndTime: PropTypes.func.isRequired,
   courses: PropTypes.object.isRequired,
   handleChange: PropTypes.func.isRequired,
   course: PropTypes.string.isRequired,
@@ -65,4 +68,7 @@ SearchResults.propTypes = {
   mouseUpChangeMonth: PropTypes.func.isRequired,
   mouseLeaveChangeMonth: PropTypes.func.isRequired,
   changeMonth: PropTypes.func.isRequired,
+  startDateText: PropTypes.string.isRequired,
+  endDateText: PropTypes.string.isRequired,
+  handleDateSubmit: PropTypes.func.isRequired,
 };

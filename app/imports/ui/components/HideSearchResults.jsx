@@ -7,7 +7,7 @@ export default class HideSearchResults extends React.Component {
     return (
         <List.Item>
           <Divider horizontal>Hide</Divider>
-          <Checkbox label="Hide joined sessions" onClick={this.props.toggleJoined} />
+          <Checkbox style={{ marginBottom: '10px' }} label="Hide joined sessions" onClick={this.props.toggleJoined} />
           <Checkbox label="Hide conflicting sessions" onClick={this.props.toggleConflicting}/>
         </List.Item>
     );
