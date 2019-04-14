@@ -3,14 +3,14 @@ import { Profiles } from '../../api/profiles/profiles.js';
 
 /** Initialize the database with a default data document. */
 function addData(data) {
-  console.log(`  Adding: ${data.profile}`);
+  console.log(`  Adding: profile of ${data.owner}`);
   Profiles.insert(data);
 }
 
 /** Initialize the collection if empty. */
 if (Profiles.find().count() === 0) {
   if (Meteor.settings.defaultProfiles) {
-    console.log('Creating default course list.');
+    console.log('Creating default profiles list.');
     Meteor.settings.defaultProfiles.map(data => addData(data));
   }
 }

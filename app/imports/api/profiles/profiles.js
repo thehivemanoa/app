@@ -13,9 +13,12 @@ const ProfileSchema = new SimpleSchema({
   image: String,
   level: Number,
   exp: Number,
-  courses: [String],
-  joinedSessions: [String],
-  createdSessions: [String]
+  courses: { type: Array, required: false },
+  'courses.$': String,
+  joinedSessions: { type: Array, required: false },
+  'joinedSessions.$': String,
+  createdSessions: { type: Array, required: false },
+  'createdSessions.$': String,
 }, { tracker: Tracker });
 
 /** Attach this schema to the collection. */
