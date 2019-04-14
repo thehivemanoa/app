@@ -9,27 +9,27 @@ export default class ProfileCard extends React.Component {
           <Card.Content>
             <Grid>
               <Grid.Row>
-                /* profile picture (popup edit pfp modal) */
+                {/** profile picture (popup edit pfp modal) */}
                 <div className="ui placeholder">
                   <div className="image"></div>
                 </div>
                 <Button>Edit</Button>
               </Grid.Row>
               <Grid.Row>
-                /* Banner with user name */
+                {/** Banner with user name */}
                 <Header as={"h2"}>Name</Header>
               </Grid.Row>
               <Grid.Row columns={2}>
                 <Grid.Column>
-                  /* Honey pot with level */
-                  <Icon name="star outline"/> // replace with honey icon
+                  {/** Honey pot with level */}
+                  <Icon name="star outline"/>
                 </Grid.Column>
                 <Grid.Column>
                   <Grid.Row>
-                    /* current/total XP */
+                    {/** current/total XP */}
                   </Grid.Row>
                   <Grid.Row>
-                    /* Progress Bar*/
+                    {/** Progress Bar*/}
                   </Grid.Row>
                 </Grid.Column>
               </Grid.Row>
