@@ -15,7 +15,7 @@ export default class FilterCourses extends React.Component {
         _.keys(this.props.courses),
         course => <Button key={course}
                           icon="x"
-                          content={<p style={{ marginLeft: '27%' }}>{course}</p>}
+                          content={<p style={{ marginLeft: '32%' }}>{course}</p>}
                           style={{ backgroundColor: colors[course] }}
                           onClick={() => this.props.deleteCourse(course)} />,
     );

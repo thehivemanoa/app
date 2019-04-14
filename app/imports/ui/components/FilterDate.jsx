@@ -43,9 +43,9 @@ export default class FilterDate extends React.Component {
     };
 
     return (
-        <List.Item>
+        <List.Item style={{ marginTop: '15px' }}>
           <Divider horizontal>Date</Divider>
-          <Grid container style={{ marginBottom: '20px' }}>
+          <Grid container style={{ marginTop: '10px', marginBottom: '20px' }}>
             <Grid.Row style={{ display: 'inline-block', paddingBottom: '5px' }}>
               <Header as="h4" textAlign="center">
                 {`${dateFns.format(this.props.month, 'MMMM')}, ${dateFns.format(this.props.month, 'YYYY')}`}

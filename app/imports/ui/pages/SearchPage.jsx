@@ -35,6 +35,7 @@ class SearchPage extends React.Component {
       endDateText: formattedDate,
       startTimeText: startOfDay,
       endTimeText: endOfDay,
+      sortBy: '',
     };
     this.toggleJoined = this.toggleJoined.bind(this);
     this.toggleConflicting = this.toggleConflicting.bind(this);
