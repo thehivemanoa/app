@@ -1,7 +1,8 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Loader, Grid, Divider } from 'semantic-ui-react';
-import { Profiles } from '/imports/api/profiles/profiles';
+import { Stuffs } from '/imports/api/stuff/stuff';
+import StuffItem from '/imports/ui/components/StuffItem';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 
@@ -54,6 +55,7 @@ class UserProfile extends React.Component {
 
 /** Require an array of Stuff documents in the props. */
 UserProfile.propTypes = {
+  stuffs: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
@@ -71,10 +73,4 @@ UserProfile.propTypes = {
 })(UserProfile); */
 
 
-export default withTracker(() => {
-  const subscription = Meteor.subscribe('Profiles');
-  return {
-    profiles: Profiles.find({}).fetch(),
-    ready: subscription.ready(),
-  };
-})(UserProfile);
+export default(UserProfile);
