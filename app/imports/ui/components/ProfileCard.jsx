@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Header, Image, Grid, Button, Icon, Button } from 'semantic-ui-react';
-import dateFns from 'date-fns';
+import { Card, Header, Grid, Button, Icon, Button } from 'semantic-ui-react';
 
 export default class ProfileCard extends React.Component {
   render() {
@@ -23,7 +22,7 @@ export default class ProfileCard extends React.Component {
               <Grid.Row columns={2}>
                 <Grid.Column>
                   /* Honey pot with level */
-                  <Icon name="star outline"> //replace with honey
+                  <Icon name="star outline"/> // replace with honey icon
                 </Grid.Column>
                 <Grid.Column>
                   <Grid.Row>
