@@ -1,103 +1,36 @@
 {
   "defaultAccounts": [
-    {
-      "email": "admin@foo.com",
-      "password": "changeme",
-      "role": "admin"
-    },
-    {
-      "email": "john@foo.com",
-      "password": "changeme"
-    },
-    {
-      "email": "jhun@foo.com",
-      "password": "changeme"
-    }
-  ],
-  "defaultSessions": [
-    {
-      "title": "Digits 6",
-      "course": "ICS 314",
-      "description": "",
-      "startOffSetFromCurrentDay": "15",
-      "endOffSetFromCurrentDay": "16",
-      "owner": "john@foo.com"
-    },
-    {
-      "title": "HW #12",
-      "course": "ICS 311",
-      "description": "",
-      "startOffSetFromCurrentDay": "15.5",
-      "endOffSetFromCurrentDay": "16.5",
-      "owner": "john@foo.com"
-    },
-    {
-      "title": "Midterm exam",
-      "course": "ICS 311",
-      "description": "",
-      "startOffSetFromCurrentDay": "16",
-      "endOffSetFromCurrentDay": "18",
-      "owner": "john@foo.com"
-    },
-    {
-      "title": "Digits 7",
-      "course": "ICS 314",
-      "description": "",
-      "startOffSetFromCurrentDay": "18",
-      "endOffSetFromCurrentDay": "20",
-      "owner": "john@foo.com"
-    },
-    {
-      "title": "HW #13",
-      "course": "ICS 311",
-      "description": "",
-      "startOffSetFromCurrentDay": "36",
-      "endOffSetFromCurrentDay": "38",
-      "owner": "john@foo.com"
-    }
-  ],
-  "defaultCourses": [
-    {
-      "course": "ICS 111",
-      "description": "Overview of the fundamentals of computer science emphasizing problem solving, algorithm development, implementation, and debugging/testing using an object-oriented programming language."
-    },
-    {
-      "course": "ICS 141",
-      "description": "Includes logic, sets, functions, matrices, algorithmic concepts, mathematical reasoning, recursion, counting techniques, and probability theory."
-    },
-    {
-      "course": "ICS 211",
-      "description": "Reinforce and strengthen problem-solving skills using abstract data types and introduce software development practices. Emphasize the use of searching and sorting algorithms and their complexity, recursion, object-oriented programming, and data structures."
-    },
-    {
-      "course": "ICS 212",
-      "description": "Program organization paradigms, programming environments, implementation of a module from specifications, the C and C++ programming languages."
-    },
-    {
-      "course": "ICS 241",
-      "description": "ICS 241 - Discrete Mathematics for Computer Science II - University of Hawaii at Manoa Includes program correctness, recurrence relations and their solutions, relations and their properties, divide and conquer relations, graph theory, trees and their applications, Boolean algebra, introduction to formal languages and automata theory."
-    },
-    {
-      "course": "ICS 311",
-      "description": "Design and correctness of algorithms, including divide-and-conquer, greedy and dynamic programming methods. Complexity analyses using recurrence relations, probabilistic methods, and NP-completeness. Applications to order statistics, disjoint sets, B-trees and balanced trees, graphs, network flows, and string matching."
-    },
-    {
-      "course": "ICS 314",
-      "description": "Problem analysis and design, team-oriented development, quality assurance, configuration management, project planning."
-    }
+    { "email": "admin@foo.com", "password": "changeme", "role": "admin" },
+    { "email": "john@foo.com", "password": "changeme" }
   ],
 
-  "defaultProfiles": [
-    {
-      "owner": "jhun@foo.com",
-      "firstName": "Jhun",
-      "lastName": "Domingo",
-      "image": "https://philipmjohnson.github.io/images/philip2.jpeg",
-      "level": 0,
-      "exp": 0,
-      "courses": [],
-      "joinedSessions": ["xWdug9rdTySKRyvbM"],
-      "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
-    }
+  "defaultData": [
+    { "name": "Basket", "quantity": 3, "owner": "john@foo.com", "condition": "excellent" },
+    { "name": "Bicycle", "quantity": 2, "owner": "john@foo.com", "condition": "poor" },
+    { "name": "Banana", "quantity": 2, "owner": "admin@foo.com", "condition": "good" },
+    { "name": "Boogie Board", "quantity": 2, "owner": "admin@foo.com", "condition": "excellent" }
+  ],
+
+  "defaultCourses": [
+    {"course": "ICS 111", "description":  "Overview of the fundamentals of computer science emphasizing problem solving, algorithm development, implementation, and debugging/testing using an object-oriented programming language."},
+    {"course": "ICS 141", "description":  "Includes logic, sets, functions, matrices, algorithmic concepts, mathematical reasoning, recursion, counting techniques, and probability theory."},
+    {"course": "ICS 211", "description":  "Reinforce and strengthen problem-solving skills using abstract data types and introduce software development practices. Emphasize the use of searching and sorting algorithms and their complexity, recursion, object-oriented programming, and data structures."},
+    {"course": "ICS 212", "description":  "Program organization paradigms, programming environments, implementation of a module from specifications, the C and C++ programming languages."},
+    {"course": "ICS 241", "description":  "ICS 241 - Discrete Mathematics for Computer Science II - University of Hawaii at Manoa Includes program correctness, recurrence relations and their solutions, relations and their properties, divide and conquer relations, graph theory, trees and their applications, Boolean algebra, introduction to formal languages and automata theory."},
+    {"course": "ICS 311", "description":  "Design and correctness of algorithms, including divide-and-conquer, greedy and dynamic programming methods. Complexity analyses using recurrence relations, probabilistic methods, and NP-completeness. Applications to order statistics, disjoint sets, B-trees and balanced trees, graphs, network flows, and string matching."},
+    {"course": "ICS 314", "description":  "Problem analysis and design, team-oriented development, quality assurance, configuration management, project planning."}
+  ],
+
+  "defaultSessions": [
+    { "title": "Digits 6" , "course": "ICS 314" , "description": "" , "startOffSetFromCurrentDay": "15",
+      "endOffSetFromCurrentDay": "16" , "owner": "john@foo.com" },
+    { "title": "HW #12" , "course": "ICS 311" , "description": "" , "startOffSetFromCurrentDay": "15.5",
+      "endOffSetFromCurrentDay": "16.5", "owner": "john@foo.com" },
+    { "title": "Midterm exam" , "course": "ICS 311" , "description": "" , "startOffSetFromCurrentDay": "16",
+      "endOffSetFromCurrentDay": "18" , "owner": "john@foo.com" },
+    { "title": "Digits 7" , "course": "ICS 314" , "description": "" ,  "startOffSetFromCurrentDay": "18",
+      "endOffSetFromCurrentDay": "20" , "owner": "john@foo.com" },
+    { "title": "HW #13" , "course": "ICS 311" , "description": "" ,  "startOffSetFromCurrentDay": "36",
+      "endOffSetFromCurrentDay": "38" , "owner": "john@foo.com" }
   ]
 }
