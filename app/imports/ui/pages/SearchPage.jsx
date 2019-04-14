@@ -14,6 +14,8 @@ class SearchPage extends React.Component {
     super(props);
     let currentDate = new Date();
     currentDate = dateFns.startOfDay(currentDate);
+    const startOfDay = dateFns.startOfDay(currentDate);
+    const endOfDay = dateFns.endOfDay(currentDate);
     const month = dateFns.startOfMonth(currentDate);
     const formattedDate = this.formatDate(currentDate);
     this.state = {
@@ -31,6 +33,8 @@ class SearchPage extends React.Component {
       month: month,
       startDateText: formattedDate,
       endDateText: formattedDate,
+      startTimeText: startOfDay,
+      endTimeText: endOfDay,
     };
     this.toggleJoined = this.toggleJoined.bind(this);
     this.toggleConflicting = this.toggleConflicting.bind(this);
@@ -47,6 +51,7 @@ class SearchPage extends React.Component {
     this.mouseLeaveChangeMonth = this.mouseLeaveChangeMonth.bind(this);
     this.changeMonth = this.changeMonth.bind(this);
     this.handleDateSubmit = this.handleDateSubmit.bind(this);
+    this.handleTimeSubmit = this.handleTimeSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -205,6 +210,14 @@ class SearchPage extends React.Component {
     }
   }
 
+  handleTimeSubmit() {
+    console.log('hello');
+  }
+
+  formatTime(time) {
+    return `${dateFns.format(time, 'h')}:${dateFns.format(time, 'mm')} ${dateFns.format(time, 'a')}`;
+  }
+
   render() {
     return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
@@ -233,11 +246,9 @@ class SearchPage extends React.Component {
                        deleteCourse={this.deleteCourse}
                        setFromDate={this.setFromDate}
                        setToDate={this.setToDate}
-                       setStartTime={this.setStartTime}
                        month={this.state.month}
                        startDateText={this.state.startDateText}
                        endDateText={this.state.endDateText}
-                       setEndTime={this.setEndTime}
                        handleDateSubmit={this.handleDateSubmit}/>
           </Grid.Column>
         </Grid>

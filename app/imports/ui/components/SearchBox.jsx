@@ -39,8 +39,7 @@ export default class SearchResults extends React.Component {
                           handleChange={this.props.handleChange}
                           handleDateSubmit={this.props.handleDateSubmit}
                           month={this.props.month}/>
-              <FilterTime setStartTime={this.props.setStartTime}
-                          setEndTime={this.props.setEndTime}/>
+              <FilterTime handleChange={this.props.handleChange}/>
             </List>
           </Card.Content>
         </Card>
@@ -57,8 +56,6 @@ SearchResults.propTypes = {
   deleteCourse: PropTypes.func.isRequired,
   setFromDate: PropTypes.func.isRequired,
   setToDate: PropTypes.func.isRequired,
-  setStartTime: PropTypes.func.isRequired,
-  setEndTime: PropTypes.func.isRequired,
   courses: PropTypes.object.isRequired,
   handleChange: PropTypes.func.isRequired,
   course: PropTypes.string.isRequired,
