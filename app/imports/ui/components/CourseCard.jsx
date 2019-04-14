@@ -17,12 +17,9 @@ class CourseCard extends React.Component {
             </Card.Description>
           </Card.Content>
           <Card.Content extra>
-            <Link to={'/'}>Edit</Link>
-          </Card.Content>
-          <Card.Content extra>
             <Grid>
               <Grid.Row columns={2}>
-                <Button fluid color={'green'}>Add</Button>
+                <Button fluid color={'green'}>Add</Button> /* Not sure if this is needed in Course Card */
                 <Button fluid color={'red'}>Delete</Button>
               </Grid.Row>
             </Grid>
