@@ -8,6 +8,9 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import SearchResults from '../components/SearchResults';
 import SearchBox from '../components/SearchBox';
 import { Sessions } from '../../api/session/session';
+import { Profiles } from '../../api/profiles/profiles';
+
+const _ = require('underscore');
 
 class SearchPage extends React.Component {
   constructor(props) {
@@ -26,15 +29,13 @@ class SearchPage extends React.Component {
       startDate: currentDate,
       fromDate: currentDate,
       toDate: currentDate,
-      startTime: null,
-      endTime: null,
+      startTime: startOfDay,
+      endTime: endOfDay,
       course: '',
       isMouseDown: false,
       month: month,
       startDateText: formattedDate,
       endDateText: formattedDate,
-      startTimeText: startOfDay,
-      endTimeText: endOfDay,
       sortBy: '',
     };
     this.toggleJoined = this.toggleJoined.bind(this);
@@ -60,7 +61,14 @@ class SearchPage extends React.Component {
   }
 
   componentWillUnmount() {
-    document.remove('mouseup', this.onMouseUp);
+    document.removeEventListener('mouseup', this.onMouseUp);
+  }
+
+  isConflictingSession(s1, s2) {
+    if (dateFns.isBefore(s2.startTime, s1.endTime) && dateFns.isBefore(s1.startTime, s2.endTime)) {
+      return true;
+    }
+    return false;
   }
 
   pressNextMonth() {
@@ -227,7 +235,15 @@ class SearchPage extends React.Component {
     return (
         <Grid container style={{ marginTop: '120px' }}>
           <Grid.Column width={11}>
-            <SearchResults sessions={this.props.sessions}/>
+            <SearchResults sessions={this.props.sessions}
+                           startDate={this.state.startDate}
+                           endDate={this.state.endDate}
+                           startTime={this.state.startTime}
+                           endTime={this.state.endTime}
+                           courses={this.state.courses}
+                           hideJoined={this.state.hideJoined}
+                           hideConflicting={this.state.hideConflicting}
+                           sortBy={this.state.sortBy} />
           </Grid.Column>
           <Grid.Column width={5}>
             <SearchBox toggleJoined={this.toggleJoined}
@@ -258,15 +274,20 @@ class SearchPage extends React.Component {
 }
 
 SearchPage.propTypes = {
+  profiles: PropTypes.array.isRequired,
   sessions: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
   // Get access to Stuff documents.
+
   const subscription = Meteor.subscribe('Sessions');
+  const subscription2 = Meteor.subscribe('Profiles');
   return {
+    currentUser: Meteor.user().username,
     sessions: Sessions.find({}).fetch(),
-    ready: subscription.ready(),
+    profiles: Profiles.find({}).fetch(),
+    ready: (subscription.ready() && subscription2.ready()),
   };
 })(SearchPage);
