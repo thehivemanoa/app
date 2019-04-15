@@ -60,7 +60,7 @@ class SearchPage extends React.Component {
   }
 
   componentWillUnmount() {
-    document.remove('mouseup', this.onMouseUp);
+    document.removeEventListener('mouseup', this.onMouseUp);
   }
 
   pressNextMonth() {
