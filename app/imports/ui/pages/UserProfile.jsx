@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Container, Loader, Grid, Divider, Card, Image, Icon, Progress, Button } from 'semantic-ui-react';
+import { Container, Loader, Grid, Card, Image, Icon, Progress, Button, List } from 'semantic-ui-react';
 import { Profiles } from '/imports/api/profiles/profiles';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
@@ -39,7 +39,7 @@ class UserProfile extends React.Component {
       height: '0',
     }
 
-    const editButton = {
+    const smallButton = {
       float: 'right',
       marginLeft: '2em',
       paddingTop: 0,
@@ -88,7 +88,7 @@ class UserProfile extends React.Component {
             {/** scroll bar? */}
             <Grid.Row>
               {/** *** MY COURSES **** */}
-              <h2>MY COURSES<Button size='small' content='edit' style={editButton}/></h2>
+              <h2>MY COURSES<Button size='small' content='edit' style={smallButton}/></h2>
               {/** course cards = colored course number, bee status, edit pop modal */}
               <Card.Group>
                 <Card>
@@ -109,12 +109,22 @@ class UserProfile extends React.Component {
             </Grid.Row>
             <Grid.Row>
               {/** *** ACCOUNT INFORMATION **** */}
-              <h2>ACCOUNT INFORMATION</h2>
-              {/** Name: [user's name], edit button->modal */}
-
-              {/** Email Address: [user's email], edit button->modal */}
-              {/** Change Password button -> modal */}
-              {/** Terminate account button + warning icon -> modal */}
+              <h2>ACCOUNT INFORMATION <Button size='mini' content='edit' floated='right' style={smallButton}/></h2>
+            </Grid.Row>
+            <Grid.Row>
+              <List>
+                <List.Item>First Name: John</List.Item>
+                <List.Item>Last Name: Smith</List.Item>
+                <List.Item>Email: johnsmith@email.com</List.Item>
+                <List.Item>
+                  {/** Change Password button -> modal */}
+                  <Button size='small' floated='left' content='Change Password' style={[smallButton, { marginLeft: 0 }]}/>
+                </List.Item>
+                <List.Item>
+                  {/** Terminate account button + warning icon -> modal */}
+                  <Button floated='left' size='small' content='Terminate Account' style={[smallButton, { marginLeft: 0 }]}/>
+                </List.Item>
+              </List>
             </Grid.Row>
           </Grid>
         </Container>
