@@ -10,7 +10,7 @@ class DataCard extends React.Component {
 
   render() {
     return (
-        <Segment centered>
+        <Segment>
           <Statistic>
             <Statistic.Value>
               <Icon name={this.props.icon}/>
