@@ -29,10 +29,10 @@ class App extends React.Component {
               <Route exact path="/" component={Landing}/>
               <Route path="/signin" component={Signin}/>
               <Route path="/signup" component={Signup}/>
-              <ProtectedRoute path="/Calendar" component={CalendarPage}/>
+              <ProtectedRoute path="/calendar" component={CalendarPage}/>
               <ProtectedRoute path="/addsession" component={CreateSession}/>
               <ProtectedRoute path="/profile" component={UserProfile}/>
-              <ProtectedRoute path="/Search" component={SearchPage}/>
+              <ProtectedRoute path="/search" component={SearchPage}/>
               <ProtectedRoute path="/edit/:_id" component={EditProfile}/>
               <AdminProtectedRoute path="/admin" component={Admin}/>
               <ProtectedRoute path="/signout" component={Signout}/>

@@ -10,8 +10,8 @@ export default class SessionCardFlat extends React.Component {
       'ICS 314': '#FFB4B0',
     };
     const buttonContainerStyle = {
-      paddingTop: '5px',
-      paddingRight: '15px',
+      paddingTop: '7px',
+      paddingRight: '20px',
     };
     const buttonStyle = {
       backgroundColor: 'white',
@@ -77,7 +77,7 @@ export default class SessionCardFlat extends React.Component {
                 </Grid>
               </Grid.Column>
               <Grid.Column style={buttonContainerStyle} width={2}>
-                <Button style={buttonStyle} floated="right">Join</Button>
+                <Button style={buttonStyle} floated="right" size="mini">Join</Button>
               </Grid.Column>
             </Grid>
           </Card.Content>
@@ -86,7 +86,7 @@ export default class SessionCardFlat extends React.Component {
       <List.Item key={2} style={showMoreContainerStyle}>
         <Button icon="plus" style={{
           position: 'absolute',
-          left: '50%',
+          left: '100%',
           height: '18px',
           width: '18px',
           padding: 0,
@@ -98,7 +98,7 @@ export default class SessionCardFlat extends React.Component {
       <List.Item key={3} style={buttonOutlineStyle}>
         <div style={{
           position: 'absolute',
-          left: '50%',
+          left: '100%',
           height: '22px',
           width: '22px',
           borderRadius: '50%',
