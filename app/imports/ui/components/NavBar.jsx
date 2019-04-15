@@ -60,9 +60,17 @@ class NavBar extends React.Component {
       fontFamily: 'Montserrat',
     };
 
+    const topLogo = {
+      paddingRight: 0,
+      paddingTop: 0,
+      paddingLeft: 0,
+      bottom: 'auto',
+      top: 10,
+    };
+
     return (
         <Menu className="ui borderless top fixed menu" style={menuStyle}>
-          <Menu.Item id='toplogo'>
+          <Menu.Item style={topLogo}>
             <Image size="tiny" src="images/white-inverted-logo.png"/>
           </Menu.Item>
           <Menu.Item>
