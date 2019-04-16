@@ -22,7 +22,7 @@ class UserProfile extends React.Component {
       paddingLeft: 50,
       paddingRight: 50,
       minHeight: '70vh',
-    }
+    };
 
     const center = {
       position: 'absolute',
@@ -31,13 +31,13 @@ class UserProfile extends React.Component {
       width: '100%',
       textAlign: 'center',
       fontSize: '1em',
-    }
+    };
 
     const xpIcon = {
       fontSize: '3em',
       width: '100%',
       height: '0',
-    }
+    };
 
     const smallButton = {
       float: 'right',
@@ -45,7 +45,7 @@ class UserProfile extends React.Component {
       paddingTop: 0,
       paddingBottom: 0,
       height: '2em'
-    }
+    };
 
     return (
         <Container className="profile-page" style={containerPadding}>
@@ -57,7 +57,7 @@ class UserProfile extends React.Component {
                      style={{ marginBottom: 5 }}/>
               <div className="non-semantic-protector">
                 <h1 className="ribbon">
-                  <strong className="ribbon-content">John Smith</strong>
+                  <strong className="ribbon-content">{this.props.profiles.firstName}</strong>
                 </h1>
                 <Grid columns={2} verticalAlign='middle'>
                   <Grid.Column width={3}>
@@ -136,6 +136,9 @@ class UserProfile extends React.Component {
 /** Require an array of Stuff documents in the props. */
 UserProfile.propTypes = {
   ready: PropTypes.bool.isRequired,
+  profiles: PropTypes.array.isRequired,
+  firstName: PropTypes.string,
+  lastName: PropTypes.string
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
@@ -155,7 +158,7 @@ UserProfile.propTypes = {
 export default withTracker(() => {
   const subscription = Meteor.subscribe('Profiles');
   return {
-    profiles: Profiles.find({}).fetch(),
+    profiles: Profiles.find({ owner: Meteor.user() }).fetch(),
     ready: subscription.ready(),
   };
 })(UserProfile);
