@@ -50,7 +50,11 @@ class Admin extends React.Component {
                 </Card.Content>
                 <Card.Content>
                   <Feed>
-                    {this.props.notes.map((note, index) => <Note key={index} note={note}/>)}
+                    {/** {this.props.notes.map((note, index) => <Note key={index} note={note}/>)} */}
+                    <Notification/>
+                    <Notification/>
+                    <Notification/>
+                    <Notification/>
                   </Feed>
                 </Card.Content>
               </Card>
