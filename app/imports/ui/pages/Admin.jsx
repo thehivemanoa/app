@@ -5,7 +5,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Grid, Feed, Card } from 'semantic-ui-react';
 import DataCard from '../components/DataCard';
 import TaskList from '../components/TaskList';
-import IssueFeed from '../components/IssueFeed';
+import Notification from '../components/Notification';
 import { Courses } from '../../api/courses/courses';
 import { Sessions } from '../../api/session/session';
 import AddCourse from '../components/AddCourse';
@@ -50,13 +50,7 @@ class Admin extends React.Component {
                 </Card.Content>
                 <Card.Content>
                   <Feed>
-                    <IssueFeed/>
-                    <IssueFeed/>
-                    <IssueFeed/>
-                    <IssueFeed/>
-                    <IssueFeed/>
-                    <IssueFeed/>
-                    <IssueFeed/>
+                    {this.props.notes.map((note, index) => <Note key={index} note={note}/>)}
                   </Feed>
                 </Card.Content>
               </Card>

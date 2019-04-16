@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Feed, Image } from 'semantic-ui-react';
 
 /** Renders the Page for adding a document. */
-class IssueFeed extends React.Component {
+class Notification extends React.Component {
 
   render() {
     return (
@@ -24,8 +24,8 @@ class IssueFeed extends React.Component {
   }
 }
 
-IssueFeed.propTypes = {
+Notification.propTypes = {
   courses: PropTypes.array,
 };
 
-export default IssueFeed;
+export default Notification;
