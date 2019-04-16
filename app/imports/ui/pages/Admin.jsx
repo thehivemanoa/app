@@ -2,12 +2,12 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Grid, Header, Card } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import TaskList from '../components/TaskList';
 import DataCard from '../components/DataCard';
 import { Courses } from '../../api/courses/courses';
 import { Sessions } from '../../api/session/session';
-import { AddCourse } from '../components/AddCourse';
+import AddCourse from '../components/AddCourse';
 
 class Admin extends React.Component {
   render() {
@@ -36,7 +36,7 @@ class Admin extends React.Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            {/** <AddCourse/> */}
+            <AddCourse/>
           </Grid.Row>
         </Grid>
     );

@@ -1,13 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Bert } from 'meteor/themeteorchef:bert';
 import { Segment } from 'semantic-ui-react';
 import AutoForm from 'uniforms-semantic/AutoForm';
 import TextField from 'uniforms-semantic/TextField';
 import LongTextField from 'uniforms-semantic/LongTextField';
+import SubmitField from 'uniforms-semantic/SubmitField';
 import ErrorsField from 'uniforms-semantic/ErrorsField';
 import { Courses, CourseSchema } from '/imports/api/courses/courses';
-import { Bert } from 'meteor/themeteorchef:bert';
-import SubmitField from './AddSession';
 
 class AddCourse extends React.Component {
 
@@ -37,15 +36,15 @@ class AddCourse extends React.Component {
 
   /** On submit, insert the data. */
   submit(data) {
-    const { courses, description } = data;
-    Courses.insert({ courses, description }, this.insertCallback);
+    const { course, description } = data;
+    Courses.insert({ course, description }, this.insertCallback);
   }
 
   render() {
     return (
         <AutoForm ref={(ref) => { this.formRef = ref; }} schema={CourseSchema} onSubmit={this.submit}>
           <Segment>
-            <TextField label={'Course Name'} name={'courses'}/>
+            <TextField label={'Course Name'} name={'course'}/>
             <LongTextField label={'Description'} name={'description'}/>
             <SubmitField value='Submit'/>
             <ErrorsField/>
