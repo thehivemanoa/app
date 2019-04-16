@@ -44,7 +44,7 @@ class UserProfile extends React.Component {
       marginLeft: '2em',
       paddingTop: 0,
       paddingBottom: 0,
-      height: '2em'
+      height: '2em',
     };
 
     return (
@@ -57,7 +57,7 @@ class UserProfile extends React.Component {
                      style={{ marginBottom: 5 }}/>
               <div className="non-semantic-protector">
                 <h1 className="ribbon">
-                  <strong className="ribbon-content">{this.props.profiles.firstName}</strong>
+                  <strong className="ribbon-content">{this.props.profiles}</strong>
                 </h1>
                 <Grid columns={2} verticalAlign='middle'>
                   <Grid.Column width={3}>
@@ -75,7 +75,7 @@ class UserProfile extends React.Component {
                       <p>800/1000 XP</p>
                     </Grid.Row>
                     <Grid.Row>
-                      {/** Progress Bar*/}
+                      {/** Progress Bar */}
                       <Progress value='4' total='5' progress='percent'/>
                     </Grid.Row>
                   </Grid.Column>
@@ -118,27 +118,32 @@ class UserProfile extends React.Component {
                 <List.Item>Email: johnsmith@email.com</List.Item>
                 <List.Item>
                   {/** Change Password button -> modal */}
-                  <Button size='small' floated='left' content='Change Password' style={[smallButton, { marginLeft: 0 }]}/>
+                  <Button size='small'
+                          floated='left'
+                          content='Change Password'
+                          style={[smallButton, { marginLeft: 0 }]}/>
                 </List.Item>
                 <List.Item>
                   {/** Terminate account button + warning icon -> modal */}
-                  <Button floated='left' size='small' content='Terminate Account' style={[smallButton, { marginLeft: 0 }]}/>
+                  <Button floated='left'
+                          size='small'
+                          content='Terminate Account'
+                          style={[smallButton, { marginLeft: 0 }]}/>
                 </List.Item>
               </List>
             </Grid.Row>
           </Grid>
         </Container>
-    )
-        ;
+    );
   }
 }
 
 /** Require an array of Stuff documents in the props. */
 UserProfile.propTypes = {
   ready: PropTypes.bool.isRequired,
-  profiles: PropTypes.array.isRequired,
+  profiles: PropTypes.string.isRequired,
   firstName: PropTypes.string,
-  lastName: PropTypes.string
+  lastName: PropTypes.string,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
@@ -158,7 +163,7 @@ UserProfile.propTypes = {
 export default withTracker(() => {
   const subscription = Meteor.subscribe('Profiles');
   return {
-    profiles: Profiles.find({ owner: Meteor.user() }).fetch(),
+    profiles: Meteor.user() ? Meteor.user().username : '',
     ready: subscription.ready(),
   };
 })(UserProfile);
