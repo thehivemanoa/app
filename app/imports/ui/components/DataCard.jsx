@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Segment, Statistic, Icon } from 'semantic-ui-react';
+import { Statistic, Icon } from 'semantic-ui-react';
 
 class DataCard extends React.Component {
   constructor(props) {
@@ -10,17 +10,16 @@ class DataCard extends React.Component {
 
   render() {
     return (
-        <Segment>
-          <Statistic>
-            <Statistic.Value>
-              <Icon name={this.props.icon}/>
-              {this.value}
-            </Statistic.Value>
-            <Statistic.Label>
-              {this.props.text}
-            </Statistic.Label>
-          </Statistic>
-        </Segment>
+            <Statistic>
+              <Statistic.Value>
+                <Icon name={this.props.icon}/>
+                {this.value}
+              </Statistic.Value>
+
+              <Statistic.Label>
+                {this.props.text}
+              </Statistic.Label>
+            </Statistic>
     );
   }
 }

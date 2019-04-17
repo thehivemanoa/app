@@ -3,14 +3,25 @@ import { Meteor } from 'meteor/meteor';
 import { Container, Loader, Grid, Card, Image, Icon, Progress, Tab } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
+import { Courses } from '/imports/api/course/course';
+import { DragDropContext } from 'react-beautiful-dnd';
+import Course from '/imports/ui/components/CourseCard';
 
 /** Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
 class UserProfile extends React.Component {
+  constructor(props) {
+    super(props);
+    // this.print = this.print.bind(this);
+  }
 
   /** If the subscription(s) have been received, render the page, otherwise show a loading icon. */
   render() {
     return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
+
+  // print() {
+  //
+  // }
 
   /** Render the page once subscriptions have been received. */
   renderPage() {
@@ -27,10 +38,12 @@ class UserProfile extends React.Component {
         ),
       },
       {
-        menuItem: 'Courses',
+        menuItem: 'Course',
         pane: (
-            <Tab.Pane attached={false} key={'Courses'}>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur cumque dolore dolores, eveniet facilis in itaque maxime, nihil optio, quia quo recusandae reprehenderit totam. Aperiam excepturi illo inventore nemo nobis perspiciatis repellat vitae. At corporis iure magnam natus qui tempora, veritatis vitae voluptate. Beatae explicabo fugit similique suscipit voluptatem! A asperiores commodi consectetur cupiditate delectus dicta dolor ea eius eligendi facilis fugiat illo impedit labore libero magni minus non numquam obcaecati officia omnis possimus quisquam rem repellendus soluta suscipit, tenetur totam ullam unde ut vitae! A, assumenda, deleniti dicta eligendi maxime nesciunt nihil odio officia omnis quam repellat, rerum soluta.</p>
+            <Tab.Pane attached={false} key={'Course'}>
+              <Card.Group>
+                {this.props.course.map((course) => <Course course={course}/>)}
+              </Card.Group>
             </Tab.Pane>
         ),
       },
@@ -38,7 +51,14 @@ class UserProfile extends React.Component {
         menuItem: 'Notifications',
         pane: (
             <Tab.Pane attached={false} key={'Notifications'}>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad asperiores, laudantium libero minima soluta tempora! Accusamus adipisci, blanditiis commodi culpa cum cupiditate dolor ea error esse explicabo fuga ipsum labore minima minus obcaecati officia praesentium, quae quos ratione reiciendis saepe sit tempora ullam unde voluptatum? Accusamus animi asperiores at cupiditate eius fugiat harum ipsa, laborum minima neque nisi officia perferendis perspiciatis, quaerat ratione repellendus, suscipit. A est iusto magnam perspiciatis placeat quas quasi quod reiciendis rerum saepe. A alias aliquam aspernatur atque corporis dignissimos enim et explicabo laboriosam maiores molestias natus nemo nisi, officiis quia ratione rerum vel voluptatibus? Ea!</p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad asperiores, laudantium libero minima
+                soluta tempora! Accusamus adipisci, blanditiis commodi culpa cum cupiditate dolor ea error esse
+                explicabo fuga ipsum labore minima minus obcaecati officia praesentium, quae quos ratione reiciendis
+                saepe sit tempora ullam unde voluptatum? Accusamus animi asperiores at cupiditate eius fugiat harum
+                ipsa, laborum minima neque nisi officia perferendis perspiciatis, quaerat ratione repellendus, suscipit.
+                A est iusto magnam perspiciatis placeat quas quasi quod reiciendis rerum saepe. A alias aliquam
+                aspernatur atque corporis dignissimos enim et explicabo laboriosam maiores molestias natus nemo nisi,
+                officiis quia ratione rerum vel voluptatibus? Ea!</p>
             </Tab.Pane>),
       }
     ];
@@ -100,7 +120,8 @@ class UserProfile extends React.Component {
               </div>
             </Card.Content>
           </Card>
-          <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'} panes={panes}
+          <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
+               panes={panes}
                renderActiveOnly={false}/>
         </Container>
     );
@@ -110,12 +131,15 @@ class UserProfile extends React.Component {
 /** Require an array of Stuff documents in the props. */
 UserProfile.propTypes = {
   ready: PropTypes.bool.isRequired,
-  firstName: PropTypes.string,
-  lastName: PropTypes.string,
-  level: PropTypes.string,
-  exp: PropTypes.string,
-  email: PropTypes.string,
-  image: PropTypes.string
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  level: PropTypes.string.isRequired,
+  exp: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  joined: PropTypes.array.isRequired,
+  created: PropTypes.array.isRequired,
+  course: PropTypes.array,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
@@ -133,7 +157,7 @@ UserProfile.propTypes = {
 
 
 export default withTracker(() => {
-  const subscription = Meteor.subscribe('Profiles');
+  const subscription = Meteor.subscribe('Course');
   return {
     firstName: Meteor.user() ? Meteor.user().profile.firstName : '',
     lastName: Meteor.user() ? Meteor.user().profile.lastName : '',
@@ -141,6 +165,9 @@ export default withTracker(() => {
     exp: Meteor.user() ? Meteor.user().profile.exp : '',
     email: Meteor.user() ? Meteor.user().username : '',
     image: Meteor.user() ? Meteor.user().profile.image : '',
+    joined: Meteor.user() ? Meteor.user().profile.joinedSessions : [],
+    created: Meteor.user() ? Meteor.user().profile.createdSessions : [],
+    course: Courses.find({}).fetch(),
     ready: subscription.ready(),
   };
 })(UserProfile);
