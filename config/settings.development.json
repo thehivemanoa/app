@@ -7,15 +7,31 @@
     },
     {
       "email": "john@foo.com",
-      "password": "changeme"
+      "password": "changeme",
+      "profile": {
+        "firstName": "John",
+        "lastName": "Smith",
+        "image": "https://react.semantic-ui.com/images/avatar/large/matthew.png",
+        "level": 12,
+        "exp": 1000,
+        "courses": ["ICS 311", "ICS 314"],
+        "joinedSessions": ["xWdug9rdTySKRyvbM"],
+        "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
+      }
     },
     {
       "email": "jhun@foo.com",
-      "password": "changeme"
-    },
-    {
-      "email": "morgan@foo.com",
-      "password": "changeme"
+      "password": "changeme",
+      "profile": {
+        "firstName": "Jhun",
+        "lastName": "Domingo",
+        "image": "https://philipmjohnson.github.io/images/philip2.jpeg",
+        "level": 4,
+        "exp": 80,
+        "courses": [],
+        "joinedSessions": ["xWdug9rdTySKRyvbM"],
+        "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
+      }
     }
   ],
   "defaultSessions": [
@@ -88,31 +104,6 @@
     {
       "course": "ICS 314",
       "description": "Problem analysis and design, team-oriented development, quality assurance, configuration management, project planning."
-    }
-  ],
-
-  "defaultProfiles": [
-    {
-      "owner": "jhun@foo.com",
-      "firstName": "Jhun",
-      "lastName": "Domingo",
-      "image": "https://philipmjohnson.github.io/images/philip2.jpeg",
-      "level": 0,
-      "exp": 0,
-      "courses": [],
-      "joinedSessions": ["xWdug9rdTySKRyvbM"],
-      "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
-    },
-    {
-      "owner": "morgan@foo.com",
-      "firstName": "Morgan",
-      "lastName": "Stremick",
-      "image": "https://philipmjohnson.github.io/images/philip2.jpeg",
-      "level": 0,
-      "exp": 0,
-      "courses": ["ICS 311", "ICS 314", "ICS 111", "ICS 114", "ICS 211", "ICS 212", "ICS 214"],
-      "joinedSessions": [],
-      "createdSessions": []
     }
   ],
 

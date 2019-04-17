@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
-import { Menu, Header, Popup, Icon, Button, Modal, Form, Image } from 'semantic-ui-react';
+import { Menu, Header, Popup, Label, Divider, Icon, Modal, Form, Image } from 'semantic-ui-react';
 import { Roles } from 'meteor/alanning:roles';
 
 // import { Roles } from 'meteor/alanning:roles';
@@ -138,19 +138,25 @@ class NavBar extends React.Component {
                            horizontalOffset={15}
                            verticalOffset={-4}
                            style={popupStyle}
+                           hideOnScroll
                            trigger={
-                             <Button inverted icon size={'mini'} color={'yellow'}>
-                               <Icon name={'bars'}/>
-                             </Button>
+                             <Label as='a' style={{ 'background': 'transparent' }}>
+                               <Image avatar spaced='right' src={this.props.image}/>
+                               <Icon inverted name='caret down'/>
+                             </Label>
                            }
                     >
                       <Menu vertical borderless secondary>
+                        <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                          {this.props.firstName} {this.props.lastName}
+                          <br/>
+                          <Divider/>
+                        </Menu.Item>
                         <Menu.Item as={NavLink}
                                    exact to='/profile'
                                    style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
                           View Profile
                         </Menu.Item>
-
                         <Menu.Item as={NavLink} onClick={Meteor.logout}
                                    exact to="/#/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
                           Log Out
@@ -169,11 +175,17 @@ class NavBar extends React.Component {
 /** Declare the types of all properties. */
 NavBar.propTypes = {
   currentUser: PropTypes.string,
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
+  image: PropTypes.string,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
 const NavBarContainer = withTracker(() => ({
   currentUser: Meteor.user() ? Meteor.user().username : '',
+  firstName: Meteor.user() ? Meteor.user().profile.firstName : '',
+  lastName: Meteor.user() ? Meteor.user().profile.lastName : '',
+  image: Meteor.user() ? Meteor.user().profile.image : '',
 }))(NavBar);
 
 /** Enable ReactRouter for this component. https://reacttraining.com/react-router/web/api/withRouter */
