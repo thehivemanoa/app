@@ -83,15 +83,15 @@ class UserProfile extends React.Component {
   }
 }
 
-/** Require an array of Stuff documents in the props. */
+/** Require an array of user documents in the props. */
 UserProfile.propTypes = {
   firstName: PropTypes.string,
   lastName: PropTypes.string,
   level: PropTypes.number,
   exp: PropTypes.number,
+  nextLevel: PropTypes.number,
   email: PropTypes.string,
-  image: PropTypes.string,
-  nextLevel: PropTypes.number
+  image: PropTypes.string
 };
 
 export default withTracker(() => {

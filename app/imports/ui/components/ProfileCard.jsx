@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
-import { Card,  Grid, Icon, Image, Progress } from 'semantic-ui-react';
+import { Card, Grid, Icon, Image, Progress } from 'semantic-ui-react';
 
 export default class ProfileCard extends React.Component {
   render() {
@@ -30,9 +30,11 @@ export default class ProfileCard extends React.Component {
               <h1 className="ribbon">
                 <strong className="ribbon-content">{this.props.firstName} {this.props.lastName}</strong>
               </h1>
+
+              {/** Progress Bar*/}
               <Grid columns={2} verticalAlign='middle'>
                 <Grid.Column width={3}>
-                  {/** Honey pot with level */}
+                  {/** Change start to honey pot */}
                   <div style={{ position: 'relative' }}>
                     <Icon name="star outline" style={xpIcon}/>
                     <div style={center}>
@@ -42,11 +44,9 @@ export default class ProfileCard extends React.Component {
                 </Grid.Column>
                 <Grid.Column width={13}>
                   <Grid.Row>
-                    {/** current/total XP */}
                     <p>{this.props.exp}/{this.props.nextLevel} XP</p>
                   </Grid.Row>
                   <Grid.Row>
-                    {/** Progress Bar*/}
                     <Progress value={this.props.exp} total={this.props.nextLevel}/>
                   </Grid.Row>
                 </Grid.Column>
@@ -58,7 +58,7 @@ export default class ProfileCard extends React.Component {
   }
 }
 
-/** Require an array of ProfileCard documents in the props. */
+/** Require an array of user documents in the props. */
 ProfileCard.propTypes = {
   firstName: PropTypes.string,
   lastName: PropTypes.string,
