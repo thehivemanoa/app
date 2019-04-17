@@ -70,7 +70,7 @@ class UserProfile extends React.Component {
         <Container className="profile-page" style={containerPadding} fluid>
           <Card style={{ float: 'left', marginRight: '3em' }}>
             <Card.Content>
-              <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' circular
+              <Image src={this.props.image} circular
                      style={{ marginBottom: 5 }}/>
               <div className="non-semantic-protector">
                 <h1 className="ribbon">
@@ -114,7 +114,8 @@ UserProfile.propTypes = {
   lastName: PropTypes.string,
   level: PropTypes.string,
   exp: PropTypes.string,
-  email: PropTypes.string
+  email: PropTypes.string,
+  image: PropTypes.string
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
@@ -139,6 +140,7 @@ export default withTracker(() => {
     level: Meteor.user() ? Meteor.user().profile.level : '',
     exp: Meteor.user() ? Meteor.user().profile.exp : '',
     email: Meteor.user() ? Meteor.user().username : '',
+    image: Meteor.user() ? Meteor.user().profile.image : '',
     ready: subscription.ready(),
   };
 })(UserProfile);

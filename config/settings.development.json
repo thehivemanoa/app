@@ -7,7 +7,17 @@
     },
     {
       "email": "john@foo.com",
-      "password": "changeme"
+      "password": "changeme",
+      "profile": {
+        "firstName": "John",
+        "lastName": "Smith",
+        "image": "https://react.semantic-ui.com/images/avatar/large/matthew.png",
+        "level": "5",
+        "exp": "90",
+        "courses": [],
+        "joinedSessions": ["xWdug9rdTySKRyvbM"],
+        "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
+      }
     },
     {
       "email": "jhun@foo.com",
