@@ -1,6 +1,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Container, Loader, Grid, Card, Image, Icon, Progress, Tab } from 'semantic-ui-react';
+import ProfileCard from '../components/ProfileCard';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 
@@ -62,56 +63,10 @@ class UserProfile extends React.Component {
       paddingRight: 50,
       minHeight: '70vh',
     };
-    
-    const center = {
-      position: 'absolute',
-      left: '.8em',
-      bottom: '.6em',
-      width: '100%',
-      textAlign: 'center',
-      fontSize: '1em',
-    };
-
-    const xpIcon = {
-      fontSize: '3em',
-      width: '100%',
-      height: '0',
-    };
 
     return (
         <Container className="profile-page" style={containerPadding} fluid>
-          <Card style={{ float: 'left', marginRight: '3em' }}>
-            <Card.Content>
-              <Image src={this.props.image} circular
-                     style={{ marginBottom: 5 }}/>
-              <div className="non-semantic-protector">
-                <h1 className="ribbon">
-                  <strong className="ribbon-content">{this.props.firstName} {this.props.lastName}</strong>
-                </h1>
-                <Grid columns={2} verticalAlign='middle'>
-                  <Grid.Column width={3}>
-                    {/** Honey pot with level */}
-                    <div style={{ position: 'relative' }}>
-                      <Icon name="star outline" style={xpIcon}/>
-                      <div style={center}>
-                        <h2 style={{ fontSize: 18 }}>{this.props.level}</h2>
-                      </div>
-                    </div>
-                  </Grid.Column>
-                  <Grid.Column width={13}>
-                    <Grid.Row>
-                      {/** current/total XP */}
-                      <p>{this.props.exp} XP</p>
-                    </Grid.Row>
-                    <Grid.Row>
-                      {/** Progress Bar */}
-                      <Progress value={this.props.exp} total='100' progress='percent'/>
-                    </Grid.Row>
-                  </Grid.Column>
-                </Grid>
-              </div>
-            </Card.Content>
-          </Card>
+          <ProfileCard/>
           <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
                panes={panes}
                renderActiveOnly={false}/>
