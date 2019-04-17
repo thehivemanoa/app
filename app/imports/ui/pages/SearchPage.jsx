@@ -15,8 +15,8 @@ const _ = require('underscore');
 class SearchPage extends React.Component {
   constructor(props) {
     super(props);
-    let currentDate = new Date();
-    currentDate = dateFns.addDays(dateFns.startOfDay(currentDate), -1);
+    const currentDate = new Date();
+    const maxDate = new Date(8640000000000000);
     const startOfDay = dateFns.startOfDay(currentDate);
     const endOfDay = dateFns.endOfDay(currentDate);
     const month = dateFns.startOfMonth(currentDate);
@@ -24,9 +24,9 @@ class SearchPage extends React.Component {
     this.state = {
       hideJoined: false,
       hideConflicting: false,
-      courses: { 'ICS 311': null },
-      endDate: currentDate,
-      startDate: currentDate,
+      courses: {},
+      startDate: startOfDay,
+      endDate: maxDate,
       fromDate: currentDate,
       toDate: currentDate,
       startTime: startOfDay,
@@ -35,8 +35,9 @@ class SearchPage extends React.Component {
       isMouseDown: false,
       month: month,
       startDateText: formattedDate,
-      endDateText: formattedDate,
+      endDateText: '\u221E',
       sortBy: 'startTime',
+      ready: false,
     };
     this.toggleJoined = this.toggleJoined.bind(this);
     this.toggleConflicting = this.toggleConflicting.bind(this);
@@ -67,6 +68,15 @@ class SearchPage extends React.Component {
     document.removeEventListener('mouseup', this.onMouseUp);
   }
 
+  initializeCourses() {
+    const courses = Profiles.findOne({ owner: this.props.currentUser }).courses;
+    const courseObject = {};
+    _.each(courses, function (course) { courseObject[course] = null; });
+    this.setState({
+      courses: courseObject,
+    });
+  }
+
   isJoined(sessionId) {
     const currentUserProfile = Profiles.findOne({ owner: this.props.currentUser });
     const joinedSessions = currentUserProfile.joinedSessions;
@@ -78,20 +88,18 @@ class SearchPage extends React.Component {
     const joinedSessions = currentUserProfile.joinedSessions;
     const currentUserId = currentUserProfile._id;
     joinedSessions.push(sessionId);
-    Profiles.update(currentUserId, { $pull: { joinedSessions: sessionId } }, error => {
-      return error ? Bert.alert({ type: 'danger', message: `Update failed: ${error.message}` }) :
-          Bert.alert({ type: 'success', message: 'Update succeeded' });
-    });
+    Profiles.update(currentUserId, { $pull: { joinedSessions: sessionId } }, error => (error ?
+        Bert.alert({ type: 'danger', message: `Update failed: ${error.message}` }) :
+          Bert.alert({ type: 'success', message: 'Update succeeded' })));
     console.log('hello');
   }
 
   handleJoin(sessionId) {
     const currentUserProfile = Profiles.findOne({ owner: this.props.currentUser });
     const currentUserId = currentUserProfile._id;
-    Profiles.update(currentUserId, { $push: { joinedSessions: sessionId } }, error => {
-      return error ? Bert.alert({ type: 'danger', message: `Update failed: ${error.message}` }) :
-          Bert.alert({ type: 'success', message: 'Update succeeded' });
-    });
+    Profiles.update(currentUserId, { $push: { joinedSessions: sessionId } }, error => (error ?
+        Bert.alert({ type: 'danger', message: `Update failed: ${error.message}` }) :
+          Bert.alert({ type: 'success', message: 'Update succeeded' })));
     console.log('hello');
   }
 
@@ -112,13 +120,14 @@ class SearchPage extends React.Component {
       let filterValue = null;
       while (j < m) {
         if (dateFns.isBefore(A[i].startTime, B[j].endTime)) {
-          if (!this.state.hideJoined) {
+          if (!this.state.hideJoined && this.passesFilter(A[i])) {
             result.push(A[i]);
           }
           filterValue = A[i].endTime;
           i++;
         } else {
-          if (!filterValue || (filterValue && !dateFns.isAfter(filterValue, B[j].startTime))) {
+          if (!filterValue ||
+              (filterValue && !dateFns.isAfter(filterValue, B[j].startTime) && this.passesFilter(B[j]))) {
             result.push(B[j]);
           }
           j++;
@@ -129,22 +138,22 @@ class SearchPage extends React.Component {
     if (this.state.hideJoined) {
       const currentUserProfile = Profiles.findOne({ owner: this.props.currentUser });
       const joinedSessionIds = currentUserProfile.joinedSessions;
-      return Sessions.find({ _id: { $not: { $in: joinedSessionIds } } }).fetch();
+      const notJoinedSessions = Sessions.find({ _id: { $not: { $in: joinedSessionIds } } }).fetch();
+      return _.filter(notJoinedSessions, session => this.passesFilter(session));
     }
-    return this.props.sessions;
+    return _.filter(this.props.sessions, session => this.passesFilter(session));
   }
 
-  areCompatible(s1, s2) {
-    if (dateFns.isBefore(s2.startTime, s1.endTime) && dateFns.isBefore(s1.startTime, s2.endTime)) {
-      return false;
-    }
-    return true;
+  passesFilter(session) {
+    return this.isInDateRange(session) && this.isInTimeRange(session) && this.isInCourses(session);
   }
 
   isInDateRange(session) {
     const startDate = this.state.startDate;
     const endDate = dateFns.endOfDay(this.state.endDate);
-    return dateFns.isWithinRange(session.date, startDate, endDate);
+    return dateFns.isValid(endDate) ?
+        dateFns.isWithinRange(session.date, startDate, endDate) :
+        !dateFns.isBefore(session.date, startDate);
   }
 
   isInTimeRange(session) {
@@ -158,7 +167,7 @@ class SearchPage extends React.Component {
         session.endTime,
         dateFns.differenceInCalendarDays(this.state.endTime, session.endTime),
     );
-    if (dateFns.isBefore(startTime, adjustedStartTime) && dateFns.isBefore(adjustedEndTime, endTime)) {
+    if (!(dateFns.isAfter(startTime, adjustedStartTime) || dateFns.isAfter(adjustedEndTime, endTime))) {
       return true;
     }
     return false;
@@ -325,16 +334,20 @@ class SearchPage extends React.Component {
   }
 
   render() {
+    if (!this.state.ready && this.props.ready) {
+      this.initializeCourses();
+      this.setState({
+        ready: true,
+      });
+    }
     return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
   renderPage() {
-    console.log(this.getFilteredSessions());
-
     return (
         <Grid container style={{ marginTop: '120px' }}>
           <Grid.Column width={11}>
-            <SearchResults sessions={this.props.sessions}
+            <SearchResults sessions={this.getFilteredSessions()}
                            startDate={this.state.startDate}
                            endDate={this.state.endDate}
                            startTime={this.state.startTime}
