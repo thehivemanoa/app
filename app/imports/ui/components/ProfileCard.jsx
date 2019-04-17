@@ -1,4 +1,5 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { Card,  Grid, Icon, Image, Progress } from 'semantic-ui-react';
 
@@ -27,7 +28,7 @@ export default class ProfileCard extends React.Component {
                    style={{ marginBottom: 5 }}/>
             <div className="non-semantic-protector">
               <h1 className="ribbon">
-                <strong className="ribbon-content">John Smith</strong>
+                <strong className="ribbon-content">{this.props.firstName} + " " + {this.props.lastName}</strong>
               </h1>
               <Grid columns={2} verticalAlign='middle'>
                 <Grid.Column width={3}>
@@ -57,6 +58,11 @@ export default class ProfileCard extends React.Component {
   }
 }
 
+/** Require an array of ProfileCard documents in the props. */
 ProfileCard.propTypes = {
-  profile: PropTypes.object.isRequired,
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
+  level: PropTypes.string,
+  exp: PropTypes.string,
+  image: PropTypes.string
 };

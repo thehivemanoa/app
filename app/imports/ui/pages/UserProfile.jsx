@@ -66,15 +66,21 @@ class UserProfile extends React.Component {
 
     return (
         <Container className="profile-page" style={containerPadding} fluid>
-          <ProfileCard/>
+          <ProfileCard
+              firstName={this.props.firstName}
+              lastName={this.props.lastName}
+              level={this.props.level}
+              exp={this.props.exp}
+              image={this.props.image}
+          />
           <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
                panes={panes}
                renderActiveOnly={false}/>
         </Container>
-    );
+    )
+        ;
   }
 }
-
 
 /** Require an array of Stuff documents in the props. */
 UserProfile.propTypes = {
