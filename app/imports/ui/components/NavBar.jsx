@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
-import { Menu, Header, Popup, Label, Divider, Icon, Modal, Form, Image } from 'semantic-ui-react';
+import { Menu, Header, Popup, Label, Divider, Icon, Modal, Form, Image, Button } from 'semantic-ui-react';
 import { Roles } from 'meteor/alanning:roles';
 
 // import { Roles } from 'meteor/alanning:roles';
@@ -47,6 +47,7 @@ class NavBar extends React.Component {
     };
 
     const popupStyle = {
+      padding: '0',
       borderRadius: '0',
       width: '175px',
       backgroundColor: '#081B34',
@@ -141,10 +142,12 @@ class NavBar extends React.Component {
                        on={'click'}
                        horizontalOffset={15}
                        verticalOffset={-4}
-                       style={popupStyle, { 'paddingBottom': 0 }}
+                       style={popupStyle}
                        hideOnScroll
                        trigger={
-                         <Icon bordered color='white' name='bars' style={{ 'paddingTop': 0, 'borderRadius': 5 }}/>
+                         <Button inverted icon size='mini' color='white'>
+                           <Icon name={'bars'}/>
+                         </Button>
                        }
                 >
                   <Menu vertical borderless secondary>
@@ -180,7 +183,7 @@ class NavBar extends React.Component {
                        on={'click'}
                        horizontalOffset={15}
                        verticalOffset={-4}
-                       style={popupStyle}
+                       style={{ 'paddingBottom': 0 }}
                        hideOnScroll
                        trigger={
                          <Label as='a' style={{ 'background': 'transparent' }}>
