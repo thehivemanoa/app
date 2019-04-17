@@ -72,6 +72,7 @@ class UserProfile extends React.Component {
               level={this.props.level}
               exp={this.props.exp}
               image={this.props.image}
+              nextLevel={this.props.nextLevel}
           />
           <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
                panes={panes}
@@ -89,7 +90,8 @@ UserProfile.propTypes = {
   level: PropTypes.number,
   exp: PropTypes.number,
   email: PropTypes.string,
-  image: PropTypes.string
+  image: PropTypes.string,
+  nextLevel: PropTypes.number
 };
 
 export default withTracker(() => {
@@ -102,5 +104,6 @@ export default withTracker(() => {
     email: Meteor.user() ? Meteor.user().username : '',
     image: Meteor.user() ? Meteor.user().profile.image : '',
     ready: subscription.ready(),
+    nextLevel: Meteor.user() ? Math.round( 50 * (0.04 * (Meteor.user().profile.level ^ 3) + 0.8 * (Meteor.user().profile.level ^ 2) + 2 * Meteor.user().profile.level)) : ''
   };
 })(UserProfile);

@@ -43,11 +43,11 @@ export default class ProfileCard extends React.Component {
                 <Grid.Column width={13}>
                   <Grid.Row>
                     {/** current/total XP */}
-                    <p>{this.props.exp}/nextLevel XP</p>
+                    <p>{this.props.exp}/{this.props.nextLevel} XP</p>
                   </Grid.Row>
                   <Grid.Row>
                     {/** Progress Bar*/}
-                    <Progress value='4' total='5' progress='percent'/>
+                    <Progress value={this.props.exp} total={this.props.nextLevel}/>
                   </Grid.Row>
                 </Grid.Column>
               </Grid>
@@ -64,6 +64,6 @@ ProfileCard.propTypes = {
   lastName: PropTypes.string,
   level: PropTypes.number,
   exp: PropTypes.number,
-  image: PropTypes.string
+  nextLevel: PropTypes.number,
+  image: PropTypes.string,
 };
-
