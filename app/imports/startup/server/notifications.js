@@ -9,9 +9,9 @@ function addData(data) {
 
 /** Initialize the collection if empty. */
 if (Notifications.find().count() === 0) {
-  if (Meteor.settings.defaultCourses) {
-    console.log('Creating default course list.');
-    Meteor.settings.defaultCourses.map(data => addData(data));
+  if (Meteor.settings.defaultNotifications) {
+    console.log('Creating default notification.');
+    Meteor.settings.defaultNotifications.map(data => addData(data));
   }
 }
 

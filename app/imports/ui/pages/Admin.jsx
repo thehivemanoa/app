@@ -8,6 +8,7 @@ import TaskList from '../components/TaskList';
 import Notification from '../components/Notification';
 import { Courses } from '../../api/courses/courses';
 import { Sessions } from '../../api/session/session';
+import { Notifications } from '../../api/notifications/notifications';
 import AddCourse from '../components/AddCourse';
 
 /**
@@ -74,6 +75,7 @@ class Admin extends React.Component {
 Admin.propTypes = {
   courses: PropTypes.array.isRequired,
   sessions: PropTypes.array.isRequired,
+  notifications: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
@@ -82,9 +84,11 @@ export default withTracker(() => {
   // Get access to Stuff documents.
   const courseSub = Meteor.subscribe('Courses');
   const sessionsSub = Meteor.subscribe('Sessions');
+  const notificationSub = Meteor.subscribe('Notifications');
   return {
     courses: Courses.find({}).fetch(),
     sessions: Sessions.find({}).fetch(),
-    ready: (courseSub.ready() && sessionsSub.ready()),
+    notifications: Notifications.find({}).fetch(),
+    ready: (courseSub.ready() && sessionsSub.ready() && notificationSub.ready()),
   };
 })(Admin);

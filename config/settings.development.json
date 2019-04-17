@@ -99,5 +99,12 @@
       "joinedSessions": ["xWdug9rdTySKRyvbM"],
       "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
     }
+  ],
+
+  "defaultNotifications": [
+    {
+      "owner": "john@foo.com",
+      "description": "Studied for finals"
+    }
   ]
 }
