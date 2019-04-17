@@ -23,7 +23,7 @@ class UserProfile extends React.Component {
       paddingLeft: 50,
       paddingRight: 50,
       minHeight: '70vh',
-    }
+    };
 
     const smallButton = {
       float: 'right',
@@ -31,7 +31,7 @@ class UserProfile extends React.Component {
       paddingTop: 0,
       paddingBottom: 0,
       height: '2em'
-    }
+    };
 
     return (
         <Container className="profile-page" style={containerPadding}>

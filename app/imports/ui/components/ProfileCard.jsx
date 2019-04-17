@@ -12,13 +12,13 @@ export default class ProfileCard extends React.Component {
       width: '100%',
       textAlign: 'center',
       fontSize: '1em',
-    }
+    };
 
     const xpIcon = {
       fontSize: '3em',
       width: '100%',
       height: '0',
-    }
+    };
 
     return (
         <Card style={{ float: 'left', marginRight: '3em' }}>
