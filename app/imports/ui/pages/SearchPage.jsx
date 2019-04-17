@@ -89,18 +89,16 @@ class SearchPage extends React.Component {
     const currentUserId = currentUserProfile._id;
     joinedSessions.push(sessionId);
     Profiles.update(currentUserId, { $pull: { joinedSessions: sessionId } }, error => (error ?
-        Bert.alert({ type: 'danger', message: `Update failed: ${error.message}` }) :
-          Bert.alert({ type: 'success', message: 'Update succeeded' })));
-    console.log('hello');
+        Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
+          Bert.alert({ type: 'success', message: 'Leave succeeded' })));
   }
 
   handleJoin(sessionId) {
     const currentUserProfile = Profiles.findOne({ owner: this.props.currentUser });
     const currentUserId = currentUserProfile._id;
     Profiles.update(currentUserId, { $push: { joinedSessions: sessionId } }, error => (error ?
-        Bert.alert({ type: 'danger', message: `Update failed: ${error.message}` }) :
-          Bert.alert({ type: 'success', message: 'Update succeeded' })));
-    console.log('hello');
+        Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
+          Bert.alert({ type: 'success', message: 'Join succeeded' })));
   }
 
   getFilteredSessions() {

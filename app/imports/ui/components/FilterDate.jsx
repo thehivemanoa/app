@@ -43,7 +43,7 @@ export default class FilterDate extends React.Component {
     };
 
     return (
-        <List.Item style={{ marginTop: '15px' }}>
+        <List.Item style={{ marginTop: 0 }}>
           <Divider horizontal>Date</Divider>
           <Grid container style={{ marginTop: '10px', marginBottom: '20px' }}>
             <Grid.Row style={{ display: 'inline-block', paddingBottom: '5px' }}>

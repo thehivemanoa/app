@@ -12,7 +12,7 @@ export default class FilterCourses extends React.Component {
     };
 
     const courses = _.map(
-        _.keys(this.props.courses),
+        _.keys(this.props.courses).sort(),
         course => <Button key={course}
                           icon="x"
                           content={<p style={{ marginLeft: '32%' }}>{course}</p>}
@@ -24,7 +24,7 @@ export default class FilterCourses extends React.Component {
         <List.Item>
           <Divider horizontal>Courses</Divider>
           <Form onSubmit={() => this.props.addCourse(this.props.course)}>
-            <Form.Input placeholder="Add courses..."
+            <Form.Input placeholder="Add course..."
                         name="course"
                         value={this.props.course}
                         onChange={this.props.handleChange}/>

@@ -20,11 +20,8 @@ export default class SearchResults extends React.Component {
             <List>
               <HideSearchResults toggleJoined={this.props.toggleJoined}
                                  toggleConflicting={this.props.toggleConflicting}/>
-              <FilterCourses addCourse={this.props.addCourse}
-                             handleChange={this.props.handleChange}
-                             course={this.props.course}
-                             courses={this.props.courses}
-                             deleteCourse={this.props.deleteCourse}/>
+              <SortByOptions handleChange={this.props.handleChange}/>
+              <FilterTime handleChange={this.props.handleChange}/>
               <FilterDate setFromDate={this.props.setFromDate}
                           pressNextMonth={this.props.pressNextMonth}
                           pressPreviousMonth={this.props.pressPreviousMonth}
@@ -40,8 +37,11 @@ export default class SearchResults extends React.Component {
                           handleChange={this.props.handleChange}
                           handleDateSubmit={this.props.handleDateSubmit}
                           month={this.props.month}/>
-              <FilterTime handleChange={this.props.handleChange}/>
-              <SortByOptions handleChange={this.props.handleChange}/>
+              <FilterCourses addCourse={this.props.addCourse}
+                             handleChange={this.props.handleChange}
+                             course={this.props.course}
+                             courses={this.props.courses}
+                             deleteCourse={this.props.deleteCourse}/>
             </List>
           </Card.Content>
         </Card>
