@@ -1,7 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Container, Loader, Grid, Card, Image, Icon, Progress, Button, List } from 'semantic-ui-react';
-import { Profiles } from '/imports/api/profiles/profiles';
+import { Container, Loader, Grid, Card, Image, Icon, Progress, Tab } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 
@@ -15,6 +14,34 @@ class UserProfile extends React.Component {
 
   /** Render the page once subscriptions have been received. */
   renderPage() {
+
+    const panes = [
+      {
+        menuItem: 'Information',
+        pane: (
+            <Tab.Pane attached={false} key={'Information'}>
+              <p>First Name: {this.props.firstName}</p>
+              <p>Last Name: {this.props.lastName}</p>
+              <p>Email: {this.props.email}</p>
+            </Tab.Pane>
+        ),
+      },
+      {
+        menuItem: 'Courses',
+        pane: (
+            <Tab.Pane attached={false} key={'Courses'}>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur cumque dolore dolores, eveniet facilis in itaque maxime, nihil optio, quia quo recusandae reprehenderit totam. Aperiam excepturi illo inventore nemo nobis perspiciatis repellat vitae. At corporis iure magnam natus qui tempora, veritatis vitae voluptate. Beatae explicabo fugit similique suscipit voluptatem! A asperiores commodi consectetur cupiditate delectus dicta dolor ea eius eligendi facilis fugiat illo impedit labore libero magni minus non numquam obcaecati officia omnis possimus quisquam rem repellendus soluta suscipit, tenetur totam ullam unde ut vitae! A, assumenda, deleniti dicta eligendi maxime nesciunt nihil odio officia omnis quam repellat, rerum soluta.</p>
+            </Tab.Pane>
+        ),
+      },
+      {
+        menuItem: 'Notifications',
+        pane: (
+            <Tab.Pane attached={false} key={'Notifications'}>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad asperiores, laudantium libero minima soluta tempora! Accusamus adipisci, blanditiis commodi culpa cum cupiditate dolor ea error esse explicabo fuga ipsum labore minima minus obcaecati officia praesentium, quae quos ratione reiciendis saepe sit tempora ullam unde voluptatum? Accusamus animi asperiores at cupiditate eius fugiat harum ipsa, laborum minima neque nisi officia perferendis perspiciatis, quaerat ratione repellendus, suscipit. A est iusto magnam perspiciatis placeat quas quasi quod reiciendis rerum saepe. A alias aliquam aspernatur atque corporis dignissimos enim et explicabo laboriosam maiores molestias natus nemo nisi, officiis quia ratione rerum vel voluptatibus? Ea!</p>
+            </Tab.Pane>),
+      }
+    ];
 
     const containerPadding = {
       paddingTop: 20,
@@ -39,25 +66,15 @@ class UserProfile extends React.Component {
       height: '0',
     };
 
-    const smallButton = {
-      float: 'right',
-      marginLeft: '2em',
-      paddingTop: 0,
-      paddingBottom: 0,
-      height: '2em',
-    };
-
     return (
-        <Container className="profile-page" style={containerPadding}>
-
-          { /** *** PROFILE CARD **** */}
+        <Container className="profile-page" style={containerPadding} fluid>
           <Card style={{ float: 'left', marginRight: '3em' }}>
             <Card.Content>
               <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' circular
                      style={{ marginBottom: 5 }}/>
               <div className="non-semantic-protector">
                 <h1 className="ribbon">
-                  <strong className="ribbon-content">{this.props.profiles}</strong>
+                  <strong className="ribbon-content">{this.props.firstName} {this.props.lastName}</strong>
                 </h1>
                 <Grid columns={2} verticalAlign='middle'>
                   <Grid.Column width={3}>
@@ -65,74 +82,26 @@ class UserProfile extends React.Component {
                     <div style={{ position: 'relative' }}>
                       <Icon name="star outline" style={xpIcon}/>
                       <div style={center}>
-                        <h2 style={{ fontSize: 18 }}>12</h2>
+                        <h2 style={{ fontSize: 18 }}>{this.props.level}</h2>
                       </div>
                     </div>
                   </Grid.Column>
                   <Grid.Column width={13}>
                     <Grid.Row>
                       {/** current/total XP */}
-                      <p>800/1000 XP</p>
+                      <p>{this.props.exp} XP</p>
                     </Grid.Row>
                     <Grid.Row>
                       {/** Progress Bar */}
-                      <Progress value='4' total='5' progress='percent'/>
+                      <Progress value={this.props.exp} total='100' progress='percent'/>
                     </Grid.Row>
                   </Grid.Column>
                 </Grid>
               </div>
             </Card.Content>
           </Card>
-          <Grid divided='vertically'>
-            {/** column 2 = 2 rows = My Courses and Account Information */}
-            {/** scroll bar? */}
-            <Grid.Row>
-              {/** *** MY COURSES **** */}
-              <h2>MY COURSES<Button size='small' content='edit' style={smallButton}/></h2>
-              {/** course cards = colored course number, bee status, edit pop modal */}
-              <Card.Group>
-                <Card>
-                  <Card.Content>
-                    <Card.Header>ICS 314</Card.Header>
-                    <Card.Meta>Worker Bee</Card.Meta>
-                  </Card.Content>
-                </Card>
-                <Card>
-                  <Card.Content>
-                    <Card.Header>ICS 311</Card.Header>
-                    <Card.Meta>Royal Bee</Card.Meta>
-                  </Card.Content>
-                </Card>
-              </Card.Group>
-              {/** add course button --> popup modal */}
-              <Button content='Add Course' style={{ marginTop: '1em' }}/>
-            </Grid.Row>
-            <Grid.Row>
-              {/** *** ACCOUNT INFORMATION **** */}
-              <h2>ACCOUNT INFORMATION <Button size='mini' content='edit' floated='right' style={smallButton}/></h2>
-            </Grid.Row>
-            <Grid.Row>
-              <List>
-                <List.Item>First Name: John</List.Item>
-                <List.Item>Last Name: Smith</List.Item>
-                <List.Item>Email: johnsmith@email.com</List.Item>
-                <List.Item>
-                  {/** Change Password button -> modal */}
-                  <Button size='small'
-                          floated='left'
-                          content='Change Password'
-                          style={[smallButton, { marginLeft: 0 }]}/>
-                </List.Item>
-                <List.Item>
-                  {/** Terminate account button + warning icon -> modal */}
-                  <Button floated='left'
-                          size='small'
-                          content='Terminate Account'
-                          style={[smallButton, { marginLeft: 0 }]}/>
-                </List.Item>
-              </List>
-            </Grid.Row>
-          </Grid>
+          <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'} panes={panes}
+               renderActiveOnly={false}/>
         </Container>
     );
   }
@@ -141,9 +110,11 @@ class UserProfile extends React.Component {
 /** Require an array of Stuff documents in the props. */
 UserProfile.propTypes = {
   ready: PropTypes.bool.isRequired,
-  profiles: PropTypes.string.isRequired,
   firstName: PropTypes.string,
   lastName: PropTypes.string,
+  level: PropTypes.string,
+  exp: PropTypes.string,
+  email: PropTypes.string
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
@@ -163,7 +134,11 @@ UserProfile.propTypes = {
 export default withTracker(() => {
   const subscription = Meteor.subscribe('Profiles');
   return {
-    profiles: Meteor.user() ? Meteor.user().username : '',
+    firstName: Meteor.user() ? Meteor.user().profile.firstName : '',
+    lastName: Meteor.user() ? Meteor.user().profile.lastName : '',
+    level: Meteor.user() ? Meteor.user().profile.level : '',
+    exp: Meteor.user() ? Meteor.user().profile.exp : '',
+    email: Meteor.user() ? Meteor.user().username : '',
     ready: subscription.ready(),
   };
 })(UserProfile);

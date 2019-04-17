@@ -11,7 +11,17 @@
     },
     {
       "email": "jhun@foo.com",
-      "password": "changeme"
+      "password": "changeme",
+      "profile": {
+        "firstName": "Jhun",
+        "lastName": "Domingo",
+        "image": "https://avatars2.githubusercontent.com/u/33533551?s=460&v=4",
+        "level": "4",
+        "exp": "80",
+        "courses": [],
+        "joinedSessions": ["xWdug9rdTySKRyvbM"],
+        "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
+      }
     }
   ],
   "defaultSessions": [
@@ -84,20 +94,6 @@
     {
       "course": "ICS 314",
       "description": "Problem analysis and design, team-oriented development, quality assurance, configuration management, project planning."
-    }
-  ],
-
-  "defaultProfiles": [
-    {
-      "owner": "jhun@foo.com",
-      "firstName": "Jhun",
-      "lastName": "Domingo",
-      "image": "https://philipmjohnson.github.io/images/philip2.jpeg",
-      "level": 0,
-      "exp": 0,
-      "courses": [],
-      "joinedSessions": ["xWdug9rdTySKRyvbM"],
-      "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
     }
   ]
 }
