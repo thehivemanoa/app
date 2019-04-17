@@ -14,9 +14,9 @@ class Notification extends React.Component {
                    src={'https://philipmjohnson.github.io/images/philip2.jpeg'}/>
           </Feed.Label>
           <Feed.Content>
-            <Feed.Date content='1 day ago' />
+            <Feed.Date content={this.props.notification.createdAt.toLocaleDateString('en-US')} />
             <Feed.Summary>
-              You added <a>Jenny Hess</a> to your <a>coworker</a> group.
+              {this.props.notification.description}
             </Feed.Summary>
           </Feed.Content>
         </Feed.Event>
@@ -25,7 +25,7 @@ class Notification extends React.Component {
 }
 
 Notification.propTypes = {
-  courses: PropTypes.array,
+  notification: PropTypes.object.isRequired,
 };
 
 export default Notification;

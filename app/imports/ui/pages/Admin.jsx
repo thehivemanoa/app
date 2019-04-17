@@ -24,7 +24,7 @@ class Admin extends React.Component {
           <Grid.Row centered columns={4}>
             <Grid.Column>
               <Card fluid style={{ padding: '10px' }}>
-                <DataCard icon={'coffee'} value={9999} text={'Coffees drank'}/>
+                <DataCard icon={'coffee'} value={999} text={'Coffees drank'}/>
               </Card>
             </Grid.Column>
             <Grid.Column>
@@ -47,15 +47,12 @@ class Admin extends React.Component {
             <Grid.Column>
               <Card fluid>
                 <Card.Content>
-                  <Card.Header>Recent Activity</Card.Header>
+                  <Card.Header>Active Reports</Card.Header>
                 </Card.Content>
                 <Card.Content>
                   <Feed>
-                    {/** {this.props.notes.map((note, index) => <Note key={index} note={note}/>)} */}
-                    <Notification/>
-                    <Notification/>
-                    <Notification/>
-                    <Notification/>
+                    {this.props.notifications.map((notification, index) => <Notification key={index}
+                                                                                         notification={notification}/>)}
                   </Feed>
                 </Card.Content>
               </Card>
