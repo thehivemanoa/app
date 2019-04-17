@@ -44,6 +44,7 @@ class Admin extends React.Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row centered columns={2}>
+            {/** Might need to add overflow: scroll to css for this component to allow list to be scrolled */}
             <Grid.Column>
               <Card fluid>
                 <Card.Content>
@@ -62,7 +63,17 @@ class Admin extends React.Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <AddCourse/>
+            <Card fluid>
+              <Card.Content>
+                <Card.Header>Active Reports</Card.Header>
+              </Card.Content>
+              <Card.Content>
+                <Feed>
+                  {this.props.notifications.map((notification, index) => <Notification key={index}
+                                                                                       notification={notification}/>)}
+                </Feed>
+              </Card.Content>
+            </Card>
           </Grid.Row>
         </Grid>
     );
