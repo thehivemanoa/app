@@ -54,6 +54,9 @@ class SearchPage extends React.Component {
     this.changeMonth = this.changeMonth.bind(this);
     this.handleDateSubmit = this.handleDateSubmit.bind(this);
     this.handleTimeSubmit = this.handleTimeSubmit.bind(this);
+    this.handleJoin = this.handleJoin.bind(this);
+    this.handleLeave = this.handleLeave.bind(this);
+    this.isJoined = this.isJoined.bind(this);
   }
 
   componentDidMount() {
@@ -64,8 +67,37 @@ class SearchPage extends React.Component {
     document.removeEventListener('mouseup', this.onMouseUp);
   }
 
+  isJoined(sessionId) {
+    const currentUserProfile = Profiles.findOne({ owner: this.props.currentUser });
+    const joinedSessions = currentUserProfile.joinedSessions;
+    return _.some(joinedSessions, joinedSessionId => joinedSessionId === sessionId);
+  }
+
+  handleLeave(sessionId) {
+    const currentUserProfile = Profiles.findOne({ owner: this.props.currentUser });
+    const joinedSessions = currentUserProfile.joinedSessions;
+    const currentUserId = currentUserProfile._id;
+    joinedSessions.push(sessionId);
+    Profiles.update(currentUserId, { $pull: { joinedSessions: sessionId } }, error => {
+      return error ? Bert.alert({ type: 'danger', message: `Update failed: ${error.message}` }) :
+          Bert.alert({ type: 'success', message: 'Update succeeded' });
+    });
+    console.log('hello');
+  }
+
+  handleJoin(sessionId) {
+    const currentUserProfile = Profiles.findOne({ owner: this.props.currentUser });
+    const currentUserId = currentUserProfile._id;
+    Profiles.update(currentUserId, { $push: { joinedSessions: sessionId } }, error => {
+      return error ? Bert.alert({ type: 'danger', message: `Update failed: ${error.message}` }) :
+          Bert.alert({ type: 'success', message: 'Update succeeded' });
+    });
+    console.log('hello');
+  }
+
   getFilteredSessions() {
-    const joinedSessions = Sessions.find({}).fetch();
+    const currentUserProfile = Profiles.findOne({ owner: this.props.currentUser });
+    const joinedSessions = currentUserProfile.joinedSessions;
     console.log(joinedSessions);
   }
 
@@ -277,7 +309,10 @@ class SearchPage extends React.Component {
                            courses={this.state.courses}
                            hideJoined={this.state.hideJoined}
                            hideConflicting={this.state.hideConflicting}
-                           sortBy={this.state.sortBy}/>
+                           sortBy={this.state.sortBy}
+                           isJoined={this.isJoined}
+                           handleJoin={this.handleJoin}
+                           handleLeave={this.handleLeave} />
           </Grid.Column>
           <Grid.Column width={5}>
             <SearchBox toggleJoined={this.toggleJoined}

@@ -81,7 +81,10 @@ export default class SessionCardFlat extends React.Component {
               <Grid.Column style={buttonContainerStyle} width={2}>
                 <Button style={buttonStyle}
                         floated="right"
-                        size="mini">Join</Button>
+                        size="mini"
+                        onClick={this.props.updateJoined}>
+                  {this.props.isJoined ? 'Leave' : 'Join'}
+                </Button>
               </Grid.Column>
             </Grid>
           </Card.Content>
@@ -121,4 +124,6 @@ export default class SessionCardFlat extends React.Component {
 SessionCardFlat.propTypes = {
   session: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
+  isJoined: PropTypes.func.isRequired,
+  updateJoined: PropTypes.func.isRequired,
 };
