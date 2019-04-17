@@ -1,41 +1,56 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Header, Grid, Button, Icon, Button } from 'semantic-ui-react';
+import { Card,  Grid, Icon, Image, Progress } from 'semantic-ui-react';
 
 export default class ProfileCard extends React.Component {
   render() {
+
+    const center = {
+      position: 'absolute',
+      left: '.8em',
+      bottom: '.6em',
+      width: '100%',
+      textAlign: 'center',
+      fontSize: '1em',
+    };
+
+    const xpIcon = {
+      fontSize: '3em',
+      width: '100%',
+      height: '0',
+    };
+
     return (
-        <Card fluid>
+        <Card style={{ float: 'left', marginRight: '3em' }}>
           <Card.Content>
-            <Grid>
-              <Grid.Row>
-                {/** profile picture (popup edit pfp modal) */}
-                <div className="ui placeholder">
-                  <div className="image"></div>
-                </div>
-                <Button>Edit</Button>
-              </Grid.Row>
-              <Grid.Row>
-                {/** Banner with user name */}
-                <Header as={"h2"}>Name</Header>
-              </Grid.Row>
-              <Grid.Row columns={2}>
-                <Grid.Column>
+            <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' circular
+                   style={{ marginBottom: 5 }}/>
+            <div className="non-semantic-protector">
+              <h1 className="ribbon">
+                <strong className="ribbon-content">John Smith</strong>
+              </h1>
+              <Grid columns={2} verticalAlign='middle'>
+                <Grid.Column width={3}>
                   {/** Honey pot with level */}
-                  <Icon name="star outline"/>
+                  <div style={{ position: 'relative' }}>
+                    <Icon name="star outline" style={xpIcon}/>
+                    <div style={center}>
+                      <h2 style={{ fontSize: 18 }}>12</h2>
+                    </div>
+                  </div>
                 </Grid.Column>
-                <Grid.Column>
+                <Grid.Column width={13}>
                   <Grid.Row>
                     {/** current/total XP */}
-                    <Header as={"h2"}>current/total</Header>
+                    <p>800/1000 XP</p>
                   </Grid.Row>
                   <Grid.Row>
                     {/** Progress Bar*/}
-                    <Header as={"h2"}>progress bar here</Header>
+                    <Progress value='4' total='5' progress='percent'/>
                   </Grid.Row>
                 </Grid.Column>
-              </Grid.Row>
-            </Grid>
+              </Grid>
+            </div>
           </Card.Content>
         </Card>
     );

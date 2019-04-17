@@ -16,7 +16,6 @@ import NotFound from '../pages/NotFound';
 import Signin from '../pages/Signin';
 import Signup from '../pages/Signup';
 import Signout from '../pages/Signout';
-import EditProfile from '../pages/EditProfile';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 class App extends React.Component {
@@ -33,7 +32,6 @@ class App extends React.Component {
               <ProtectedRoute path="/addsession" component={CreateSession}/>
               <ProtectedRoute path="/profile" component={UserProfile}/>
               <ProtectedRoute path="/Search" component={SearchPage}/>
-              <ProtectedRoute path="/edit/:_id" component={EditProfile}/>
               <AdminProtectedRoute path="/admin" component={Admin}/>
               <ProtectedRoute path="/signout" component={Signout}/>
               <Route component={NotFound}/>
