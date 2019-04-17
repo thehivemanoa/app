@@ -3,8 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Container, Loader, Grid, Card, Image, Icon, Progress, Tab } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
-import { Courses } from '/imports/api/course/course';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { Courses } from '/imports/api/courses/courses';
 import Course from '/imports/ui/components/CourseCard';
 
 /** Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
@@ -42,7 +41,7 @@ class UserProfile extends React.Component {
         pane: (
             <Tab.Pane attached={false} key={'Course'}>
               <Card.Group>
-                {this.props.course.map((course) => <Course course={course}/>)}
+                {/*{this.props.course.map((course) => <Course course={course}/>)}*/}
               </Card.Group>
             </Tab.Pane>
         ),
@@ -139,7 +138,7 @@ UserProfile.propTypes = {
   image: PropTypes.string.isRequired,
   joined: PropTypes.array.isRequired,
   created: PropTypes.array.isRequired,
-  course: PropTypes.array,
+  // course: PropTypes.array,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
@@ -167,7 +166,7 @@ export default withTracker(() => {
     image: Meteor.user() ? Meteor.user().profile.image : '',
     joined: Meteor.user() ? Meteor.user().profile.joinedSessions : [],
     created: Meteor.user() ? Meteor.user().profile.createdSessions : [],
-    course: Courses.find({}).fetch(),
+    // course: Courses.find({}).fetch(),
     ready: subscription.ready(),
   };
 })(UserProfile);
