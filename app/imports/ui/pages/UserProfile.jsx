@@ -138,20 +138,6 @@ UserProfile.propTypes = {
   ready: PropTypes.bool.isRequired,
 };
 
-/** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
-/** export default withTracker(() => {
-            // Get access to Profile documents.
-            const subscription = Meteor.subscribe('Profiles');
-            return {
-              stuffs: Stuffs.find({}).fetch(),
-              ready: subscription.ready(),
-            };
-
-            // Get access to Profile documents.
-
-          })(UserProfile); */
-
-
 export default withTracker(() => {
   const subscription = Meteor.subscribe('Profiles');
   return {
