@@ -16,7 +16,7 @@ class SearchPage extends React.Component {
   constructor(props) {
     super(props);
     let currentDate = new Date();
-    currentDate = dateFns.startOfDay(currentDate);
+    currentDate = dateFns.addDays(dateFns.startOfDay(currentDate), -1);
     const startOfDay = dateFns.startOfDay(currentDate);
     const endOfDay = dateFns.endOfDay(currentDate);
     const month = dateFns.startOfMonth(currentDate);
@@ -24,7 +24,7 @@ class SearchPage extends React.Component {
     this.state = {
       hideJoined: true,
       hideConflicting: true,
-      courses: { 'ICS 311': null, 'ICS 314': null },
+      courses: { 'ICS 311': null },
       endDate: currentDate,
       startDate: currentDate,
       fromDate: currentDate,
@@ -36,7 +36,7 @@ class SearchPage extends React.Component {
       month: month,
       startDateText: formattedDate,
       endDateText: formattedDate,
-      sortBy: '',
+      sortBy: 'startTime',
     };
     this.toggleJoined = this.toggleJoined.bind(this);
     this.toggleConflicting = this.toggleConflicting.bind(this);
@@ -64,11 +64,43 @@ class SearchPage extends React.Component {
     document.removeEventListener('mouseup', this.onMouseUp);
   }
 
-  isConflictingSession(s1, s2) {
+  getFilteredSessions() {
+    const joinedSessions = Sessions.find({}).fetch();
+    console.log(joinedSessions);
+  }
+
+  areCompatible(s1, s2) {
     if (dateFns.isBefore(s2.startTime, s1.endTime) && dateFns.isBefore(s1.startTime, s2.endTime)) {
+      return false;
+    }
+    return true;
+  }
+
+  isInDateRange(session) {
+    const startDate = this.state.startDate;
+    const endDate = dateFns.endOfDay(this.state.endDate);
+    return dateFns.isWithinRange(session.date, startDate, endDate);
+  }
+
+  isInTimeRange(session) {
+    const startTime = this.state.startTime;
+    const endTime = this.state.endTime;
+    const adjustedStartTime = dateFns.addDays(
+        session.startTime,
+        dateFns.differenceInCalendarDays(this.state.startTime, session.startTime),
+    );
+    const adjustedEndTime = dateFns.addDays(
+        session.endTime,
+        dateFns.differenceInCalendarDays(this.state.endTime, session.endTime),
+    );
+    if (dateFns.isBefore(startTime, adjustedStartTime) && dateFns.isBefore(adjustedEndTime, endTime)) {
       return true;
     }
     return false;
+  }
+
+  isInCourses(session) {
+    return _.some(_.keys(this.state.courses), course => course === session.course);
   }
 
   pressNextMonth() {
@@ -232,6 +264,8 @@ class SearchPage extends React.Component {
   }
 
   renderPage() {
+    this.getFilteredSessions();
+
     return (
         <Grid container style={{ marginTop: '120px' }}>
           <Grid.Column width={11}>
@@ -243,7 +277,7 @@ class SearchPage extends React.Component {
                            courses={this.state.courses}
                            hideJoined={this.state.hideJoined}
                            hideConflicting={this.state.hideConflicting}
-                           sortBy={this.state.sortBy} />
+                           sortBy={this.state.sortBy}/>
           </Grid.Column>
           <Grid.Column width={5}>
             <SearchBox toggleJoined={this.toggleJoined}
@@ -274,6 +308,7 @@ class SearchPage extends React.Component {
 }
 
 SearchPage.propTypes = {
+  currentUser: PropTypes.string,
   profiles: PropTypes.array.isRequired,
   sessions: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
@@ -285,7 +320,7 @@ export default withTracker(() => {
   const subscription = Meteor.subscribe('Sessions');
   const subscription2 = Meteor.subscribe('Profiles');
   return {
-    currentUser: Meteor.user().username,
+    currentUser: Meteor.user() ? Meteor.user().username : '',
     sessions: Sessions.find({}).fetch(),
     profiles: Profiles.find({}).fetch(),
     ready: (subscription.ready() && subscription2.ready()),
