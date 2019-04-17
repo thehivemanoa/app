@@ -22,8 +22,8 @@ class SearchPage extends React.Component {
     const month = dateFns.startOfMonth(currentDate);
     const formattedDate = this.formatDate(currentDate);
     this.state = {
-      hideJoined: true,
-      hideConflicting: true,
+      hideJoined: false,
+      hideConflicting: false,
       courses: { 'ICS 311': null },
       endDate: currentDate,
       startDate: currentDate,
@@ -96,9 +96,42 @@ class SearchPage extends React.Component {
   }
 
   getFilteredSessions() {
-    const currentUserProfile = Profiles.findOne({ owner: this.props.currentUser });
-    const joinedSessions = currentUserProfile.joinedSessions;
-    console.log(joinedSessions);
+    if (this.state.hideConflicting) {
+      const currentUserProfile = Profiles.findOne({ owner: this.props.currentUser });
+      const joinedSessionIds = currentUserProfile.joinedSessions;
+      const joinedSessions = Sessions.find({ _id: { $in: joinedSessionIds } }).fetch();
+      const result = [];
+      const A = _.sortBy(joinedSessions, 'startTime');
+      const maxDate = new Date(8640000000000000);
+      const sentinel = { startTime: maxDate };
+      A.push(sentinel);
+      const B = _.sortBy(this.props.sessions, 'endTime');
+      const m = B.length;
+      let i = 0;
+      let j = 0;
+      let filterValue = null;
+      while (j < m) {
+        if (dateFns.isBefore(A[i].startTime, B[j].endTime)) {
+          if (!this.state.hideJoined) {
+            result.push(A[i]);
+          }
+          filterValue = A[i].endTime;
+          i++;
+        } else {
+          if (!filterValue || (filterValue && !dateFns.isAfter(filterValue, B[j].startTime))) {
+            result.push(B[j]);
+          }
+          j++;
+        }
+      }
+      return result;
+    }
+    if (this.state.hideJoined) {
+      const currentUserProfile = Profiles.findOne({ owner: this.props.currentUser });
+      const joinedSessionIds = currentUserProfile.joinedSessions;
+      return Sessions.find({ _id: { $not: { $in: joinedSessionIds } } }).fetch();
+    }
+    return this.props.sessions;
   }
 
   areCompatible(s1, s2) {
@@ -296,7 +329,7 @@ class SearchPage extends React.Component {
   }
 
   renderPage() {
-    this.getFilteredSessions();
+    console.log(this.getFilteredSessions());
 
     return (
         <Grid container style={{ marginTop: '120px' }}>
