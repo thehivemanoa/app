@@ -12,8 +12,8 @@
         "firstName": "John",
         "lastName": "Smith",
         "image": "https://react.semantic-ui.com/images/avatar/large/matthew.png",
-        "level": "12",
-        "exp": "100",
+        "level": 12,
+        "exp": 100,
         "courses": ["ICS 311", "ICS 314"],
         "joinedSessions": ["xWdug9rdTySKRyvbM"],
         "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
@@ -26,8 +26,8 @@
         "firstName": "Jhun",
         "lastName": "Domingo",
         "image": "https://philipmjohnson.github.io/images/philip2.jpeg",
-        "level": "4",
-        "exp": "80",
+        "level": 4,
+        "exp": 80,
         "courses": [],
         "joinedSessions": ["xWdug9rdTySKRyvbM"],
         "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]

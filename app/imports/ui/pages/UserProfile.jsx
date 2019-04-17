@@ -86,8 +86,8 @@ class UserProfile extends React.Component {
 UserProfile.propTypes = {
   firstName: PropTypes.string,
   lastName: PropTypes.string,
-  level: PropTypes.string,
-  exp: PropTypes.string,
+  level: PropTypes.number,
+  exp: PropTypes.number,
   email: PropTypes.string,
   image: PropTypes.string
 };

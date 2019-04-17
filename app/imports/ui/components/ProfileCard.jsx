@@ -24,11 +24,11 @@ export default class ProfileCard extends React.Component {
     return (
         <Card style={{ float: 'left', marginRight: '3em' }}>
           <Card.Content>
-            <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' circular
+            <Image src={this.props.image} circular
                    style={{ marginBottom: 5 }}/>
             <div className="non-semantic-protector">
               <h1 className="ribbon">
-                <strong className="ribbon-content">{this.props.firstName} + " " + {this.props.lastName}</strong>
+                <strong className="ribbon-content">{this.props.firstName} {this.props.lastName}</strong>
               </h1>
               <Grid columns={2} verticalAlign='middle'>
                 <Grid.Column width={3}>
@@ -36,14 +36,14 @@ export default class ProfileCard extends React.Component {
                   <div style={{ position: 'relative' }}>
                     <Icon name="star outline" style={xpIcon}/>
                     <div style={center}>
-                      <h2 style={{ fontSize: 18 }}>12</h2>
+                      <h2 style={{ fontSize: 18 }}>{this.props.level}</h2>
                     </div>
                   </div>
                 </Grid.Column>
                 <Grid.Column width={13}>
                   <Grid.Row>
                     {/** current/total XP */}
-                    <p>800/1000 XP</p>
+                    <p>{this.props.exp}/nextLevel XP</p>
                   </Grid.Row>
                   <Grid.Row>
                     {/** Progress Bar*/}
@@ -62,7 +62,8 @@ export default class ProfileCard extends React.Component {
 ProfileCard.propTypes = {
   firstName: PropTypes.string,
   lastName: PropTypes.string,
-  level: PropTypes.string,
-  exp: PropTypes.string,
+  level: PropTypes.number,
+  exp: PropTypes.number,
   image: PropTypes.string
 };
+
