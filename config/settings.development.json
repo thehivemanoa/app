@@ -7,7 +7,7 @@
       "profile": {
         "firstName": "Waggle",
         "lastName": "Admin",
-        "image": "https://i.ytimg.com/vi/l0F-1GnoUzw/maxresdefault.jpg",
+        "image": "https://vignette.wikia.nocookie.net/bokunoheroacademia/images/a/a0/Shota_scar_headshot.png/revision/latest?cb=20171119144516",
         "level": 100,
         "exp": 0,
         "courses": ["ICS 311", "ICS 314"],
@@ -117,7 +117,7 @@
     }
   ],
 
-  "defaultNotifications": [
+  "defaultReportLog": [
     {
       "owner": "john@foo.com",
       "description": "Too much sass",
@@ -131,6 +131,21 @@
     {
       "owner": "john@foo.com",
       "description": "Bullying",
+      "createdAt": "Tue Apr 11 2019 16:57:51 GMT-1000 (Hawaii-Aleutian Standard Time)"
+    }
+  ],
+
+  "defaultActivityLog": [
+    {
+      "owner": "admin@foo.com",
+      "target": "john@foo.com",
+      "event": "banned",
+      "createdAt": "Tue Apr 11 2019 16:57:51 GMT-1000 (Hawaii-Aleutian Standard Time)"
+    },
+    {
+      "owner": "admin@foo.com",
+      "target": "jhun@foo.com",
+      "event": "removed xp from",
       "createdAt": "Tue Apr 11 2019 16:57:51 GMT-1000 (Hawaii-Aleutian Standard Time)"
     }
   ]

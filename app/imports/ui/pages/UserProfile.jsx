@@ -41,9 +41,9 @@ class UserProfile extends React.Component {
         ),
       },
       {
-        menuItem: 'Notifications',
+        menuItem: 'ReportLog',
         pane: (
-            <Tab.Pane attached={false} key={'Notifications'}>
+            <Tab.Pane attached={false} key={'ReportLog'}>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad asperiores, laudantium libero minima
                 soluta tempora! Accusamus adipisci, blanditiis commodi culpa cum cupiditate dolor ea error esse
                 explicabo fuga ipsum labore minima minus obcaecati officia praesentium, quae quos ratione reiciendis
