@@ -3,7 +3,17 @@
     {
       "email": "admin@foo.com",
       "password": "changeme",
-      "role": "admin"
+      "role": "admin",
+      "profile": {
+        "firstName": "Waggle",
+        "lastName": "Admin",
+        "image": "https://i.ytimg.com/vi/l0F-1GnoUzw/maxresdefault.jpg",
+        "level": 100,
+        "exp": 0,
+        "courses": ["ICS 311", "ICS 314"],
+        "joinedSessions": ["xWdug9rdTySKRyvbM"],
+        "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
+      }
     },
     {
       "email": "john@foo.com",
