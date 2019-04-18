@@ -1,7 +1,7 @@
 import React from 'react';
 import dateFns from 'date-fns';
 import PropTypes from 'prop-types';
-import { List } from 'semantic-ui-react';
+import { List, Divider } from 'semantic-ui-react';
 import SessionCardFlat from './SessionCardFlat';
 
 const _ = require('underscore');
@@ -23,9 +23,12 @@ export default class SearchResults extends React.Component {
     sessionCards = _.flatten(sessionCards);
 
     return (
-        <List>
-          {sessionCards}
-        </List>
+        <div style={{ marginTop: '8px' }}>
+          <Divider horizontal>{`${this.props.sessions.length} results`}</Divider>
+          <List style={{ marginTop: '20px' }}>
+            {sessionCards}
+          </List>
+        </div>
     );
   }
 }

@@ -124,6 +124,6 @@ export default class SessionCardFlat extends React.Component {
 SessionCardFlat.propTypes = {
   session: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  isJoined: PropTypes.func.isRequired,
+  isJoined: PropTypes.bool.isRequired,
   updateJoined: PropTypes.func.isRequired,
 };
