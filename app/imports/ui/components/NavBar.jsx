@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
-import { Menu, Header, Popup, Label, Divider, Icon, Modal, Form, Image } from 'semantic-ui-react';
+import { Menu, Header, Popup, Label, Divider, Icon, Modal, Form, Image, Button, Container } from 'semantic-ui-react';
 import { Roles } from 'meteor/alanning:roles';
 
 // import { Roles } from 'meteor/alanning:roles';
@@ -47,6 +47,7 @@ class NavBar extends React.Component {
     };
 
     const popupStyle = {
+      padding: '0',
       borderRadius: '0',
       width: '175px',
       backgroundColor: '#081B34',
@@ -69,105 +70,161 @@ class NavBar extends React.Component {
     };
 
     return (
-        <Menu className="ui borderless top fixed menu" style={menuStyle}>
-          <Menu.Item style={topLogo}>
-            <Image size="tiny" src="images/white-inverted-logo.png"/>
-          </Menu.Item>
-          <Menu.Item>
-            <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
-          </Menu.Item>
+        <Container>
+          <Menu className="ui borderless top fixed menu" style={menuStyle}>
+            <Menu.Item style={topLogo}>
+              <Image size="tiny" src="images/white-inverted-logo.png"/>
+            </Menu.Item>
+            <Menu.Item>
+              <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
+            </Menu.Item>
 
-          {this.props.currentUser === '' ? (
-              <Menu.Menu position='right'>
-                <Modal id='login-modal' trigger={<Menu.Item style={{ color: 'white' }}>Log In</Menu.Item>}>
-                  <Modal.Header>Log in to your account</Modal.Header>
-                  <Modal.Content>
-                    <Form onSubmit={this.handleSubmit}>
-                      <Form.Input
-                          label="Email"
-                          icon="user"
-                          iconPosition="left"
-                          name="email"
-                          type="email"
-                          placeholder="E-mail address"
-                          onChange={this.handleChange}
-                      />
-                      <Form.Input
-                          label="Password"
-                          icon="lock"
-                          iconPosition="left"
-                          name="password"
-                          placeholder="Password"
-                          type="password"
-                          onChange={this.handleChange}
-                      />
-                      <Form.Button content="Submit">Log In</Form.Button>
-                    </Form>
-                  </Modal.Content>
-                </Modal>
-              </Menu.Menu>
-
-          ) : ''}
-
-          {this.props.currentUser ? (
-              <Menu.Menu position={'right'}>
-                <Menu.Item as={NavLink} exact to='/' content={'Home'}
-                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}
-                           position='right'/>
-
-                <Menu.Item as={NavLink} exact to='/addsession' content={'Create a Session'}
-                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
-
-                <Menu.Item as={NavLink} exact to='/calendar' content={'Calendar'}
-                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
-
-                <Menu.Item as={NavLink} exact to='/search' content={'Search'}
-                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
-
-                <Menu.Item as={NavLink} exact to='' content={'Leaderboard'}
-                           style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
-
-                {Roles.userIsInRole(Meteor.userId(), 'admin') ? (
-                    <Menu.Item as={NavLink} exact to="/admin" content={'Admin'}
-                               style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
-                ) : ''}
-                <Menu.Menu>
-                  <Menu.Item>
-                    <Popup basic
-                           on={'click'}
-                           horizontalOffset={15}
-                           verticalOffset={-4}
-                           style={popupStyle}
-                           hideOnScroll
-                           trigger={
-                             <Label as='a' style={{ 'background': 'transparent' }}>
-                               <Image avatar spaced='right' src={this.props.image}/>
-                               <Icon inverted name='caret down'/>
-                             </Label>
-                           }
-                    >
-                      <Menu vertical borderless secondary>
-                        <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                          {this.props.firstName} {this.props.lastName}
-                          <br/>
-                          <Divider/>
-                        </Menu.Item>
-                        <Menu.Item as={NavLink}
-                                   exact to='/profile'
-                                   style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                          View Profile
-                        </Menu.Item>
-                        <Menu.Item as={NavLink} onClick={Meteor.logout}
-                                   exact to="/#/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                          Log Out
-                        </Menu.Item>
-                      </Menu>
-                    </Popup>
-                  </Menu.Item>
+            {this.props.currentUser === '' ? (
+                <Menu.Menu position='right'>
+                  <Modal id='login-modal' trigger={<Menu.Item style={{ color: 'white' }}>Log In</Menu.Item>}>
+                    <Modal.Header>Log in to your account</Modal.Header>
+                    <Modal.Content>
+                      <Form onSubmit={this.handleSubmit}>
+                        <Form.Input
+                            label="Email"
+                            icon="user"
+                            iconPosition="left"
+                            name="email"
+                            type="email"
+                            placeholder="E-mail address"
+                            onChange={this.handleChange}
+                        />
+                        <Form.Input
+                            label="Password"
+                            icon="lock"
+                            iconPosition="left"
+                            name="password"
+                            placeholder="Password"
+                            type="password"
+                            onChange={this.handleChange}
+                        />
+                        <Form.Button content="Submit">Log In</Form.Button>
+                      </Form>
+                    </Modal.Content>
+                  </Modal>
                 </Menu.Menu>
-              </Menu.Menu>
-          ) : ''}
-        </Menu>
+
+            ) : ''}
+
+            {this.props.currentUser ? (
+                <Menu.Menu position={'right'}>
+                  <Menu.Item as={NavLink} exact to='/' content={'Home'}
+                             className='collapsable'
+                             style={{ color: 'rgba(255, 255, 255, 0.9)' }}
+                             position='right'/>
+
+                  <Menu.Item as={NavLink} exact to='/addsession' content={'Create a Session'}
+                             className='collapsable'
+                             style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                  <Menu.Item as={NavLink} exact to='/Calendar' content={'Calendar'}
+                             className='collapsable'
+                             style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                  <Menu.Item as={NavLink} exact to='/Search' content={'Search'}
+                             className='collapsable'
+                             style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                  <Menu.Item as={NavLink} exact to='' content={'Leaderboard'}
+                             className='collapsable'
+                             style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                  {Roles.userIsInRole(Meteor.userId(), 'admin') ? (
+                      <Menu.Item as={NavLink} exact to="/admin" content={'Admin'}
+                                 className='collapsable'
+                                 style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>) : ''}
+                  <Popup basic
+                         className="collapsable"
+                         on={'click'}
+                         horizontalOffset={15}
+                         verticalOffset={-4}
+                         style={popupStyle}
+                         hideOnScroll
+                         trigger={
+                           <Label className="collapsable"
+                                  as='a' style={{ 'background': 'transparent', position: 'relative' }}>
+                             <Image avatar spaced='right' src={this.props.image}/>
+                             <Icon inverted name='caret down'/>
+                           </Label>
+                         }
+                  >
+                    <Menu className="collapsable" vertical borderless secondary>
+                      <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                        {this.props.firstName} {this.props.lastName}
+                        <br/>
+                        <Divider/>
+                      </Menu.Item>
+                      <Menu.Item as={NavLink}
+                                 exact to='/profile'
+                                 style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                        View Profile
+                      </Menu.Item>
+                      <Menu.Item as={NavLink} onClick={Meteor.logout}
+                                 exact to="/#/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                        Log Out
+                      </Menu.Item>
+                    </Menu>
+                  </Popup>
+
+                  <Popup basic
+                         className='collapsed'
+                         on={'click'}
+                         horizontalOffset={15}
+                         verticalOffset={-4}
+                         style={popupStyle}
+                         hideOnScroll
+                         trigger={
+                           <Button className='collapsed' inverted icon size='medium' color='white'
+                                   style={{ position: 'relative', bottom: '.65em' }}>
+                             <Icon name={'bars'}/>
+                           </Button>
+                         }
+                  >
+                    <Menu vertical borderless secondary>
+                      <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                        {this.props.firstName} {this.props.lastName}
+                        <br/>
+                        <Divider/>
+                      </Menu.Item>
+
+                      <Menu.Item as={NavLink}
+                                 exact to='/profile'
+                                 style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                        View Profile
+                      </Menu.Item>
+
+                      <Menu.Item as={NavLink} exact to='/addsession' content={'Create a Session'}
+                                 style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                      <Menu.Item as={NavLink} exact to='/Calendar' content={'Calendar'}
+                                 style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                      <Menu.Item as={NavLink} exact to='/Search' content={'Search'}
+                                 style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                      <Menu.Item as={NavLink} exact to='' content={'Leaderboard'}
+                                 style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                      {Roles.userIsInRole(Meteor.userId(), 'admin') ? (
+                          <Menu.Item as={NavLink} exact to="/admin" content={'Admin'}
+                                     style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>) : ''}
+                      <Menu.Item as={NavLink} onClick={Meteor.logout}
+                                 exact to="/#/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                        Log Out
+                      </Menu.Item>
+                    </Menu>
+                  </Popup>
+
+                </Menu.Menu>
+
+            ) : ''}
+          </Menu>
+        </Container>
     );
   }
 }
