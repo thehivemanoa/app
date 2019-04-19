@@ -26,7 +26,7 @@ CreateSession.propTypes = {
 };
 
 export default withTracker(() => {
-  const subscription = Meteor.subscribe('Notifications');
+  const subscription = Meteor.subscribe('ReportLog');
   return {
     courses: Courses.find({}).fetch(),
     ready: subscription.ready(),

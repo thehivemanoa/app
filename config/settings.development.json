@@ -3,7 +3,17 @@
     {
       "email": "admin@foo.com",
       "password": "changeme",
-      "role": "admin"
+      "role": "admin",
+      "profile": {
+        "firstName": "Waggle",
+        "lastName": "Admin",
+        "image": "https://vignette.wikia.nocookie.net/bokunoheroacademia/images/a/a0/Shota_scar_headshot.png/revision/latest?cb=20171119144516",
+        "level": 100,
+        "exp": 0,
+        "courses": ["ICS 311", "ICS 314"],
+        "joinedSessions": ["xWdug9rdTySKRyvbM"],
+        "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
+      }
     },
     {
       "email": "john@foo.com",
@@ -107,7 +117,7 @@
     }
   ],
 
-  "defaultNotifications": [
+  "defaultReportLog": [
     {
       "owner": "john@foo.com",
       "description": "Too much sass",
@@ -121,6 +131,21 @@
     {
       "owner": "john@foo.com",
       "description": "Bullying",
+      "createdAt": "Tue Apr 11 2019 16:57:51 GMT-1000 (Hawaii-Aleutian Standard Time)"
+    }
+  ],
+
+  "defaultActivityLog": [
+    {
+      "owner": "admin@foo.com",
+      "target": "john@foo.com",
+      "event": "banned",
+      "createdAt": "Tue Apr 11 2019 16:57:51 GMT-1000 (Hawaii-Aleutian Standard Time)"
+    },
+    {
+      "owner": "admin@foo.com",
+      "target": "jhun@foo.com",
+      "event": "removed xp from",
       "createdAt": "Tue Apr 11 2019 16:57:51 GMT-1000 (Hawaii-Aleutian Standard Time)"
     }
   ]
