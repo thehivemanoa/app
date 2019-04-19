@@ -9,13 +9,13 @@ body {
   margin-top: 150px !important;
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 61.25rem) {
   .collapsed{
-    display: none;
+    display: none !important;
   }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 61.25rem) {
   .collapsable{
     display: none !important;
   }

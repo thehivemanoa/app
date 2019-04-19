@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
-import { Menu, Header, Popup, Label, Divider, Icon, Modal, Form, Image, Button } from 'semantic-ui-react';
+import { Menu, Header, Popup, Label, Divider, Icon, Modal, Form, Image, Button, Container } from 'semantic-ui-react';
 import { Roles } from 'meteor/alanning:roles';
 
 // import { Roles } from 'meteor/alanning:roles';
@@ -70,6 +70,7 @@ class NavBar extends React.Component {
     };
 
     return (
+        <Container>
         <Menu className="ui borderless top fixed menu" style={menuStyle}>
           <Menu.Item style={topLogo}>
             <Image size="tiny" src="images/white-inverted-logo.png"/>
@@ -138,61 +139,21 @@ class NavBar extends React.Component {
                                className='collapsable'
                                style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>) : ''}
                 <Popup basic
-                       className='collapsed'
+                       className="collapsable"
                        on={'click'}
                        horizontalOffset={15}
                        verticalOffset={-4}
                        style={popupStyle}
                        hideOnScroll
                        trigger={
-                         <Button inverted icon size='mini' color='white'>
-                           <Icon name={'bars'}/>
-                         </Button>
-                       }
-                >
-                  <Menu vertical borderless secondary>
-                    <Menu.Item as={NavLink} exact to='/' content={'Home'}
-                               className='collapsed'
-                               style={{ color: 'rgba(255, 255, 255, 0.9)' }}
-                               position='right'/>
-
-                    <Menu.Item as={NavLink} exact to='/addsession' content={'Create a Session'}
-                               className='collapsed'
-                               style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
-
-                    <Menu.Item as={NavLink} exact to='/Calendar' content={'Calendar'}
-                               className='collapsed'
-                               style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
-
-                    <Menu.Item as={NavLink} exact to='/Search' content={'Search'}
-                               className='collapsed'
-                               style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
-
-                    <Menu.Item as={NavLink} exact to='' content={'Leaderboard'}
-                               className='collapsed'
-                               style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
-
-                    {Roles.userIsInRole(Meteor.userId(), 'admin') ? (
-                        <Menu.Item as={NavLink} exact to="/admin" content={'Admin'}
-                                   className='collapsed'
-                                   style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>) : ''}
-                  </Menu>
-                </Popup>
-
-                <Popup basic
-                       on={'click'}
-                       horizontalOffset={15}
-                       verticalOffset={-4}
-                       style={{ 'paddingBottom': 0 }}
-                       hideOnScroll
-                       trigger={
-                         <Label as='a' style={{ 'background': 'transparent' }}>
+                         <Label className="collapsable"
+                                as='a' style={{ 'background': 'transparent', position:'relative' }}>
                            <Image avatar spaced='right' src={this.props.image}/>
                            <Icon inverted name='caret down'/>
                          </Label>
                        }
                 >
-                  <Menu vertical borderless secondary>
+                  <Menu className="collapsable" vertical borderless secondary>
                     <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
                       {this.props.firstName} {this.props.lastName}
                       <br/>
@@ -209,9 +170,60 @@ class NavBar extends React.Component {
                     </Menu.Item>
                   </Menu>
                 </Popup>
+
+                <Popup basic
+                       className='collapsed'
+                       on={'click'}
+                       horizontalOffset={15}
+                       verticalOffset={-4}
+                       style={popupStyle}
+                       hideOnScroll
+                       trigger={
+                           <Button className='collapsed' inverted icon size='medium' color='white' style={{ position: 'relative', bottom: '.65em' }}>
+                             <Icon name={'bars'}/>
+                           </Button>
+                       }
+                >
+                  <Menu vertical borderless secondary>
+                    <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                      {this.props.firstName} {this.props.lastName}
+                      <br/>
+                      <Divider/>
+                    </Menu.Item>
+
+                    <Menu.Item as={NavLink}
+                               exact to='/profile'
+                               style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                      View Profile
+                    </Menu.Item>
+
+                    <Menu.Item as={NavLink} exact to='/addsession' content={'Create a Session'}
+                               style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                    <Menu.Item as={NavLink} exact to='/Calendar' content={'Calendar'}
+                               style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                    <Menu.Item as={NavLink} exact to='/Search' content={'Search'}
+                               style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                    <Menu.Item as={NavLink} exact to='' content={'Leaderboard'}
+                               style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+
+                    {Roles.userIsInRole(Meteor.userId(), 'admin') ? (
+                        <Menu.Item as={NavLink} exact to="/admin" content={'Admin'}
+                                   style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>) : ''}
+                    <Menu.Item as={NavLink} onClick={Meteor.logout}
+                               exact to="/#/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                      Log Out
+                    </Menu.Item>
+                  </Menu>
+                </Popup>
+
               </Menu.Menu>
+
           ) : ''}
         </Menu>
+        </Container>
     );
   }
 }
