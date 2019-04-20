@@ -70,6 +70,29 @@ class SearchPage extends React.Component {
     document.removeEventListener('mouseup', this.onMouseUp);
   }
 
+  getNumberOfWorkers(session) {
+    const attendees = Meteor.users.find({ username: { $in: session.attendees } }).fetch();
+    return _.filter(attendees, attendee => !attendee.profile.courses[session.course]).length;
+  }
+
+  getNumberOfRoyals(session) {
+    const attendees = Meteor.users.find({ username: { $in: session.attendees } }).fetch();
+    return _.filter(attendees, attendee => attendee.profile.courses[session.course]).length;
+  }
+
+  getSortedSessions() {
+    const sessions = this.getFilteredSessions();
+    if (this.state.sortBy === 'attenbees') {
+      return _.sortBy(sessions, session => session.attendees.length).reverse();
+    }
+    if (this.state.sortBy === 'royalWorker') {
+      return _.sortBy(_.filter(sessions, session => this.getNumberOfWorkers(session)), session => {
+        return this.getNumberOfRoyals(session) / this.getNumberOfWorkers(session);
+      }).reverse();
+    }
+    return _.sortBy(sessions, this.state.sortBy);
+  }
+
   stringToTime(string) {
     const time = string.split(/[\s:]+/);
     let currentDate = dateFns.startOfDay(new Date());
@@ -378,6 +401,22 @@ class SearchPage extends React.Component {
     console.log(this.state.sortBy);
     return (
         <Grid container style={{ marginTop: '120px' }}>
+          <Grid.Column width={11}>
+            <SearchResults
+                sessions={this.getSortedSessions()}
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                startTime={this.state.startTime}
+                endTime={this.state.endTime}
+                courses={this.state.courses}
+                hideJoined={this.state.hideJoined}
+                hideConflicting={this.state.hideConflicting}
+                sortBy={this.state.sortBy}
+                isJoined={this.isJoined}
+                handleJoin={this.handleJoin}
+                handleLeave={this.handleLeave}
+            />
+          </Grid.Column>
           <Grid.Column width={5}>
             <SearchBox
                 toggleJoined={this.toggleJoined}
@@ -405,22 +444,6 @@ class SearchPage extends React.Component {
                 endTimeText={this.state.endTimeText}
                 onTimeSubmit={this.onTimeSubmit}
                 sortBy={this.state.sortBy}
-            />
-          </Grid.Column>
-          <Grid.Column width={11}>
-            <SearchResults
-                sessions={_.sortBy(this.getFilteredSessions(), this.state.sortBy)}
-                startDate={this.state.startDate}
-                endDate={this.state.endDate}
-                startTime={this.state.startTime}
-                endTime={this.state.endTime}
-                courses={this.state.courses}
-                hideJoined={this.state.hideJoined}
-                hideConflicting={this.state.hideConflicting}
-                sortBy={this.state.sortBy}
-                isJoined={this.isJoined}
-                handleJoin={this.handleJoin}
-                handleLeave={this.handleLeave}
             />
           </Grid.Column>
         </Grid>

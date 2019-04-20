@@ -105,9 +105,9 @@ class SessionCardFlat extends React.Component {
               <Grid.Column width={2} style={{ paddingLeft: 0, paddingRight: 0 }}>
                 <Grid>
                   <Grid.Column><Icon name="user times"/></Grid.Column>
-                  <Grid.Column>1</Grid.Column>
+                  <Grid.Column>{royals.length}</Grid.Column>
                   <Grid.Column><Icon name="user times"/></Grid.Column>
-                  <Grid.Column>0</Grid.Column>
+                  <Grid.Column>{workers.length}</Grid.Column>
                 </Grid>
               </Grid.Column>
               <Grid.Column style={buttonContainerStyle} width={2}>
