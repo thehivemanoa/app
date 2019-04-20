@@ -1,7 +1,7 @@
 import React from 'react';
 import { Header, Card, List, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import HideSearchResults from './HideSearchResults';
+import HideOptions from './HideOptions';
 import FilterCourses from './FilterCourses';
 import FilterDate from './FilterDate';
 import FilterTime from './FilterTime';
@@ -18,10 +18,15 @@ export default class SearchResults extends React.Component {
           </Card.Content>
           <Card.Content>
             <List>
-              <HideSearchResults toggleJoined={this.props.toggleJoined}
-                                 toggleConflicting={this.props.toggleConflicting}/>
+              <HideOptions toggleJoined={this.props.toggleJoined}
+                           toggleConflicting={this.props.toggleConflicting}/>
               <SortByOptions handleChange={this.props.handleChange}/>
-              <FilterTime handleChange={this.props.handleChange}/>
+              <FilterTime
+                  handleChange={this.props.handleChange}
+                  startTimeText={this.props.startTimeText}
+                  endTimeText={this.props.endTimeText}
+                  onTimeSubmit={this.props.onTimeSubmit}
+              />
               <FilterDate setFromDate={this.props.setFromDate}
                           pressNextMonth={this.props.pressNextMonth}
                           pressPreviousMonth={this.props.pressPreviousMonth}
@@ -71,4 +76,7 @@ SearchResults.propTypes = {
   startDateText: PropTypes.string.isRequired,
   endDateText: PropTypes.string.isRequired,
   handleDateSubmit: PropTypes.func.isRequired,
+  startTimeText: PropTypes.string.isRequired,
+  endTimeText: PropTypes.string.isRequired,
+  onTimeSubmit: PropTypes.func.isRequired,
 };

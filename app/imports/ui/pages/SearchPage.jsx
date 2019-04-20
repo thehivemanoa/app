@@ -29,6 +29,8 @@ class SearchPage extends React.Component {
       endDate: maxDate,
       fromDate: currentDate,
       toDate: currentDate,
+      startTimeText: this.formatTime(startOfDay),
+      endTimeText: this.formatTime(endOfDay),
       startTime: startOfDay,
       endTime: endOfDay,
       course: '',
@@ -58,6 +60,7 @@ class SearchPage extends React.Component {
     this.handleJoin = this.handleJoin.bind(this);
     this.handleLeave = this.handleLeave.bind(this);
     this.isJoined = this.isJoined.bind(this);
+    this.onTimeSubmit = this.onTimeSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -68,10 +71,47 @@ class SearchPage extends React.Component {
     document.removeEventListener('mouseup', this.onMouseUp);
   }
 
+  stringToTime(string) {
+    const time = string.split(/[\s:]+/);
+    let currentDate = dateFns.startOfDay(new Date());
+    if (time[2] === 'pm') {
+      currentDate = dateFns.addHours(currentDate, 12);
+    } else if (time[2] !== 'am') {
+      return null;
+    }
+    currentDate = dateFns.addHours(currentDate, Number(time[0]) % 12);
+    currentDate = dateFns.addMinutes(currentDate, Number(time[1]));
+    if (!dateFns.isValid(currentDate)) {
+      return null;
+    }
+    return currentDate;
+  }
+
+  onTimeSubmit() {
+    console.log('hello');
+    const startTime = this.stringToTime(this.state.startTimeText);
+    const endTime = this.stringToTime(this.state.endTimeText);
+    console.log(this.formatTime(startTime));
+    if (startTime && endTime && dateFns.isBefore(startTime, endTime)) {
+      this.setState({
+        startTime: startTime,
+        endTime: endTime,
+      });
+    } else {
+      Bert.alert({ type: 'danger', message: 'Invalid time' });
+    }
+  }
+
+  formatTime(date) {
+    return `${dateFns.format(date, 'h')}:${dateFns.format(date, 'mm')} ${dateFns.format(date, 'a')}`;
+  }
+
   initializeCourses() {
     const courses = this.props.currentProfile.courses;
     const courseObject = {};
-    _.each(courses, function (course) { courseObject[course] = null; });
+    _.each(courses, function (course) {
+      courseObject[course] = null;
+    });
     this.setState({
       courses: courseObject,
     });
@@ -88,7 +128,7 @@ class SearchPage extends React.Component {
         currentUserId,
         { $pull: { 'profile.joinedSessions': sessionId } },
         error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
-          Bert.alert({ type: 'success', message: 'Leave succeeded' })),
+            Bert.alert({ type: 'success', message: 'Leave succeeded' })),
     );
   }
 
@@ -318,16 +358,12 @@ class SearchPage extends React.Component {
         endDate: endDate,
       });
     } else {
-      Bert.alert({ type: 'danger', message: 'At least one of start date and end date is invalid' });
+      Bert.alert({ type: 'danger', message: 'Invalid date' });
     }
   }
 
   handleTimeSubmit() {
     console.log('hello');
-  }
-
-  formatTime(time) {
-    return `${dateFns.format(time, 'h')}:${dateFns.format(time, 'mm')} ${dateFns.format(time, 'a')}`;
   }
 
   render() {
@@ -355,30 +391,35 @@ class SearchPage extends React.Component {
                            sortBy={this.state.sortBy}
                            isJoined={this.isJoined}
                            handleJoin={this.handleJoin}
-                           handleLeave={this.handleLeave} />
+                           handleLeave={this.handleLeave}/>
           </Grid.Column>
           <Grid.Column width={5}>
-            <SearchBox toggleJoined={this.toggleJoined}
-                       pressNextMonth={this.pressNextMonth}
-                       pressPreviousMonth={this.pressPreviousMonth}
-                       mouseUpChangeMonth={this.mouseUpChangeMonth}
-                       mouseLeaveChangeMonth={this.mouseLeaveChangeMonth}
-                       changeMonth={this.changeMonth}
-                       isInRange={this.isInRange}
-                       startDate={this.state.startDate}
-                       endDate={this.state.endDate}
-                       courses={this.state.courses}
-                       course={this.state.course}
-                       handleChange={this.handleChange}
-                       toggleConflicting={this.toggleConflicting}
-                       addCourse={this.addCourse}
-                       deleteCourse={this.deleteCourse}
-                       setFromDate={this.setFromDate}
-                       setToDate={this.setToDate}
-                       month={this.state.month}
-                       startDateText={this.state.startDateText}
-                       endDateText={this.state.endDateText}
-                       handleDateSubmit={this.handleDateSubmit}/>
+            <SearchBox
+                toggleJoined={this.toggleJoined}
+                pressNextMonth={this.pressNextMonth}
+                pressPreviousMonth={this.pressPreviousMonth}
+                mouseUpChangeMonth={this.mouseUpChangeMonth}
+                mouseLeaveChangeMonth={this.mouseLeaveChangeMonth}
+                changeMonth={this.changeMonth}
+                isInRange={this.isInRange}
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                courses={this.state.courses}
+                course={this.state.course}
+                handleChange={this.handleChange}
+                toggleConflicting={this.toggleConflicting}
+                addCourse={this.addCourse}
+                deleteCourse={this.deleteCourse}
+                setFromDate={this.setFromDate}
+                setToDate={this.setToDate}
+                month={this.state.month}
+                startDateText={this.state.startDateText}
+                endDateText={this.state.endDateText}
+                handleDateSubmit={this.handleDateSubmit}
+                startTimeText={this.state.startTimeText}
+                endTimeText={this.state.endTimeText}
+                onTimeSubmit={this.onTimeSubmit}
+            />
           </Grid.Column>
         </Grid>
     );

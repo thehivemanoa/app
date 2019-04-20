@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { List, Divider, Checkbox } from 'semantic-ui-react';
 
-export default class HideSearchResults extends React.Component {
+export default class HideOptions extends React.Component {
   render() {
     return (
         <List.Item>
@@ -14,7 +14,7 @@ export default class HideSearchResults extends React.Component {
   }
 }
 
-HideSearchResults.propTypes = {
+HideOptions.propTypes = {
   toggleJoined: PropTypes.func.isRequired,
   toggleConflicting: PropTypes.func.isRequired,
 };
