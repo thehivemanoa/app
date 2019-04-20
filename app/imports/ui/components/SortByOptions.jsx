@@ -2,6 +2,8 @@ import React from 'react';
 import { Header, Button, List, Select, Form } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
+const _ = require('underscore');
+
 export default class SortByOptions extends React.Component {
   constructor(props) {
     super(props);
@@ -30,7 +32,6 @@ export default class SortByOptions extends React.Component {
     const options = [
       { key: 'title', text: 'Title', value: 'title' },
       { key: 'course', text: 'Course', value: 'course' },
-      { key: 'date', text: 'Date', value: 'date' },
       { key: 'start time', text: 'Start Time', value: 'startTime' },
       { key: 'end time', text: 'End Time', value: 'endTime' },
       { key: 'attenbees', text: 'Attenbees', value: 'attenbees' },
@@ -58,8 +59,9 @@ export default class SortByOptions extends React.Component {
                         options={options}
                         search
                         fluid
+                        defaultValue='startTime'
                         onChange={this.props.handleChange}
-                        name="startTime"/>
+                        name="sortBy"/>
           </Form>
           </List.Item>
         </List>
@@ -68,6 +70,7 @@ export default class SortByOptions extends React.Component {
 }
 
 SortByOptions.propTypes = {
+  sortBy: PropTypes.string.isRequired,
   toggleCollapse: PropTypes.func.isRequired,
   sortCollapse: PropTypes.bool.isRequired,
   handleChange: PropTypes.func.isRequired,

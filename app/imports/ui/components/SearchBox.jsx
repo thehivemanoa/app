@@ -66,6 +66,7 @@ export default class SearchResults extends React.Component {
                 handleChange={this.props.handleChange}
                 sortCollapse={this.state.sortCollapse}
                 toggleCollapse={() => this.toggleCollapseFilter('sortCollapse')}
+                sortBy={this.props.sortBy}
             />
             <Divider style={{ margin: 0 }}/>
             <HideOptions
@@ -144,4 +145,5 @@ SearchResults.propTypes = {
   startTimeText: PropTypes.string.isRequired,
   endTimeText: PropTypes.string.isRequired,
   onTimeSubmit: PropTypes.func.isRequired,
+  sortBy: PropTypes.string.isRequired,
 };

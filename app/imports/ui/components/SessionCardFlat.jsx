@@ -1,10 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Grid, Button, Icon, List } from 'semantic-ui-react';
+import { Meteor } from 'meteor/meteor';
+import { withTracker } from 'meteor/react-meteor-data';
+import { Card, Grid, Button, Icon, List, Form, Loader, Header } from 'semantic-ui-react';
 import dateFns from 'date-fns';
 
-export default class SessionCardFlat extends React.Component {
+const _ = require('underscore');
+
+class SessionCardFlat extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isCollapsed: true,
+    };
+    this.toggleCollapsed = this.toggleCollapsed.bind(this);
+  }
+
+  usersToLabels(users) {
+    return _.map(users, user => {
+      return (
+          <List.Item key={user.username}>
+            {`${user.profile.firstName} ${user.profile.lastName}`}
+          </List.Item>
+      );
+    });
+  }
+
+  toggleCollapsed() {
+    this.setState({
+      isCollapsed: !this.state.isCollapsed,
+    });
+  }
+
   render() {
+    return (this.props.ready) ? this.renderComponent() : <Loader active>Getting data</Loader>;
+  }
+
+  renderComponent() {
     const colors = {
       'ICS 311': '#E692F8',
       'ICS 314': '#FFB4B0',
@@ -15,14 +47,6 @@ export default class SessionCardFlat extends React.Component {
     };
     const buttonStyle = {
       backgroundColor: 'white',
-    };
-    const showMoreButtonStyle = {
-      position: 'absolute',
-      top: '100%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      backgroundColor: 'Transparent',
-      zIndex: 99,
     };
 
     const startTime = this.props.session.startTime;
@@ -52,17 +76,25 @@ export default class SessionCardFlat extends React.Component {
       padding: 0,
       zIndex: buttonIndex,
     };
+    const attendees = Meteor.users.find({ username: { $in: this.props.session.attendees } }).fetch();
+    const royals = _.filter(attendees, attendee => attendee.profile.courses[this.props.session.course]);
+    const workers = _.filter(attendees, attendee => !attendee.profile.courses[this.props.session.course]);
+    const creator = Meteor.users.find({ username: this.props.session.owner }).fetch();
+    const royalLabels = this.usersToLabels(royals);
+    const workerLabels = this.usersToLabels(workers);
+    const creatorLabel = this.usersToLabels(creator);
 
     return [
       <List.Item key={1} style={cardStyle}>
-        <Card fluid style={{
-          backgroundColor: colors[this.props.session.course],
-          margin: 0,
-          border: 'none',
-          boxShadow: 'none',
-          fontSize: '12px',
-        }}>
-          <Card.Content>
+        <Card
+            fluid
+            style={{
+              margin: 0,
+              boxShadow: 'none',
+              fontSize: '12px',
+            }}
+        >
+          <Card.Content style={{ backgroundColor: colors[this.props.session.course] }}>
             <Grid columns="equal" style={{ height: '45px' }}>
               <Grid.Column>{this.props.session.title}</Grid.Column>
               <Grid.Column width={3}>{`${formattedStartTime} - ${formattedEndTime}`}</Grid.Column>
@@ -88,19 +120,65 @@ export default class SessionCardFlat extends React.Component {
               </Grid.Column>
             </Grid>
           </Card.Content>
+          <Card.Content
+              style={{
+                display: this.state.isCollapsed ? 'none' : '',
+                borderColor: colors[this.props.session.course],
+                borderWidth: '2px',
+                borderStyle: 'dashed',
+              }}
+          >
+            <Grid>
+              <Grid.Column width={8}>
+                <Form>
+                  <Form.TextArea
+                      readOnly
+                      value={this.props.session.description}
+                      style={{ borderStyle: 'dashed', borderColor: colors[this.props.session.course] }}
+                  />
+                </Form>
+              </Grid.Column>
+              <Grid.Column width={8}>
+                <Grid columns={3}>
+                  <Grid.Column>
+                    <List>
+                      <List.Item><Header as="h5">Royal Bees</Header></List.Item>
+                      {royalLabels}
+                    </List>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <List>
+                      <List.Item><Header as="h5">Worker Bees</Header></List.Item>
+                      {workerLabels}
+                    </List>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <List>
+                      <List.Item><Header as="h5">Creator</Header></List.Item>
+                      {creatorLabel}
+                    </List>
+                  </Grid.Column>
+                </Grid>
+              </Grid.Column>
+            </Grid>
+          </Card.Content>
         </Card>
       </List.Item>,
       <List.Item key={2} style={showMoreContainerStyle}>
-        <Button icon="plus" style={{
-          position: 'absolute',
-          left: '100%',
-          height: '18px',
-          width: '18px',
-          padding: 0,
-          borderRadius: '50%',
-          transform: 'translate(-50%,-50%)',
-          backgroundColor: colors[this.props.session.course],
-        }}/>
+        <Button
+            icon={this.state.isCollapsed ? 'plus' : 'minus'}
+            onClick={this.toggleCollapsed}
+            style={{
+              position: 'absolute',
+              left: '100%',
+              height: '18px',
+              width: '18px',
+              padding: 0,
+              borderRadius: '50%',
+              transform: 'translate(-50%,-50%)',
+              backgroundColor: colors[this.props.session.course],
+            }}
+        />
       </List.Item>,
       <List.Item key={3} style={buttonOutlineStyle}>
         <div style={{
@@ -111,7 +189,6 @@ export default class SessionCardFlat extends React.Component {
           borderRadius: '50%',
           padding: 0,
           transform: 'translate(-50%,-50%)',
-          backgroundColor: colors[this.props.session.course],
           borderWidth: '2px',
           borderStyle: 'solid',
           borderColor: 'white',
@@ -126,4 +203,14 @@ SessionCardFlat.propTypes = {
   index: PropTypes.number.isRequired,
   isJoined: PropTypes.bool.isRequired,
   updateJoined: PropTypes.func.isRequired,
+  ready: PropTypes.bool.isRequired,
 };
+
+export default withTracker(() => {
+  // Get access to Stuff documents.
+  const subscription = Meteor.subscribe('Profiles');
+  return {
+    profiles: Meteor.users.find({}).fetch(),
+    ready: subscription.ready(),
+  };
+})(SessionCardFlat);

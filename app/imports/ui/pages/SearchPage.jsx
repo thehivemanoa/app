@@ -1,7 +1,6 @@
 import React from 'react';
 import dateFns from 'date-fns';
 import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
 import { Loader, Grid } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
@@ -76,9 +75,10 @@ class SearchPage extends React.Component {
     let currentDate = dateFns.startOfDay(new Date());
     if (time[2] === 'pm') {
       currentDate = dateFns.addHours(currentDate, 12);
-    } else if (time[2] !== 'am') {
-      return null;
-    }
+    } else
+      if (time[2] !== 'am') {
+        return null;
+      }
     currentDate = dateFns.addHours(currentDate, Number(time[0]) % 12);
     currentDate = dateFns.addMinutes(currentDate, Number(time[1]));
     if (!dateFns.isValid(currentDate)) {
@@ -108,12 +108,8 @@ class SearchPage extends React.Component {
 
   initializeCourses() {
     const courses = this.props.currentProfile.courses;
-    const courseObject = {};
-    _.each(courses, function (course) {
-      courseObject[course] = null;
-    });
     this.setState({
-      courses: courseObject,
+      courses: _.mapObject(courses, () => null),
     });
   }
 
@@ -130,6 +126,7 @@ class SearchPage extends React.Component {
         error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
             Bert.alert({ type: 'success', message: 'Leave succeeded' })),
     );
+    Sessions.update(sessionId, { $pull: { attendees: this.props.currentUsername } });
   }
 
   handleJoin(sessionId) {
@@ -140,6 +137,7 @@ class SearchPage extends React.Component {
         error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
             Bert.alert({ type: 'success', message: 'Join succeeded' })),
     );
+    Sessions.update(sessionId, { $addToSet: { attendees: this.props.currentUsername } });
   }
 
   getFilteredSessions() {
@@ -377,6 +375,7 @@ class SearchPage extends React.Component {
   }
 
   renderPage() {
+    console.log(this.state.sortBy);
     return (
         <Grid container style={{ marginTop: '120px' }}>
           <Grid.Column width={5}>
@@ -405,21 +404,24 @@ class SearchPage extends React.Component {
                 startTimeText={this.state.startTimeText}
                 endTimeText={this.state.endTimeText}
                 onTimeSubmit={this.onTimeSubmit}
+                sortBy={this.state.sortBy}
             />
           </Grid.Column>
           <Grid.Column width={11}>
-            <SearchResults sessions={this.getFilteredSessions()}
-                           startDate={this.state.startDate}
-                           endDate={this.state.endDate}
-                           startTime={this.state.startTime}
-                           endTime={this.state.endTime}
-                           courses={this.state.courses}
-                           hideJoined={this.state.hideJoined}
-                           hideConflicting={this.state.hideConflicting}
-                           sortBy={this.state.sortBy}
-                           isJoined={this.isJoined}
-                           handleJoin={this.handleJoin}
-                           handleLeave={this.handleLeave}/>
+            <SearchResults
+                sessions={_.sortBy(this.getFilteredSessions(), this.state.sortBy)}
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                startTime={this.state.startTime}
+                endTime={this.state.endTime}
+                courses={this.state.courses}
+                hideJoined={this.state.hideJoined}
+                hideConflicting={this.state.hideConflicting}
+                sortBy={this.state.sortBy}
+                isJoined={this.isJoined}
+                handleJoin={this.handleJoin}
+                handleLeave={this.handleLeave}
+            />
           </Grid.Column>
         </Grid>
     );

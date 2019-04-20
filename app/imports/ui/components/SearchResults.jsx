@@ -43,6 +43,7 @@ export default class SearchResults extends React.Component {
 }
 
 SearchResults.propTypes = {
+  sortBy: PropTypes.string.isRequired,
   sessions: PropTypes.array.isRequired,
   handleJoin: PropTypes.func.isRequired,
   isJoined: PropTypes.func.isRequired,

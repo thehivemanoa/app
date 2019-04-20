@@ -10,7 +10,7 @@
         "image": "https://vignette.wikia.nocookie.net/bokunoheroacademia/images/a/a0/Shota_scar_headshot.png/revision/latest?cb=20171119144516",
         "level": 100,
         "exp": 0,
-        "courses": ["ICS 311", "ICS 314"],
+        "courses": { "ICS 311": true, "ICS 314": false },
         "joinedSessions": ["xWdug9rdTySKRyvbM"],
         "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
       }
@@ -24,7 +24,7 @@
         "image": "https://react.semantic-ui.com/images/avatar/large/matthew.png",
         "level": 12,
         "exp": 1000,
-        "courses": ["ICS 311", "ICS 314"],
+        "courses": { "ICS 311": true, "ICS 314": true },
         "joinedSessions": ["xWdug9rdTySKRyvbM"],
         "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
       }
@@ -38,7 +38,7 @@
         "image": "https://philipmjohnson.github.io/images/philip2.jpeg",
         "level": 4,
         "exp": 80,
-        "courses": [],
+        "courses": { "ICS 311": false, "ICS 314": true },
         "joinedSessions": ["xWdug9rdTySKRyvbM"],
         "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
       }
