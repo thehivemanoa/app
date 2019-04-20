@@ -34,57 +34,57 @@ export default class FilterTime extends React.Component {
     const style = {
       paddingLeft: '14px',
       paddingRight: '14px',
+      marginTop: '5px',
+      marginBottom: '30px',
     };
-    if (this.state.isCollapsed) {
+    if (this.props.timeCollapse) {
       style.display = 'none';
     }
 
     return (
-        <List.Item>
-          <List style={{ padding: 0 }}>
-            <List.Item>
-              <Header as="h3" style={{ display: 'inline-block' }}>Time</Header>
-              <Button
-                  icon={this.state.isCollapsed ? 'plus' : 'minus'}
-                  floated="right"
-                  style={{
-                    backgroundColor: 'Transparent',
-                    paddingRight: 0,
-                    paddingTop: '5px',
-                    marginBottom: '15px',
-                    margin: 0,
-                  }}
-                  onClick={this.toggleCollapsed}
-              />
-            </List.Item>
-            <List.Item style={style}>
-              <Form onSubmit={this.props.onTimeSubmit}>
-                <Form.Group>
-                  <Form.Input
-                      label="From"
-                      value={this.props.startTimeText}
-                      onChange={this.props.handleChange}
-                      name="startTimeText"
-                      width={8}
-                  />
-                  <Form.Input
-                      label="To"
-                      value={this.props.endTimeText}
-                      onChange={this.props.handleChange}
-                      name="endTimeText"
-                      width={8}
-                  />
-                </Form.Group>
-                <Form.Button style={{ display: 'none' }}></Form.Button>
-              </Form>
-            </List.Item>
-          </List>
-        </List.Item>
+        <List style={{ paddingLeft: '14px', paddingRight: '14px', marginTop: '14px', marginBottom: '14px' }}>
+          <List.Item>
+            <Header as="h4" style={{ display: 'inline-block', lineHeight: '35px' }}>Time</Header>
+            <Button
+                icon={this.props.timeCollapse ? 'plus' : 'minus'}
+                floated="right"
+                style={{
+                  backgroundColor: 'Transparent',
+                  paddingRight: 0,
+                  margin: 0,
+                }}
+                onClick={this.props.toggleCollapse}
+            />
+          </List.Item>
+          <List.Item style={style}>
+            <Form onSubmit={this.props.onTimeSubmit}>
+              <Form.Group>
+                <Form.Input
+                    label="From"
+                    value={this.props.startTimeText}
+                    onChange={this.props.handleChange}
+                    name="startTimeText"
+                    width={8}
+                />
+                <Form.Input
+                    label="To"
+                    value={this.props.endTimeText}
+                    onChange={this.props.handleChange}
+                    name="endTimeText"
+                    width={8}
+                />
+              </Form.Group>
+              <Form.Button style={{ display: 'none' }}></Form.Button>
+            </Form>
+          </List.Item>
+        </List>
     );
   }
 }
 
 FilterTime.propTypes = {
+  toggleCollapse: PropTypes.func.isRequired,
+  hideTime: PropTypes.bool.isRequired,
   onTimeSubmit: PropTypes.func.isRequired,
   startTimeText: PropTypes.string.isRequired,
   endTimeText: PropTypes.string.isRequired,

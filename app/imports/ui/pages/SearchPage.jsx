@@ -379,20 +379,6 @@ class SearchPage extends React.Component {
   renderPage() {
     return (
         <Grid container style={{ marginTop: '120px' }}>
-          <Grid.Column width={11}>
-            <SearchResults sessions={this.getFilteredSessions()}
-                           startDate={this.state.startDate}
-                           endDate={this.state.endDate}
-                           startTime={this.state.startTime}
-                           endTime={this.state.endTime}
-                           courses={this.state.courses}
-                           hideJoined={this.state.hideJoined}
-                           hideConflicting={this.state.hideConflicting}
-                           sortBy={this.state.sortBy}
-                           isJoined={this.isJoined}
-                           handleJoin={this.handleJoin}
-                           handleLeave={this.handleLeave}/>
-          </Grid.Column>
           <Grid.Column width={5}>
             <SearchBox
                 toggleJoined={this.toggleJoined}
@@ -420,6 +406,20 @@ class SearchPage extends React.Component {
                 endTimeText={this.state.endTimeText}
                 onTimeSubmit={this.onTimeSubmit}
             />
+          </Grid.Column>
+          <Grid.Column width={11}>
+            <SearchResults sessions={this.getFilteredSessions()}
+                           startDate={this.state.startDate}
+                           endDate={this.state.endDate}
+                           startTime={this.state.startTime}
+                           endTime={this.state.endTime}
+                           courses={this.state.courses}
+                           hideJoined={this.state.hideJoined}
+                           hideConflicting={this.state.hideConflicting}
+                           sortBy={this.state.sortBy}
+                           isJoined={this.isJoined}
+                           handleJoin={this.handleJoin}
+                           handleLeave={this.handleLeave}/>
           </Grid.Column>
         </Grid>
     );

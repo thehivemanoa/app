@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Card, List, Icon } from 'semantic-ui-react';
+import { Header, Card, List, Divider, Button, Input } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import HideOptions from './HideOptions';
 import FilterCourses from './FilterCourses';
@@ -8,46 +8,111 @@ import FilterTime from './FilterTime';
 import SortByOptions from './SortByOptions';
 
 export default class SearchResults extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isCollapsed: true,
+      hideCollapse: true,
+      sortCollapse: true,
+      timeCollapse: true,
+      dateCollapse: true,
+      courseCollapse: true,
+    };
+    this.toggleCollapseFilter = this.toggleCollapseFilter.bind(this);
+    this.toggleCollapse = this.toggleCollapse.bind(this);
+  }
+
+  toggleCollapseFilter(name) {
+    this.setState({
+      [name]: !this.state[name],
+    });
+  }
+
+  toggleCollapse() {
+    this.setState({
+      isCollapsed: !this.state.isCollapsed,
+      hideCollapse: !this.state.isCollapsed,
+      sortCollapse: !this.state.isCollapsed,
+      timeCollapse: !this.state.isCollapsed,
+      dateCollapse: !this.state.isCollapsed,
+      courseCollapse: !this.state.isCollapsed,
+    });
+  }
+
   render() {
     return (
         <Card fluid>
-          <Card.Content style={{ textAlign: 'center' }}>
-            <Header as="h3" style={{ display: 'inline-block' }}>
-              Search
-            </Header>
-          </Card.Content>
           <Card.Content>
-            <List>
-              <HideOptions toggleJoined={this.props.toggleJoined}
-                           toggleConflicting={this.props.toggleConflicting}/>
-              <SortByOptions handleChange={this.props.handleChange}/>
-              <FilterTime
-                  handleChange={this.props.handleChange}
-                  startTimeText={this.props.startTimeText}
-                  endTimeText={this.props.endTimeText}
-                  onTimeSubmit={this.props.onTimeSubmit}
-              />
-              <FilterDate setFromDate={this.props.setFromDate}
-                          pressNextMonth={this.props.pressNextMonth}
-                          pressPreviousMonth={this.props.pressPreviousMonth}
-                          mouseUpChangeMonth={this.props.mouseUpChangeMonth}
-                          mouseLeaveChangeMonth={this.props.mouseLeaveChangeMonth}
-                          changeMonth={this.props.changeMonth}
-                          isInRange={this.props.isInRange}
-                          setToDate={this.props.setToDate}
-                          startDate={this.props.startDate}
-                          endDate={this.props.endDate}
-                          startDateText={this.props.startDateText}
-                          endDateText={this.props.endDateText}
-                          handleChange={this.props.handleChange}
-                          handleDateSubmit={this.props.handleDateSubmit}
-                          month={this.props.month}/>
-              <FilterCourses addCourse={this.props.addCourse}
-                             handleChange={this.props.handleChange}
-                             course={this.props.course}
-                             courses={this.props.courses}
-                             deleteCourse={this.props.deleteCourse}/>
-            </List>
+            <Input
+                placeholder="Search"
+                icon="search"
+                style={{
+                  width: '90%',
+                }}
+            />
+            <Button
+                icon={this.state.isCollapsed ? 'plus' : 'minus'}
+                onClick={this.toggleCollapse}
+                floated="right"
+                style={{
+                  paddingRight: 0,
+                  paddingLeft: 0,
+                  backgroundColor: 'Transparent',
+                }}
+            />
+          </Card.Content>
+          <Card.Content style={{ padding: 0 }}>
+            <HideOptions
+                toggleJoined={this.props.toggleJoined}
+                toggleConflicting={this.props.toggleConflicting}
+                hideCollapse={this.state.hideCollapse}
+                toggleCollapse={() => this.toggleCollapseFilter('hideCollapse')}
+            />
+            <Divider style={{ margin: 0 }}/>
+            <SortByOptions
+                handleChange={this.props.handleChange}
+                sortCollapse={this.state.sortCollapse}
+                toggleCollapse={() => this.toggleCollapseFilter('sortCollapse')}
+            />
+            <Divider style={{ margin: 0 }}/>
+            <FilterTime
+                handleChange={this.props.handleChange}
+                startTimeText={this.props.startTimeText}
+                endTimeText={this.props.endTimeText}
+                onTimeSubmit={this.props.onTimeSubmit}
+                timeCollapse={this.state.timeCollapse}
+                toggleCollapse={() => this.toggleCollapseFilter('timeCollapse')}
+            />
+            <Divider style={{ margin: 0 }}/>
+            <FilterDate
+                setFromDate={this.props.setFromDate}
+                pressNextMonth={this.props.pressNextMonth}
+                pressPreviousMonth={this.props.pressPreviousMonth}
+                mouseUpChangeMonth={this.props.mouseUpChangeMonth}
+                mouseLeaveChangeMonth={this.props.mouseLeaveChangeMonth}
+                changeMonth={this.props.changeMonth}
+                isInRange={this.props.isInRange}
+                setToDate={this.props.setToDate}
+                startDate={this.props.startDate}
+                endDate={this.props.endDate}
+                startDateText={this.props.startDateText}
+                endDateText={this.props.endDateText}
+                handleChange={this.props.handleChange}
+                handleDateSubmit={this.props.handleDateSubmit}
+                month={this.props.month}
+                dateCollapse={this.state.dateCollapse}
+                toggleCollapse={() => this.toggleCollapseFilter('dateCollapse')}
+            />
+            <Divider style={{ margin: 0 }}/>
+            <FilterCourses
+                addCourse={this.props.addCourse}
+                handleChange={this.props.handleChange}
+                course={this.props.course}
+                courses={this.props.courses}
+                deleteCourse={this.props.deleteCourse}
+                courseCollapse={this.state.courseCollapse}
+                toggleCollapse={() => this.toggleCollapseFilter('courseCollapse')}
+            />
           </Card.Content>
         </Card>
     );
