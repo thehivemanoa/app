@@ -62,17 +62,17 @@ export default class SearchResults extends React.Component {
             />
           </Card.Content>
           <Card.Content style={{ padding: 0 }}>
+            <SortByOptions
+                handleChange={this.props.handleChange}
+                sortCollapse={this.state.sortCollapse}
+                toggleCollapse={() => this.toggleCollapseFilter('sortCollapse')}
+            />
+            <Divider style={{ margin: 0 }}/>
             <HideOptions
                 toggleJoined={this.props.toggleJoined}
                 toggleConflicting={this.props.toggleConflicting}
                 hideCollapse={this.state.hideCollapse}
                 toggleCollapse={() => this.toggleCollapseFilter('hideCollapse')}
-            />
-            <Divider style={{ margin: 0 }}/>
-            <SortByOptions
-                handleChange={this.props.handleChange}
-                sortCollapse={this.state.sortCollapse}
-                toggleCollapse={() => this.toggleCollapseFilter('sortCollapse')}
             />
             <Divider style={{ margin: 0 }}/>
             <FilterTime
