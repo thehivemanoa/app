@@ -123,9 +123,6 @@ class SessionCardFlat extends React.Component {
           <Card.Content
               style={{
                 display: this.state.isCollapsed ? 'none' : '',
-                borderColor: colors[this.props.session.course],
-                borderWidth: '2px',
-                borderStyle: 'dashed',
               }}
           >
             <Grid>

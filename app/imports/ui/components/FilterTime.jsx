@@ -32,17 +32,17 @@ export default class FilterTime extends React.Component {
       options.push({ key: this.formatTime(currentTime), text: this.formatTime(currentTime), value: currentTime });
     }
     const style = {
-      paddingLeft: '14px',
-      paddingRight: '14px',
-      marginTop: '5px',
-      marginBottom: '30px',
+      paddingLeft: '21px',
+      paddingRight: '28px',
+      marginTop: '15px',
+      marginBottom: '40px',
     };
     if (this.props.timeCollapse) {
       style.display = 'none';
     }
 
     return (
-        <List style={{ paddingLeft: '14px', paddingRight: '14px', marginTop: '14px', marginBottom: '14px' }}>
+        <List style={{ paddingLeft: '21px', paddingRight: '14px', marginTop: '4px', marginBottom: '4px' }}>
           <List.Item>
             <Header as="h4" style={{ display: 'inline-block', lineHeight: '35px' }}>Time</Header>
             <Button
@@ -83,6 +83,7 @@ export default class FilterTime extends React.Component {
 }
 
 FilterTime.propTypes = {
+  timeCollapse: PropTypes.bool.isRequired,
   toggleCollapse: PropTypes.func.isRequired,
   hideTime: PropTypes.bool.isRequired,
   onTimeSubmit: PropTypes.func.isRequired,

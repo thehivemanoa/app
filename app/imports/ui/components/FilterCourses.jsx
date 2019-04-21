@@ -25,10 +25,10 @@ export default class FilterCourses extends React.Component {
       'ICS 314': '#FFB4B0',
     };
     const style = {
-      paddingLeft: '14px',
-      paddingRight: '14px',
-      marginTop: '5px',
-      marginBottom: '30px',
+      paddingLeft: '21px',
+      paddingRight: '28px',
+      marginTop: '15px',
+      marginBottom: '40px',
     };
     if (this.props.courseCollapse) {
       style.display = 'none';
@@ -43,7 +43,7 @@ export default class FilterCourses extends React.Component {
     );
 
     return (
-        <List style={{ paddingLeft: '14px', paddingRight: '14px', marginTop: '14px', marginBottom: '14px' }}>
+        <List style={{ paddingLeft: '21px', paddingRight: '14px', marginTop: '4px', marginBottom: '4px' }}>
           <List.Item>
             <Header as="h4" style={{ display: 'inline-block', lineHeight: '35px' }}>Course</Header>
             <Button
