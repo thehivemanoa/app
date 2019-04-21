@@ -8,6 +8,8 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import SearchResults from '../components/SearchResults';
 import SearchBox from '../components/SearchBox';
 import { Sessions } from '../../api/session/session';
+import SessionCardFlat from '../components/SessionCardFlat';
+import SessionCard from '../components/SessionCard';
 
 const _ = require('underscore');
 
@@ -80,19 +82,6 @@ class SearchPage extends React.Component {
     return _.filter(attendees, attendee => attendee.profile.courses[session.course]).length;
   }
 
-  getSortedSessions() {
-    const sessions = this.getFilteredSessions();
-    if (this.state.sortBy === 'attenbees') {
-      return _.sortBy(sessions, session => session.attendees.length).reverse();
-    }
-    if (this.state.sortBy === 'royalWorker') {
-      return _.sortBy(_.filter(sessions, session => this.getNumberOfWorkers(session)), session => {
-        return this.getNumberOfRoyals(session) / this.getNumberOfWorkers(session);
-      }).reverse();
-    }
-    return _.sortBy(sessions, this.state.sortBy);
-  }
-
   stringToTime(string) {
     const time = string.split(/[\s:]+/);
     let currentDate = dateFns.startOfDay(new Date());
@@ -111,10 +100,8 @@ class SearchPage extends React.Component {
   }
 
   onTimeSubmit() {
-    console.log('hello');
     const startTime = this.stringToTime(this.state.startTimeText);
     const endTime = this.stringToTime(this.state.endTimeText);
-    console.log(this.formatTime(startTime));
     if (startTime && endTime && dateFns.isBefore(startTime, endTime)) {
       this.setState({
         startTime: startTime,
@@ -164,42 +151,66 @@ class SearchPage extends React.Component {
   }
 
   getFilteredSessions() {
-    if (this.state.hideConflicting) {
-      const joinedSessionIds = this.props.currentProfile.joinedSessions;
-      const joinedSessions = Sessions.find({ _id: { $in: joinedSessionIds } }).fetch();
-      const result = [];
-      const A = _.sortBy(joinedSessions, 'startTime');
-      const maxDate = new Date(8640000000000000);
-      const sentinel = { startTime: maxDate };
-      A.push(sentinel);
-      const B = _.sortBy(this.props.sessions, 'endTime');
-      const m = B.length;
-      let i = 0;
-      let j = 0;
-      let filterValue = null;
-      while (j < m) {
-        if (dateFns.isBefore(A[i].startTime, B[j].endTime)) {
-          if (!this.state.hideJoined && this.passesFilter(A[i])) {
-            result.push(A[i]);
-          }
-          filterValue = A[i].endTime;
-          i++;
-        } else {
-          if (!filterValue ||
-              (filterValue && !dateFns.isAfter(filterValue, B[j].startTime) && this.passesFilter(B[j]))) {
-            result.push(B[j]);
-          }
-          j++;
+    let results = [];
+    const joinedSessionIds = this.props.currentProfile.joinedSessions;
+    const joinedSessions = Sessions.find({ _id: { $in: joinedSessionIds } }).fetch();
+    const notJoinedSessions = Sessions.find({ _id: { $not: { $in: joinedSessionIds } } }).fetch();
+    const A = _.sortBy(joinedSessions, 'startTime');
+    const n = A.length;
+    const B = _.sortBy(notJoinedSessions, 'endTime');
+    const m = B.length;
+    const maxDate = new Date(8640000000000000);
+    const sentinel = { startTime: maxDate, endTime: maxDate };
+    A.push(sentinel);
+    B.push(sentinel);
+    let i = 0;
+    let j = 0;
+    let filterValue = null;
+    while (i <= n && j <= m && i + j < n + m) {
+      if (dateFns.isBefore(A[i].startTime, B[j].endTime)) {
+        if (!this.state.hideJoined && this.passesFilter(A[i])) {
+          results.push({
+            session: A[i],
+            isJoined: true,
+            isConflicting: false,
+          });
         }
+        filterValue = A[i].endTime;
+        i++;
+      } else {
+        if (this.passesFilter(B[j]) && (!filterValue || !dateFns.isAfter(filterValue, B[j].startTime))) {
+          results.push({
+            session: B[j],
+            isJoined: false,
+            isConflicting: false,
+          });
+        } else
+          if (this.passesFilter(B[j]) && !this.state.hideConflicting) {
+            results.push({
+              session: B[j],
+              isJoined: false,
+              isConflicting: true,
+            });
+          }
+        j++;
       }
-      return result;
     }
-    if (this.state.hideJoined) {
-      const joinedSessionIds = this.props.currentProfile.joinedSessions;
-      const notJoinedSessions = Sessions.find({ _id: { $not: { $in: joinedSessionIds } } }).fetch();
-      return _.filter(notJoinedSessions, session => this.passesFilter(session));
+    if (this.state.sortBy === 'attenbees') {
+      results = _.sortBy(results, sessionWrapper => sessionWrapper.session.attendees.length).reverse();
+    } else {
+      results = _.sortBy(results, sessionWrapper => sessionWrapper.session[this.state.sortBy]);
     }
-    return _.filter(this.props.sessions, session => this.passesFilter(session));
+    return _.map(results, (sessionWrapper, index) => {
+      const updateJoined = sessionWrapper.isJoined ? this.handleLeave : this.handleJoin;
+      return <SessionCardFlat
+          key={index}
+          index={results.length - index}
+          session={sessionWrapper.session}
+          updateJoined={() => updateJoined(sessionWrapper.session._id)}
+          isJoined={sessionWrapper.isJoined}
+          isConflicting={sessionWrapper.isConflicting}
+      />;
+    });
   }
 
   passesFilter(session) {
@@ -398,12 +409,11 @@ class SearchPage extends React.Component {
   }
 
   renderPage() {
-    console.log(this.state.sortBy);
     return (
         <Grid container style={{ marginTop: '120px' }}>
           <Grid.Column width={11}>
             <SearchResults
-                sessions={this.getSortedSessions()}
+                sessionCards={this.getFilteredSessions()}
                 startDate={this.state.startDate}
                 endDate={this.state.endDate}
                 startTime={this.state.startTime}

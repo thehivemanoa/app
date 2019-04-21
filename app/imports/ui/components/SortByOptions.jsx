@@ -35,7 +35,6 @@ export default class SortByOptions extends React.Component {
       { key: 'start time', text: 'Start Time', value: 'startTime' },
       { key: 'end time', text: 'End Time', value: 'endTime' },
       { key: 'attenbees', text: 'Attenbees', value: 'attenbees' },
-      { key: 'royal to worker', text: 'Royal : Worker', value: 'royalWorker' },
     ];
 
     return (

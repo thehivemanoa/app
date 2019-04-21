@@ -8,24 +8,10 @@ const _ = require('underscore');
 
 export default class SearchResults extends React.Component {
   render() {
-    const n = this.props.sessions.length;
-
-    let sessionCards = _.map(this.props.sessions,
-        (session, index) => {
-          const isJoined = this.props.isJoined(session._id);
-          const updateJoined = isJoined ? this.props.handleLeave : this.props.handleJoin;
-          return <SessionCardFlat key={index}
-                                  index={n - index}
-                                  session={session}
-                                  updateJoined={() => updateJoined(session._id)}
-                                  isJoined={isJoined}/>;
-        });
-    sessionCards = _.flatten(sessionCards);
-
     return (
         <div style={{ textAlign: 'center' }}>
           <List style={{ margin: 0 }}>
-            {sessionCards}
+            {this.props.sessionCards}
           </List>
         </div>
     );
@@ -34,7 +20,7 @@ export default class SearchResults extends React.Component {
 
 SearchResults.propTypes = {
   sortBy: PropTypes.string.isRequired,
-  sessions: PropTypes.array.isRequired,
+  sessionCards: PropTypes.array.isRequired,
   handleJoin: PropTypes.func.isRequired,
   isJoined: PropTypes.func.isRequired,
   handleLeave: PropTypes.func.isRequired,

@@ -85,7 +85,6 @@ export default class FilterTime extends React.Component {
 FilterTime.propTypes = {
   timeCollapse: PropTypes.bool.isRequired,
   toggleCollapse: PropTypes.func.isRequired,
-  hideTime: PropTypes.bool.isRequired,
   onTimeSubmit: PropTypes.func.isRequired,
   startTimeText: PropTypes.string.isRequired,
   endTimeText: PropTypes.string.isRequired,

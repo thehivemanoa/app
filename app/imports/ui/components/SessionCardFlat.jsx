@@ -111,10 +111,13 @@ class SessionCardFlat extends React.Component {
                 </Grid>
               </Grid.Column>
               <Grid.Column style={buttonContainerStyle} width={2}>
-                <Button style={buttonStyle}
-                        floated="right"
-                        size="mini"
-                        onClick={this.props.updateJoined}>
+                <Button
+                    style={buttonStyle}
+                    floated="right"
+                    size="mini"
+                    onClick={this.props.isConflicting ? () => '' : this.props.updateJoined}
+                    disabled={this.props.isConflicting}
+                >
                   {this.props.isJoined ? 'Leave' : 'Join'}
                 </Button>
               </Grid.Column>
@@ -196,6 +199,7 @@ class SessionCardFlat extends React.Component {
 }
 
 SessionCardFlat.propTypes = {
+  isConflicting: PropTypes.bool.isRequired,
   session: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   isJoined: PropTypes.bool.isRequired,
