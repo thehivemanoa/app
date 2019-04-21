@@ -5,10 +5,10 @@ import { List, Header, Button, Checkbox } from 'semantic-ui-react';
 export default class HideOptions extends React.Component {
   render() {
     const style = {
-      paddingLeft: '21px',
-      paddingRight: '28px',
+      paddingLeft: '14px',
+      paddingRight: '21px',
       marginTop: '15px',
-      marginBottom: '40px',
+      marginBottom: '35px',
     };
     if (this.props.hideCollapse) {
       style.display = 'none';

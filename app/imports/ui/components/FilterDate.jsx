@@ -56,10 +56,10 @@ export default class FilterDate extends React.Component {
       borderBottomLeftRadius: 0,
     };
     const style = {
-      paddingLeft: '21px',
-      paddingRight: '28px',
+      paddingLeft: '14px',
+      paddingRight: '21px',
       marginTop: '15px',
-      marginBottom: '40px',
+      marginBottom: '35px',
     };
     if (this.props.dateCollapse) {
       style.display = 'none';

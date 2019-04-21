@@ -25,10 +25,10 @@ export default class FilterCourses extends React.Component {
       'ICS 314': '#FFB4B0',
     };
     const style = {
-      paddingLeft: '21px',
-      paddingRight: '28px',
+      paddingLeft: '14px',
+      paddingRight: '21px',
       marginTop: '15px',
-      marginBottom: '40px',
+      marginBottom: '35px',
     };
     if (this.props.courseCollapse) {
       style.display = 'none';
