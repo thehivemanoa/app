@@ -32,17 +32,15 @@ export default class FilterTime extends React.Component {
       options.push({ key: this.formatTime(currentTime), text: this.formatTime(currentTime), value: currentTime });
     }
     const style = {
-      paddingLeft: '14px',
-      paddingRight: '21px',
-      marginTop: '15px',
-      marginBottom: '35px',
+      marginTop: '5px',
+      marginBottom: '25px',
     };
     if (this.props.timeCollapse) {
       style.display = 'none';
     }
 
     return (
-        <List style={{ paddingLeft: '21px', paddingRight: '14px', marginTop: '4px', marginBottom: '4px' }}>
+        <List style={{ paddingLeft: '21px', paddingRight: '21px', marginTop: '4px', marginBottom: '4px' }}>
           <List.Item>
             <Header as="h4" style={{ display: 'inline-block', lineHeight: '35px' }}>Time</Header>
             <Button
@@ -52,22 +50,24 @@ export default class FilterTime extends React.Component {
                   backgroundColor: 'Transparent',
                   paddingRight: 0,
                   margin: 0,
+                  display: 'none',
                 }}
                 onClick={this.props.toggleCollapse}
             />
           </List.Item>
           <List.Item style={style}>
-            <Form onSubmit={this.props.onTimeSubmit}>
+            <Form onSubmit={this.props.onTimeSubmit} inline>
               <Form.Group>
                 <Form.Input
-                    label="From"
                     value={this.props.startTimeText}
                     onChange={this.props.handleChange}
                     name="startTimeText"
                     width={8}
                 />
+                <label style={{ lineHeight: '38px' }}>
+                  -
+                </label>
                 <Form.Input
-                    label="To"
                     value={this.props.endTimeText}
                     onChange={this.props.handleChange}
                     name="endTimeText"

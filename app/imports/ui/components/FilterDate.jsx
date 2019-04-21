@@ -56,17 +56,15 @@ export default class FilterDate extends React.Component {
       borderBottomLeftRadius: 0,
     };
     const style = {
-      paddingLeft: '14px',
-      paddingRight: '21px',
-      marginTop: '15px',
-      marginBottom: '35px',
+      marginTop: '5px',
+      marginBottom: '25px',
     };
     if (this.props.dateCollapse) {
       style.display = 'none';
     }
 
     return (
-        <List style={{ paddingLeft: '21px', paddingRight: '14px', marginTop: '4px', marginBottom: '4px' }}>
+        <List style={{ paddingLeft: '21px', paddingRight: '21px', marginTop: '4px', marginBottom: '4px' }}>
           <List.Item>
             <Header as="h4" style={{ display: 'inline-block', lineHeight: '35px' }}>Date</Header>
             <Button
@@ -76,6 +74,7 @@ export default class FilterDate extends React.Component {
                   backgroundColor: 'Transparent',
                   paddingRight: 0,
                   margin: 0,
+                  display: 'none',
                 }}
                 onClick={this.props.toggleCollapse}
             />
@@ -132,14 +131,13 @@ export default class FilterDate extends React.Component {
             </Grid>
             <Form onSubmit={this.props.handleDateSubmit}>
               <Form.Group>
-                <Form.Input label="From"
-                            placeholder={'mm/dd/yyyy'}
+                <Form.Input placeholder={'mm/dd/yyyy'}
                             name="startDateText"
                             value={this.props.startDateText}
                             onChange={this.props.handleChange}
                             width={8}/>
-                <Form.Input label="To"
-                            placeholder={'mm/dd/yyyy'}
+                <label style={{ lineHeight: '38px' }}>-</label>
+                <Form.Input placeholder={'mm/dd/yyyy'}
                             name="endDateText"
                             value={this.props.endDateText}
                             onChange={this.props.handleChange}

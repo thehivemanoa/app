@@ -21,10 +21,8 @@ export default class SortByOptions extends React.Component {
 
   render() {
     const style = {
-      paddingLeft: '14px',
-      paddingRight: '21px',
-      marginTop: '15px',
-      marginBottom: '35px',
+      marginTop: '5px',
+      marginBottom: '25px',
     };
     if (this.props.sortCollapse) {
       style.display = 'none';
@@ -38,7 +36,7 @@ export default class SortByOptions extends React.Component {
     ];
 
     return (
-        <List style={{ paddingLeft: '21px', paddingRight: '14px', marginTop: '4px', marginBottom: '4px' }}>
+        <List style={{ paddingLeft: '21px', paddingRight: '21px', marginTop: '4px', marginBottom: '4px' }}>
           <List.Item>
             <Header as="h4" style={{ display: 'inline-block', lineHeight: '35px' }}>Sort</Header>
             <Button
@@ -48,6 +46,7 @@ export default class SortByOptions extends React.Component {
                   backgroundColor: 'Transparent',
                   paddingRight: 0,
                   margin: 0,
+                  display: 'none',
                 }}
                 onClick={this.props.toggleCollapse}
             />

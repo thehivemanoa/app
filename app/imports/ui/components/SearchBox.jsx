@@ -11,21 +11,18 @@ export default class SearchResults extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isCollapsed: true,
-      hideCollapse: true,
-      sortCollapse: true,
-      timeCollapse: true,
-      dateCollapse: true,
-      courseCollapse: true,
+      isCollapsed: false,
+      hideCollapse: false,
+      sortCollapse: false,
+      timeCollapse: false,
+      dateCollapse: false,
+      courseCollapse: false,
     };
     this.toggleCollapseFilter = this.toggleCollapseFilter.bind(this);
     this.toggleCollapse = this.toggleCollapse.bind(this);
   }
 
   toggleCollapseFilter(name) {
-    this.setState({
-      [name]: !this.state[name],
-    });
   }
 
   toggleCollapse() {
@@ -42,14 +39,8 @@ export default class SearchResults extends React.Component {
   render() {
     return (
         <Card fluid>
-          <Card.Content>
-            <Input
-                placeholder="Search"
-                icon="search"
-                style={{
-                  width: '90%',
-                }}
-            />
+          <Card.Content style={{ paddingLeft: '21px', paddingTop: 0, paddingBottom: 0 }}>
+            <Header as="h3" style={{ display: 'inline-block', lineHeight: '63px', marginBottom: 0 }}>Filter Options</Header>
             <Button
                 icon={this.state.isCollapsed ? 'plus' : 'minus'}
                 onClick={this.toggleCollapse}
@@ -58,6 +49,7 @@ export default class SearchResults extends React.Component {
                   paddingRight: 0,
                   paddingLeft: 0,
                   backgroundColor: 'Transparent',
+                  display: 'none',
                 }}
             />
           </Card.Content>
