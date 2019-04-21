@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import dateFns from 'date-fns';
 import { Sessions } from '../../api/session/session.js';
+import { Stuffs } from '../../api/stuff/stuff';
 
 /** Initialize the database with a default data document. */
 function addData(data) {
@@ -36,6 +37,14 @@ if (Sessions.find().count() === 0) {
 Meteor.publish('Sessions', function publish() {
   if (this.userId) {
     return Sessions.find();
+  }
+  return this.ready();
+});
+
+Meteor.publish('MySessions', function publish() {
+  if (this.userId) {
+    const sessionIds = Meteor.users.find(this.userId).fetch()[0].profile.joinedSessions;
+    return Sessions.find({ _id: { $in: sessionIds } });
   }
   return this.ready();
 });

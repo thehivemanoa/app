@@ -4,9 +4,12 @@ import { Meteor } from 'meteor/meteor';
 import { Grid, Loader } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
+import { Bert } from 'meteor/themeteorchef:bert';
 import { Sessions } from '../../api/session/session';
 import Calendar from '../components/Calendar';
 import SessionList from '../components/SessionList';
+
+const _ = require('underscore');
 
 class CalendarPage extends React.Component {
   constructor(props) {
@@ -21,6 +24,50 @@ class CalendarPage extends React.Component {
     this.handleNextMonthClick = this.handleNextMonthClick.bind(this);
     this.handlePreviousDayClick = this.handlePreviousDayClick.bind(this);
     this.handleNextDayClick = this.handleNextDayClick.bind(this);
+    this.handleLeave = this.handleLeave.bind(this);
+    this.handleJoin = this.handleJoin.bind(this);
+    this.isJoined = this.isJoined.bind(this);
+  }
+
+  handleLeave(sessionId) {
+    const currentUserId = this.props.currentUserId;
+    const throwError = function (error) {
+      return error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
+          Bert.alert({ type: 'success', message: 'Leave succeeded' });
+    };
+    Meteor.users.update(
+        currentUserId,
+        { $pull: { 'profile.joinedSessions': sessionId } },
+        error => throwError(error),
+    );
+    Sessions.update(
+        sessionId,
+        { $pull: { attendees: this.props.currentUsername } },
+        error => throwError(error),
+    );
+  }
+
+  handleJoin(sessionId) {
+    const currentUserId = this.props.currentUserId;
+    const throwError = function (error) {
+      return error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
+          Bert.alert({ type: 'success', message: 'Join succeeded' });
+    };
+    Meteor.users.update(
+        currentUserId,
+        { $push: { 'profile.joinedSessions': sessionId } },
+        error => throwError(error),
+    );
+    Sessions.update(
+        sessionId,
+        { $push: { attendees: this.props.currentUsername } },
+        error => throwError(error),
+    );
+  }
+
+  isJoined(sessionId) {
+    const joinedSessions = this.props.joinedSessions;
+    return _.some(joinedSessions, session => session === sessionId);
   }
 
   handleDayClick(date) {
@@ -70,25 +117,31 @@ class CalendarPage extends React.Component {
       minWidth: '1200px',
       marginTop: '120px',
     };
+
     return (
         <div>
           <Grid style={middleGridStyle} centered container>
             <Grid.Column width={11}>
               <Calendar selectedDate={this.state.selectedDate}
-                        sessions={this.props.sessions}
+                        sessions={_.sortBy(this.props.sessions, 'startTime')}
                         month={this.state.month}
                         handlePreviousMonthClick={this.handlePreviousMonthClick}
                         handleNextMonthClick={this.handleNextMonthClick}
                         handleDayClick={this.handleDayClick}/>
             </Grid.Column>
             <Grid.Column width={5}>
-              <SessionList handleNextDayClick={this.handleNextDayClick}
-                           sessions={this.props.sessions.filter(session => dateFns.isSameDay(
-                               session.startTime,
-                               this.state.selectedDate,
-                           ))}
-                           handlePreviousDayClick={this.handlePreviousDayClick}
-                           selectedDate={this.state.selectedDate}/>
+              <SessionList
+                  handleNextDayClick={this.handleNextDayClick}
+                  sessions={this.props.sessions.filter(session => dateFns.isSameDay(
+                      session.startTime,
+                      this.state.selectedDate,
+                  ))}
+                  handlePreviousDayClick={this.handlePreviousDayClick}
+                  selectedDate={this.state.selectedDate}
+                  handleLeave={this.handleLeave}
+                  handleJoin={this.handleJoin}
+                  isJoined={this.isJoined}
+              />
             </Grid.Column>
           </Grid>
         </div>
@@ -97,15 +150,21 @@ class CalendarPage extends React.Component {
 }
 
 CalendarPage.propTypes = {
+  joinedSessions: PropTypes.array.isRequired,
+  currentUsername: PropTypes.string.isRequired,
+  currentUserId: PropTypes.string.isRequired,
   sessions: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
   // Get access to Stuff documents.
-  const subscription = Meteor.subscribe('Sessions');
+  const subscription = Meteor.subscribe('MySessions');
   return {
+    currentUserId: Meteor.user() ? Meteor.user()._id : '',
+    currentUsername: Meteor.user() ? Meteor.user().username : '',
+    joinedSessions: Meteor.user() ? Meteor.user().profile.joinedSessions : [],
     sessions: Sessions.find({}).fetch(),
-    ready: subscription.ready(),
+    ready: (subscription.ready()),
   };
 })(CalendarPage);

@@ -24,16 +24,6 @@ export default class SearchResults extends React.Component {
 
     return (
         <div style={{ textAlign: 'center' }}>
-          <Header
-              as="h3"
-              style={{
-                margin: 0,
-                display: this.props.sessions.length === 0 ? 'inline-block' : 'inline-block',
-                lineHeight: '65px',
-              }}
-          >
-            {this.props.sessions.length === 0 ? 'No Results' : 'Results'}
-          </Header>
           <List style={{ margin: 0 }}>
             {sessionCards}
           </List>
