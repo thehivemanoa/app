@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Feed, Image } from 'semantic-ui-react';
 
 /** Renders the Page for adding a document. */
-class Notification extends React.Component {
+class ActivityItem extends React.Component {
 
   render() {
     return (
@@ -14,9 +14,11 @@ class Notification extends React.Component {
                    src={'https://philipmjohnson.github.io/images/philip2.jpeg'}/>
           </Feed.Label>
           <Feed.Content>
-            <Feed.Date content={this.props.notification.createdAt.toLocaleDateString('en-US')} />
+            <Feed.Date content={this.props.activityItem.createdAt.toLocaleDateString('en-US')} />
             <Feed.Summary>
-              {this.props.notification.description}
+              <Feed.User>{this.props.activityItem.owner}</Feed.User>
+              {' '}{this.props.activityItem.event}{' '}
+              <Feed.User>{this.props.activityItem.target}</Feed.User>
             </Feed.Summary>
           </Feed.Content>
         </Feed.Event>
@@ -24,8 +26,8 @@ class Notification extends React.Component {
   }
 }
 
-Notification.propTypes = {
-  notification: PropTypes.object.isRequired,
+ActivityItem.propTypes = {
+  activityItem: PropTypes.object.isRequired,
 };
 
-export default Notification;
+export default ActivityItem;

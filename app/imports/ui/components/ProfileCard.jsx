@@ -1,6 +1,7 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
-import { Card,  Grid, Icon, Image, Progress } from 'semantic-ui-react';
+import { Card, Grid, Icon, Image, Progress } from 'semantic-ui-react';
 
 export default class ProfileCard extends React.Component {
   render() {
@@ -23,30 +24,30 @@ export default class ProfileCard extends React.Component {
     return (
         <Card style={{ float: 'left', marginRight: '3em' }}>
           <Card.Content>
-            <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' circular
+            <Image src={this.props.image} circular
                    style={{ marginBottom: 5 }}/>
             <div className="non-semantic-protector">
               <h1 className="ribbon">
-                <strong className="ribbon-content">John Smith</strong>
+                <strong className="ribbon-content">{this.props.firstName} {this.props.lastName}</strong>
               </h1>
+
+              {/** Progress Bar*/}
               <Grid columns={2} verticalAlign='middle'>
                 <Grid.Column width={3}>
-                  {/** Honey pot with level */}
+                  {/** Change start to honey pot */}
                   <div style={{ position: 'relative' }}>
                     <Icon name="star outline" style={xpIcon}/>
                     <div style={center}>
-                      <h2 style={{ fontSize: 18 }}>12</h2>
+                      <h2 style={{ fontSize: 18 }}>{this.props.level}</h2>
                     </div>
                   </div>
                 </Grid.Column>
                 <Grid.Column width={13}>
                   <Grid.Row>
-                    {/** current/total XP */}
-                    <p>800/1000 XP</p>
+                    <p>{this.props.exp}/{this.props.nextLevel} XP</p>
                   </Grid.Row>
                   <Grid.Row>
-                    {/** Progress Bar*/}
-                    <Progress value='4' total='5' progress='percent'/>
+                    <Progress value={this.props.exp} total={this.props.nextLevel}/>
                   </Grid.Row>
                 </Grid.Column>
               </Grid>
@@ -57,6 +58,12 @@ export default class ProfileCard extends React.Component {
   }
 }
 
+/** Require an array of user documents in the props. */
 ProfileCard.propTypes = {
-  profile: PropTypes.object.isRequired,
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
+  level: PropTypes.number,
+  exp: PropTypes.number,
+  nextLevel: PropTypes.number,
+  image: PropTypes.string,
 };

@@ -9,6 +9,21 @@ body {
   margin-top: 150px !important;
 }
 
+@media (min-width: 61.25rem) {
+  .collapsed{
+    display: none !important;
+  }
+}
+
+@media (max-width: 61.25rem) {
+  .collapsable{
+    display: none !important;
+  }
+  .collapsed{
+    display: block;
+  }
+}
+
 .landing-page, .profile-page, user-homepage {
   font-family: 'Montserrat', sans-serif !important;
 }

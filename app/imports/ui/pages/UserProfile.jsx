@@ -1,20 +1,8 @@
 import React from 'react';
 import Alert from 'react-s-alert/';
 import { Meteor } from 'meteor/meteor';
-import { AccountSchema } from '../../api/accounts/accounts';
-import {
-  Container,
-  Loader,
-  Grid,
-  Card,
-  Image,
-  Icon,
-  Progress,
-  Tab,
-  Divider,
-  Button,
-  Modal,
-} from 'semantic-ui-react';
+import { Container, Loader, Grid, Card, Image, Icon, Progress, Tab } from 'semantic-ui-react';
+import ProfileCard from '../components/ProfileCard';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import AutoForm from 'uniforms-semantic/AutoForm';
@@ -184,9 +172,9 @@ class UserProfile extends React.Component {
         ),
       },
       {
-        menuItem: 'Notifications',
+        menuItem: 'ReportLog',
         pane: (
-            <Tab.Pane attached={false} key={'Notifications'}>
+            <Tab.Pane attached={false} key={'ReportLog'}>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad asperiores, laudantium libero minima
                 soluta tempora! Accusamus adipisci, blanditiis commodi culpa cum cupiditate dolor ea error esse
                 explicabo fuga ipsum labore minima minus obcaecati officia praesentium, quae quos ratione reiciendis
@@ -198,8 +186,8 @@ class UserProfile extends React.Component {
             </Tab.Pane>),
       }
     ];
-
     return (
+
         <Container className="profile-page" style={containerPadding} fluid>
           <Card style={{ float: 'left', marginRight: '3em' }}>
             <Card.Content>
@@ -233,24 +221,44 @@ class UserProfile extends React.Component {
             </Card.Content>
           </Card>
           <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'left'}
+
+    const containerPadding = {
+      paddingTop: 20,
+      paddingBottom: 30,
+      paddingLeft: 50,
+      paddingRight: 50,
+      minHeight: '70vh',
+    };
+
+    return (
+        <Container className="profile-page" style={containerPadding} fluid>
+          <ProfileCard
+              firstName={this.props.firstName}
+              lastName={this.props.lastName}
+              level={this.props.level}
+              exp={this.props.exp}
+              image={this.props.image}
+              nextLevel={this.props.nextLevel}
+          />
+          <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
                panes={panes}
                renderActiveOnly={false}/>
         </Container>
-    );
+    )
+        ;
   }
 }
 
-/** Require an array of Stuff documents in the props. */
+/** Require an array of user documents in the props. */
 UserProfile.propTypes = {
   ready: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
   lastName: PropTypes.string,
-  level: PropTypes.string,
-  exp: PropTypes.string,
-  email: PropTypes.array,
-  image: PropTypes.string,
-  doc: PropTypes.object,
-  model: PropTypes.object,
+  level: PropTypes.number,
+  exp: PropTypes.number,
+  nextLevel: PropTypes.number,
+  email: PropTypes.string,
+  image: PropTypes.string
 };
 
 export default withTracker(() => {
@@ -264,5 +272,6 @@ export default withTracker(() => {
     image: Meteor.user() ? Meteor.user().profile.image : '',
     doc:  Meteor.users.findOne({ _id: Meteor.userId() }),
     ready: subscription.ready(),
+    nextLevel: Meteor.user() ? Math.round( 50 * (0.04 * (Meteor.user().profile.level ^ 3) + 0.8 * (Meteor.user().profile.level ^ 2) + 2 * Meteor.user().profile.level)) : ''
   };
 })(UserProfile);

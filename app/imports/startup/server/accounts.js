@@ -17,6 +17,17 @@ function createUser(email, password, profile, role) {
   }
 }
 
+Meteor.publish('Profiles', function publish() {
+  const USER_FIELDS = {
+    username: 1,
+    profile: 1,
+  };
+  if (this.userId) {
+    return Meteor.users.find({}, { fields: USER_FIELDS });
+  }
+  return this.ready();
+});
+
 /** When running app for first time, pass a settings file to set up a default user account. */
 if (Meteor.users.find().count() === 0) {
   if (Meteor.settings.defaultAccounts) {
