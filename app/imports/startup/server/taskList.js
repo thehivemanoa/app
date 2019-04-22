@@ -4,7 +4,7 @@ import { TaskList } from '../../api/taskList/taskList.js';
 
 /** Initialize the database with a default data document. */
 function addData(data) {
-  console.log(`  Adding task for: ${data.owner}`);
+  console.log('Adding task');
   TaskList.insert(data);
 }
 
