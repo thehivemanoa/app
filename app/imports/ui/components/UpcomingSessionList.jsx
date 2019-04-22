@@ -1,7 +1,7 @@
 import React from 'react';
 import dateFns from 'date-fns';
 import PropTypes from 'prop-types';
-import { Card, Header, Divider, Container } from 'semantic-ui-react';
+import { Card, Header, Divider, Container, List } from 'semantic-ui-react';
 import isAfter from 'date-fns/is_after';
 import startOfWeek from 'date-fns/start_of_week';
 import endOfWeek from 'date-fns/end_of_week';
@@ -74,12 +74,25 @@ export default class UpcomingSessionList extends React.Component {
           </Header>
       );
     }
-      /** return group of cards for each week */
-      return _.each(formattedDates, (formattedDate) => <Container className="session_weekly_list">
-        <Divider horizontal><h2>{formattedDate}</h2></Divider>
-        <Card.Group centered items={_.pluck(groupedCards, formattedDate)}/>
-      </Container>);
 
+    console.log('how are you');
+    const containers = [];
+    /** return group of cards for each week */
+    _.each(formattedDates, (formattedDate, index) => {
+      const listItem = (<List.Item className="session_weekly_list" key={index}>
+            <Divider horizontal><h2>{formattedDate}</h2></Divider>
+            <Card.Group centered items={groupedCards[formattedDate]}/>
+          </List.Item>
+      );
+      console.log(listItem);
+      containers.push(listItem);
+    });
+
+    return (
+        <List>
+          {containers}
+        </List>
+    );
 
   }
 }
