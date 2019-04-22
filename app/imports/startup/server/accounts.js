@@ -26,11 +26,3 @@ if (Meteor.users.find().count() === 0) {
     console.log('Cannot initialize the database!  Please invoke meteor with a settings file.');
   }
 }
-
-/** This subscription publishes all documents provided that the user is logged in */
-Meteor.publish('Accounts', function publish() {
-  if (this.userId) {
-    return Accounts.find();
-  }
-  return this.ready();
-});

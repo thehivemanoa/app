@@ -1,7 +1,7 @@
 import React from 'react';
 import Alert from 'react-s-alert/';
 import { Meteor } from 'meteor/meteor';
-import { Accounts, AccountSchema } from '../../api/accounts/accounts';
+import { AccountSchema } from '../../api/accounts/accounts';
 import {
   Container,
   Loader,
@@ -29,9 +29,10 @@ class UserProfile extends React.Component {
     this.info = this.info.bind(this);
     this.edit = this.edit.bind(this);
     this.save = this.save.bind(this);
+    this.submitInfo = this.submitInfo.bind(this);
     this.state = ({ editing: false });
     console.log('state: { editing: false }');
-    console.log(Meteor.userId());
+    console.log(this.props.doc);
   }
 
   edit() {
@@ -49,12 +50,12 @@ class UserProfile extends React.Component {
   }
 
   submitInfo(data) {
-    const { firstName, lastName, email } = data;
+    const { emails, profile, username } = data;
     Meteor.users.update({ _id: Meteor.userId() }, {
       $set: {
-        'emails.0.address': firstName,
-        'profile.firstName': lastName,
-        'profile.lastName': email
+        emails: emails,
+        profile: profile,
+        username: username,
       }
     }, (error) => (error ?
         Alert.error(`Update failed: ${error.message}`, {
@@ -65,6 +66,7 @@ class UserProfile extends React.Component {
           position: 'top-right',
           effect: 'slide',
         })));
+    return this.save()
   };
 
   renderInfoNormal() {
@@ -82,11 +84,11 @@ class UserProfile extends React.Component {
   renderInfoForm() {
     return (
         <div>
-          <AutoForm schema={AccountSchema} onSubmit={this.submitInfo} model={this.props.doc}>
-            <TextField name='profile.firstName' label={'First Name'} placeholder={this.props.firstName} />
-            <TextField name='profile.lastName' label={'Last Name'} placeholder={this.props.lastName} />
-            <TextField name='emails.0.address' label={'Email'} placeholder={this.props.email[0].address} />
-            <SubmitField value='Submit' onClick={this.save}/>
+          <AutoForm schema={AccountSchema} model={this.props.doc}>
+            <TextField name='profile.firstName' label={'First Name'} />
+            <TextField name='profile.lastName' label={'Last Name'} />
+            <TextField name='emails.0.address' label={'Email'} />
+            <SubmitField value='Submit' onClick={this.submitInfo}/>
           </AutoForm>
         </div>
     )
@@ -230,7 +232,7 @@ class UserProfile extends React.Component {
               </div>
             </Card.Content>
           </Card>
-          <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
+          <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'left'}
                panes={panes}
                renderActiveOnly={false}/>
         </Container>
@@ -240,6 +242,7 @@ class UserProfile extends React.Component {
 
 /** Require an array of Stuff documents in the props. */
 UserProfile.propTypes = {
+  ready: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
   lastName: PropTypes.string,
   level: PropTypes.string,
@@ -250,8 +253,7 @@ UserProfile.propTypes = {
   model: PropTypes.object,
 };
 
-export default withTracker(({ match }) => {
-  const documentId = match.params._id;
+export default withTracker(() => {
   const subscription = Meteor.subscribe('Notifications');
   return {
     firstName: Meteor.user() ? Meteor.user().profile.firstName : '',
@@ -260,7 +262,7 @@ export default withTracker(({ match }) => {
     exp: Meteor.user() ? Meteor.user().profile.exp : '',
     email: Meteor.user() ? Meteor.user().emails : [],
     image: Meteor.user() ? Meteor.user().profile.image : '',
-    doc: Accounts.findOne(documentId),
+    doc:  Meteor.users.findOne({ _id: Meteor.userId() }),
     ready: subscription.ready(),
   };
 })(UserProfile);
