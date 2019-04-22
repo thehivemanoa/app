@@ -2,12 +2,13 @@ import React from 'react';
 import Alert from 'react-s-alert';
 import { Bert } from 'meteor/themeteorchef:bert';
 import { Meteor } from 'meteor/meteor';
-import { Container, Loader, Image, Tab, Modal, Divider, Button, Form, Grid } from 'semantic-ui-react';
+import { Container, Loader, Image, Tab, Modal, Divider, Button, Form } from 'semantic-ui-react';
 import { Courses } from '../../api/courses/courses';
 import { withTracker } from 'meteor/react-meteor-data';
 import ProfileCard from '../components/ProfileCard';
-import CourseDND from '../components/CourseDND';
 import PropTypes from 'prop-types';
+
+const _ = require('underscore');
 
 /** Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
 class UserProfile extends React.Component {
@@ -26,6 +27,11 @@ class UserProfile extends React.Component {
       submittedFirstName: firstName,
       submittedLastName: lastName,
       submittedEmail: email,
+      activeCourses: [],
+      userCourses: [],
+      workerBee: [],
+      royalBee: [],
+      ready: false,
     });
 
     this.info = this.info.bind(this);
@@ -38,9 +44,21 @@ class UserProfile extends React.Component {
     this.renderInfoForm = this.renderInfoForm.bind(this);
     this.renderPicNormal = this.renderPicNormal.bind(this);
     this.renderPicForm = this.renderPicForm.bind(this);
-    this.handleTabChange = this.handleTabChange.bind(this);
+    this.initializeCourses = this.initializeCourses.bind(this);
 
     console.log('state: { editing: false }');
+  }
+
+  initializeCourses() {
+    const courses = this.props.userCourses;
+    const list = _.pluck(this.props.courses, 'course');
+    this.setState({
+      userCourses: _.keys(courses, 'courses'),
+    });
+    this.forceUpdate();
+    this.setState({
+      activeCourses: _.difference(list, this.state.userCourses),
+    });
   }
 
   edit() {
@@ -149,10 +167,16 @@ class UserProfile extends React.Component {
     }
   }
 
-  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
-
   /** If the subscription(s) have been received, render the page, otherwise show a loading icon. */
   render() {
+    if (!this.state.ready && this.props.ready){
+      this.initializeCourses();
+      this.setState({
+        ready: true,
+      });
+    }
+    console.log(this.state.userCourses);
+    console.log(this.state.activeCourses);
     return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
@@ -173,9 +197,6 @@ class UserProfile extends React.Component {
               {this.info()}
             </Tab.Pane>
         ),
-      },
-      {
-        menuItem: 'Courses',
       },
       {
         menuItem: 'Accounts',
@@ -208,50 +229,18 @@ class UserProfile extends React.Component {
       }
     ];
 
-    const { activeIndex } = this.state;
-
     return (
         <Container className="profile-page" style={containerPadding} fluid>
-          {this.state.activeIndex === 1 ?
-              (<div>
-                <Grid relaxed={'very'} columns={4}>
-                  <Grid.Row>
-                    <Grid.Column>
-                      <CourseDND tableId={'Courses'} courses={this.props.courses}
-                                 userCourses={this.props.userCourses}/>
-                    </Grid.Column>
-                    <Grid.Column>
-                      <CourseDND tableId={'Worker Bee'} courses={this.props.courses}
-                                 userCourses={this.props.userCourses}/>
-                    </Grid.Column>
-                    <Grid.Column>
-                      <CourseDND tableId={'Royal Bee'} courses={this.props.courses}
-                                 userCourses={this.props.userCourses}/>
-                    </Grid.Column>
-                    <Grid.Column>
-                      <Tab menu={{ secondary: true, pointing: true, fluid: false, vertical: true }}
-                           menuPosition={'right'}
-                           panes={panes} renderActiveOnly={false} activeIndex={activeIndex}
-                           onTabChange={this.handleTabChange}
-                           className="activeTabTwo"
-                      />
-                    </Grid.Column>
-                  </Grid.Row>
-                </Grid>
-              </div>) :
-              (<div>
-                <ProfileCard
-                    firstName={this.state.submittedFirstName}
-                    lastName={this.state.submittedLastName}
-                    level={this.props.level}
-                    exp={this.props.exp}
-                    image={this.props.image}
-                    nextLevel={this.props.nextLevel}
-                />
-                <Tab menu={{ secondary: true, pointing: true, fluid: false, vertical: true }} menuPosition={'right'}
-                     panes={panes} renderActiveOnly={false} activeIndex={activeIndex}
-                     onTabChange={this.handleTabChange}/>
-              </div>)}
+          <ProfileCard
+              firstName={this.state.submittedFirstName}
+              lastName={this.state.submittedLastName}
+              level={this.props.level}
+              exp={this.props.exp}
+              image={this.props.image}
+              nextLevel={this.props.nextLevel}
+          />
+          <Tab menu={{ secondary: true, pointing: true, fluid: false, vertical: true }} menuPosition={'right'}
+               panes={panes} renderActiveOnly={false}/>
         </Container>
     );
   }
