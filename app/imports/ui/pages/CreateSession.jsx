@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Loader } from 'semantic-ui-react';
+import { Loader, Container } from 'semantic-ui-react';
 import AddSession from '../components/AddSession';
 import { Courses } from '../../api/courses/courses';
 
@@ -15,7 +15,9 @@ class CreateSession extends React.Component {
 
   renderPage() {
     return (
-      <AddSession courses={this.props.courses}/>
+        <Container style={{ marginBottom: '14px' }}>
+          <AddSession courses={this.props.courses}/>
+        </Container>
     );
   }
 }
