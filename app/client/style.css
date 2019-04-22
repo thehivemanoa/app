@@ -9,7 +9,22 @@ body {
   margin-top: 150px !important;
 }
 
-.landing-page, .profile-page {
+@media (min-width: 61.25rem) {
+  .collapsed{
+    display: none !important;
+  }
+}
+
+@media (max-width: 61.25rem) {
+  .collapsable{
+    display: none !important;
+  }
+  .collapsed{
+    display: block;
+  }
+}
+
+.landing-page, .profile-page, user-homepage {
   font-family: 'Montserrat', sans-serif !important;
 }
 
@@ -102,7 +117,67 @@ h2 {
   margin: 21px 7px !important;
 }
 
-.ui.menu > .item:first-child {
-  padding-bottom: 0px !important;
-  padding-top:15px !important;
+/**
+Progress Bar
+ */
+.ui.progress {
+  border-radius: 10em !important;
 }
+
+.ui.progress .bar {
+  border-radius: 10em !important;
+  background: #ffc300 !important;
+}
+
+/**
+Modification of ribbon css from:
+ https://css-tricks.com/snippets/css/ribbon/
+*/
+.ribbon {
+  font-size: 16px !important;
+
+  width: 75%;
+
+  position: relative;
+  background: #ba89b6;
+  color: #fff;
+  text-align: center;
+  padding: .2em;
+  margin: 2em auto 3em;
+}
+.ribbon:before, .ribbon:after {
+  content: "";
+  position: absolute;
+  display: block;
+  bottom: -1em;
+  border: .7em solid #986794;
+  z-index: -1;
+}
+.ribbon:before {
+  left: -1.25em;
+  border-right-width: 1.5em;
+  border-left-color: transparent;
+}
+.ribbon:after {
+  right: -1.25em;
+  border-left-width: 1.5em;
+  border-right-color: transparent;
+}
+.ribbon .ribbon-content:before, .ribbon .ribbon-content:after {
+  content: "";
+  position: absolute;
+  display: block;
+  border-style: solid;
+  border-color: #804f7c transparent transparent transparent;
+  bottom: -1em;
+}
+.ribbon .ribbon-content:before {
+  left: 0;
+  border-width: 1em 0 0 1em;
+}
+.ribbon .ribbon-content:after {
+  right: 0;
+  border-width: 1em 1em 0 0;
+}
+
+.non-semantic-protector { position: relative; z-index: 1; }

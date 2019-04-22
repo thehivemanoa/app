@@ -13,19 +13,19 @@ export default class SessionList extends React.Component {
     const month = dateFns.format(date, 'MMM');
     const dayOfTheMonth = dateFns.format(date, 'DD');
     const formattedDate = `${dayOfTheWeek}, ${month} ${dayOfTheMonth} `;
-    const courses = _.groupBy(this.props.sessions, 'course');
-    let groups = _.mapObject(courses, function (sessions, course) {
-      const sessionCards = _.map(sessions, (session, index) => <SessionCard key={index} session={session} fluid/>);
+    const sessionCards = _.map(_.sortBy(this.props.sessions, 'startTime'), (session) => {
+      const isJoined = this.props.isJoined(session._id);
+      const handleUpdate = isJoined ? this.props.handleLeave : this.props.handleJoin;
       return (
-          <div style={{ width: '100%' }}>
-            <Divider horizontal>{course}</Divider>
-            <Card.Group key={course} fluid>
-              {sessionCards}
-            </Card.Group>
-          </div>
+          <SessionCard
+              key={session.startTime}
+              session={session}
+              fluid
+              handleUpdate={() => handleUpdate(session._id)}
+              isJoined={isJoined}
+          />
       );
     });
-    groups = _.values(groups);
     // const events = this.props.sessions.map((session, index) => <SessionCard key={index} session={session} />);
 
     return (
@@ -52,8 +52,10 @@ export default class SessionList extends React.Component {
               </Grid>
             </Card.Header>
           </Card.Content>
-          <Card.Content style={{ paddingTop: 0 }}>
-            {groups}
+          <Card.Content>
+            <Card.Group>
+              {sessionCards}
+            </Card.Group>
           </Card.Content>
         </Card>
     );
@@ -61,6 +63,9 @@ export default class SessionList extends React.Component {
 }
 
 SessionList.propTypes = {
+  isJoined: PropTypes.func.isRequired,
+  handleJoin: PropTypes.func.isRequired,
+  handleLeave: PropTypes.func.isRequired,
   sessions: PropTypes.array.isRequired,
   selectedDate: PropTypes.object.isRequired,
   handlePreviousDayClick: PropTypes.func.isRequired,

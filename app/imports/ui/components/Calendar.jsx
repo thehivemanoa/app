@@ -12,16 +12,20 @@ export default class Calendar extends React.Component {
           <List>
             <List.Item>
               <Grid>
-                <CalendarHeader month={this.props.month}
-                                handlePreviousMonthClick={this.props.handlePreviousMonthClick}
-                                handleNextMonthClick={this.props.handleNextMonthClick}/>
+                <CalendarHeader
+                    month={this.props.month}
+                    handlePreviousMonthClick={this.props.handlePreviousMonthClick}
+                    handleNextMonthClick={this.props.handleNextMonthClick}
+                />
                 <Days/>
               </Grid>
             </List.Item>
             <List.Item>
-              <Cells month={this.props.month}
-                     sessions={this.props.sessions}
-                     handleDayClick={this.props.handleDayClick}/>
+              <Cells
+                  month={this.props.month}
+                  sessions={this.props.sessions}
+                  handleDayClick={this.props.handleDayClick}
+              />
             </List.Item>
           </List>
         </Container>
