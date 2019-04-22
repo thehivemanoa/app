@@ -1,9 +1,9 @@
 import React from 'react';
-import { Card, Grid, Button } from 'semantic-ui-react';
+import { Card } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Courses } from '../../api/courses/courses';
-import sAlert from 'react-s-alert';
+import Alert from 'react-s-alert';
 
 class CourseCard extends React.Component {
 
@@ -16,16 +16,12 @@ class CourseCard extends React.Component {
   /** Notify the user of the results of the submit. If successful, clear the form. */
   deleteCallback(error) {
     if (error) {
-      sAlert.error(`Delete failed: ${error.message}`, {
-        position: 'top-right',
+      Alert.error('Delete failed:' + `${error.message}`, {
         effect: 'slide',
-        html: 'false'
       });
     } else {
-      sAlert.success('Delete succeeded', {
-        position: 'top-right',
+      Alert.success('Delete succeeded', {
         effect: 'slide',
-        html: 'false'
       });
     }
   }
@@ -37,7 +33,7 @@ class CourseCard extends React.Component {
 
   render() {
     return (
-        <Card centered>
+        <Card>
           <Card.Content>
             <Card.Header>
               {this.props.course.course}
@@ -45,14 +41,6 @@ class CourseCard extends React.Component {
             <Card.Description>
               {this.props.course.description}
             </Card.Description>
-          </Card.Content>
-          <Card.Content extra>
-            <Grid>
-              <Grid.Row columns={2}>
-                <Button fluid color={'green'}>Add</Button> /* Not sure if this is needed in Course Card */
-                <Button color={'red'} onClick={this.onClick}>Delete</Button>
-              </Grid.Row>
-            </Grid>
           </Card.Content>
         </Card>
     );

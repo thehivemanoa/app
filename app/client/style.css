@@ -180,4 +180,9 @@ Modification of ribbon css from:
   border-width: 1em 1em 0 0;
 }
 
+.activeTabTwo {
+  position: initial;
+  margin-right: 15rem;
+}
+
 .non-semantic-protector { position: relative; z-index: 1; }

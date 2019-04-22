@@ -2,11 +2,12 @@ import React from 'react';
 import Alert from 'react-s-alert';
 import { Bert } from 'meteor/themeteorchef:bert';
 import { Meteor } from 'meteor/meteor';
-import { Container, Loader, Image, Tab, Modal, Divider, Button, Form } from 'semantic-ui-react';
-import ProfileCard from '../components/ProfileCard';
+import { Container, Loader, Image, Tab, Modal, Divider, Button, Form, Grid } from 'semantic-ui-react';
+import { Courses } from '../../api/courses/courses';
 import { withTracker } from 'meteor/react-meteor-data';
+import ProfileCard from '../components/ProfileCard';
+import CourseDND from '../components/CourseDND';
 import PropTypes from 'prop-types';
-import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 /** Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
 class UserProfile extends React.Component {
@@ -18,6 +19,7 @@ class UserProfile extends React.Component {
 
     this.state = ({
       editing: false,
+      activeIndex: 0,
       firstName: firstName,
       lastName: lastName,
       email: email,
@@ -36,6 +38,7 @@ class UserProfile extends React.Component {
     this.renderInfoForm = this.renderInfoForm.bind(this);
     this.renderPicNormal = this.renderPicNormal.bind(this);
     this.renderPicForm = this.renderPicForm.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
 
     console.log('state: { editing: false }');
   }
@@ -146,13 +149,14 @@ class UserProfile extends React.Component {
     }
   }
 
+  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
+
   /** If the subscription(s) have been received, render the page, otherwise show a loading icon. */
   render() {
     return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
   renderPage() {
-
     const containerPadding = {
       paddingTop: 20,
       paddingBottom: 30,
@@ -169,6 +173,9 @@ class UserProfile extends React.Component {
               {this.info()}
             </Tab.Pane>
         ),
+      },
+      {
+        menuItem: 'Courses',
       },
       {
         menuItem: 'Accounts',
@@ -201,18 +208,50 @@ class UserProfile extends React.Component {
       }
     ];
 
+    const { activeIndex } = this.state;
+
     return (
         <Container className="profile-page" style={containerPadding} fluid>
-          <ProfileCard
-              firstName={this.state.submittedFirstName}
-              lastName={this.state.submittedLastName}
-              level={this.props.level}
-              exp={this.props.exp}
-              image={this.props.image}
-              nextLevel={this.props.nextLevel}
-          />
-          <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
-               panes={panes} renderActiveOnly={false}/>
+          {this.state.activeIndex === 1 ?
+              (<div>
+                <Grid relaxed={'very'} columns={4}>
+                  <Grid.Row>
+                    <Grid.Column>
+                      <CourseDND tableId={'Courses'} courses={this.props.courses}
+                                 userCourses={this.props.userCourses}/>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <CourseDND tableId={'Worker Bee'} courses={this.props.courses}
+                                 userCourses={this.props.userCourses}/>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <CourseDND tableId={'Royal Bee'} courses={this.props.courses}
+                                 userCourses={this.props.userCourses}/>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <Tab menu={{ secondary: true, pointing: true, fluid: false, vertical: true }}
+                           menuPosition={'right'}
+                           panes={panes} renderActiveOnly={false} activeIndex={activeIndex}
+                           onTabChange={this.handleTabChange}
+                           className="activeTabTwo"
+                      />
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+              </div>) :
+              (<div>
+                <ProfileCard
+                    firstName={this.state.submittedFirstName}
+                    lastName={this.state.submittedLastName}
+                    level={this.props.level}
+                    exp={this.props.exp}
+                    image={this.props.image}
+                    nextLevel={this.props.nextLevel}
+                />
+                <Tab menu={{ secondary: true, pointing: true, fluid: false, vertical: true }} menuPosition={'right'}
+                     panes={panes} renderActiveOnly={false} activeIndex={activeIndex}
+                     onTabChange={this.handleTabChange}/>
+              </div>)}
         </Container>
     );
   }
@@ -228,11 +267,13 @@ UserProfile.propTypes = {
   email: PropTypes.array,
   image: PropTypes.string,
   currentUser: PropTypes.object,
+  courses: PropTypes.array,
+  userCourses: PropTypes.object,
   username: PropTypes.string
 };
 
 export default withTracker(() => {
-  const subscription = Meteor.subscribe('Profiles');
+  const subscription = Meteor.subscribe('Courses');
   return {
     currentUser: Meteor.user(),
     firstName: Meteor.user() ? Meteor.user().profile.firstName : '',
@@ -243,6 +284,8 @@ export default withTracker(() => {
     image: Meteor.user() ? Meteor.user().profile.image : '',
     username: Meteor.user() ? Meteor.user().username : '',
     nextLevel: Meteor.user() ? Math.round(50 * (0.04 * (Meteor.user().profile.level ^ 3) + 0.8 * (Meteor.user().profile.level ^ 2) + 2 * Meteor.user().profile.level)) : null,
+    courses: Courses.find({}).fetch(),
+    userCourses: Meteor.user() ? Meteor.user().profile.courses : {},
     ready: subscription.ready(),
   };
 })(UserProfile);
