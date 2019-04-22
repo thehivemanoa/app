@@ -4,13 +4,14 @@ import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Grid, Feed, Card } from 'semantic-ui-react';
 import DataCard from '../components/DataCard';
-import TaskList from '../components/TaskList';
 import ReportItem from '../components/ReportItem';
 import ActivityItem from '../components/ActivityItem';
+import TaskItem from '../components/TaskItem';
 import { Courses } from '../../api/courses/courses';
 import { Sessions } from '../../api/session/session';
 import { ReportLog } from '../../api/reportLog/reportLog';
 import { ActivityLog } from '../../api/activityLog/activityLog';
+import { TaskList } from '../../api/taskList/taskList';
 
 // import AddCourse from '../components/AddCourse';
 
@@ -69,7 +70,17 @@ class Admin extends React.Component {
             </Grid.Column>
 
             <Grid.Column>
-              <TaskList/>
+              <Card fluid>
+                <Card.Content>
+                  <Card.Header>Task List</Card.Header>
+                </Card.Content>
+                <Card.Content>
+                  <Feed>
+                    {this.props.taskList.map((data, index) => <TaskItem key={index}
+                                                                         taskItem={data}/>)}
+                  </Feed>
+                </Card.Content>
+              </Card>
             </Grid.Column>
           </Grid.Row>
 
@@ -99,6 +110,7 @@ Admin.propTypes = {
   sessions: PropTypes.array.isRequired,
   reports: PropTypes.array.isRequired,
   activityLog: PropTypes.array.isRequired,
+  taskList: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
@@ -109,11 +121,13 @@ export default withTracker(() => {
   const sessionsSub = Meteor.subscribe('Sessions');
   const activitySub = Meteor.subscribe('ActivityLog');
   const reportLogSub = Meteor.subscribe('ReportLog');
+  const taskSub = Meteor.subscribe('TaskList');
   return {
     courses: Courses.find({}).fetch(),
     sessions: Sessions.find({}).fetch(),
     reports: ReportLog.find({}).fetch(),
     activityLog: ActivityLog.find({}).fetch(),
-    ready: (courseSub.ready() && sessionsSub.ready() && reportLogSub.ready() && activitySub.ready()),
+    taskList: TaskList.find({}).fetch(),
+    ready: (courseSub.ready() && sessionsSub.ready() && reportLogSub.ready() && activitySub.ready() && taskSub.ready()),
   };
 })(Admin);
