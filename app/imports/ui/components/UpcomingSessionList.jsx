@@ -13,7 +13,9 @@ export default class UpcomingSessionList extends React.Component {
   render() {
     const date = this.props.selectedDate;
 
-    const upcomingSessions = _.sortBy(_.filter(this.props.sessions, (session) => { return isAfter(date, session.startTime) }, 'startTime'));
+    const upcomingSessions = _.sortBy(_.filter(this.props.sessions, (session) => {
+      return isAfter(date, session.startTime)
+    }, 'startTime'));
 
     const groupedSessions = _.groupBy(upcomingSessions, function (session) {
       return startOfWeek(session.startTime)
@@ -53,9 +55,8 @@ export default class UpcomingSessionList extends React.Component {
         );
     /** sessionCards array returns new array of grouped session cards arrays of keys as formatted start to end dates: [ [{sessionCard1}, {sessionCard2}], [{sessionCard3}] ] */
 
-const groupedCards = _.object(formattedDates, sessionCards);
+    const groupedCards = _.object(formattedDates, sessionCards);
     /** groupedCards returns new abject where keys are formatted dates and values are arrays of session cards: {'start-end': [{sessionCard1}, {sessionCard2}], 'start-end': {sessionCard3}]} */
-
 
     /** if there are no upcoming sessions, return "no upcoming sessions" message */
     if (_.isEmpty(groupedCards)) {
@@ -66,16 +67,14 @@ const groupedCards = _.object(formattedDates, sessionCards);
       );
     } else {
       /** return group of cards for each week */
-      return (_.each(groupedCards, (card) => {
-        _.each(_.keys(card), (key) => {
-          return (
-              <Container className="session_weekly_list">
-                <Divider horizontal><h2>{key}</h2></Divider>
-                <Card.Group centered items={_.values(_.pick(card, key))}/>
-              </Container>
-          )
-        })
-      }));
+      return _.each(formattedDates, (formattedDate) => {
+        return (
+            <Container className="session_weekly_list">
+              <Divider horizontal><h2>{formattedDate}</h2></Divider>
+              <Card.Group centered items={_.pluck(groupedCards, formattedDate)}/>
+            </Container>
+        );
+      });
     }
   }
 }
