@@ -13,9 +13,7 @@ export default class UpcomingSessionList extends React.Component {
   render() {
     const date = this.props.selectedDate;
 
-    const upcomingSessions = _.sortBy(_.filter(this.props.sessions, (session) => {
-      return isAfter(date, session.startTime);
-    }, 'startTime'));
+    const upcomingSessions = _.sortBy(_.filter(this.props.sessions, (session) => isAfter(date, session.startTime), 'startTime'));
 
     const groupedSessions = _.groupBy(upcomingSessions, function (session) {
       return startOfWeek(session.startTime);
@@ -34,29 +32,31 @@ export default class UpcomingSessionList extends React.Component {
       const endDayOfTheMonth = dateFns.format(endDate, 'DD');
       return (`${startDayOfTheWeek}, ${startMonth} ${startDayOfTheMonth} - ${endDayOfTheWeek}, ${endMonth} ${endDayOfTheMonth}`);
     });
-    /** formattedDates array returns new array of keys as formatted start to end dates: ['start-end', 'start-end', 'start-end'] */
+    /** formattedDates array returns new array of keys as formatted start to end dates:
+     * ['start-end', 'start-end', 'start-end'] */
 
     const sessionCards =
         _.map(_.values(groupedSessions), (sessionsArray) => {
-              _.map(sessionsArray, (session) => {
-                const isJoined = this.props.isJoined(session._id);
-                const handleUpdate = isJoined ? this.props.handleLeave : this.props.handleJoin;
-                return (
-                    <SessionCard
-                        key={session.startTime}
-                        session={session}
-                        fluid
-                        handleUpdate={() => handleUpdate(session._id)}
-                        isJoined={isJoined}
-                    />
-                );
-              })
-            }
-        );
-    /** sessionCards array returns new array of grouped session cards arrays of keys as formatted start to end dates: [ [{sessionCard1}, {sessionCard2}], [{sessionCard3}] ] */
+          _.map(sessionsArray, (session) => {
+            const isJoined = this.props.isJoined(session._id);
+            const handleUpdate = isJoined ? this.props.handleLeave : this.props.handleJoin;
+            return (
+                <SessionCard
+                    key={session.startTime}
+                    session={session}
+                    fluid
+                    handleUpdate={() => handleUpdate(session._id)}
+                    isJoined={isJoined}
+                />
+            );
+          });
+        });
+    /** sessionCards array returns new array of grouped session cards arrays of keys as formatted start to end dates:
+     * [ [{sessionCard1}, {sessionCard2}], [{sessionCard3}] ] */
 
     const groupedCards = _.object(formattedDates, sessionCards);
-    /** groupedCards returns new abject where keys are formatted dates and values are arrays of session cards: {'start-end': [{sessionCard1}, {sessionCard2}], 'start-end': {sessionCard3}]} */
+    /** groupedCards returns new abject where keys are formatted dates and values are arrays of session cards:
+     * {'start-end': [{sessionCard1}, {sessionCard2}], 'start-end': {sessionCard3}]} */
 
     /** if there are no upcoming sessions, return "no upcoming sessions" message */
     if (_.isEmpty(groupedCards)) {
@@ -65,17 +65,14 @@ export default class UpcomingSessionList extends React.Component {
             You have no upcoming sessions.
           </Header>
       );
-    } else {
-      /** return group of cards for each week */
-      return _.each(formattedDates, (formattedDate) => {
-        return (
-            <Container className="session_weekly_list">
-              <Divider horizontal><h2>{formattedDate}</h2></Divider>
-              <Card.Group centered items={_.pluck(groupedCards, formattedDate)}/>
-            </Container>
-        );
-      });
     }
+      /** return group of cards for each week */
+      return _.each(formattedDates, (formattedDate) => <Container className="session_weekly_list">
+        <Divider horizontal><h2>{formattedDate}</h2></Divider>
+        <Card.Group centered items={_.pluck(groupedCards, formattedDate)}/>
+      </Container>);
+
+
   }
 }
 
