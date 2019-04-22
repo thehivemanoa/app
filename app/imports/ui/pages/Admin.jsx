@@ -85,7 +85,7 @@ class Admin extends React.Component {
           </Grid.Row>
 
           {/** --------------------------------- ROW 3---------------------------------*/}
-          <Grid.Row centered>
+          <Grid.Row centered style={{ marginBottom: '14px' }}>
             <Grid.Column>
               <Card fluid>
                 <Card.Content>
