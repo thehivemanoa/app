@@ -21,7 +21,8 @@ export default class UpcomingSessionList extends React.Component {
     /** groupedSessions returns object grouped by startTime as keys:
      *  {startTime: [session1, sessions2], startTime: [session3]}
      */
-
+    console.log('hello');
+    console.log(groupedSessions);
     const formattedDates = _.map(_.keys(groupedSessions), startDate => {
       const startDayOfTheWeek = dateFns.format(startDate, 'dddd');
       const startMonth = dateFns.format(startDate, 'MMM');
@@ -32,14 +33,18 @@ export default class UpcomingSessionList extends React.Component {
       const endDayOfTheMonth = dateFns.format(endDate, 'DD');
       return (`${startDayOfTheWeek}, ${startMonth} ${startDayOfTheMonth} - ${endDayOfTheWeek}, ${endMonth} ${endDayOfTheMonth}`);
     });
+    console.log(formattedDates);
     /** formattedDates array returns new array of keys as formatted start to end dates:
      * ['start-end', 'start-end', 'start-end'] */
 
+    console.log(_.values(groupedSessions));
     const sessionCards =
         _.map(_.values(groupedSessions), (sessionsArray) => {
-          _.map(sessionsArray, (session) => {
+          return _.map(sessionsArray, (session) => {
+            console.log(session);
             const isJoined = this.props.isJoined(session._id);
             const handleUpdate = isJoined ? this.props.handleLeave : this.props.handleJoin;
+            console.log(isJoined);
             return (
                 <SessionCard
                     key={session.startTime}
@@ -51,6 +56,8 @@ export default class UpcomingSessionList extends React.Component {
             );
           });
         });
+
+    console.log(sessionCards);
     /** sessionCards array returns new array of grouped session cards arrays of keys as formatted start to end dates:
      * [ [{sessionCard1}, {sessionCard2}], [{sessionCard3}] ] */
 
@@ -58,6 +65,7 @@ export default class UpcomingSessionList extends React.Component {
     /** groupedCards returns new abject where keys are formatted dates and values are arrays of session cards:
      * {'start-end': [{sessionCard1}, {sessionCard2}], 'start-end': {sessionCard3}]} */
 
+    console.log(groupedCards);
     /** if there are no upcoming sessions, return "no upcoming sessions" message */
     if (_.isEmpty(groupedCards)) {
       return (
