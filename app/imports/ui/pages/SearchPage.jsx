@@ -379,15 +379,18 @@ class SearchPage extends React.Component {
 
   stringToDate(string) {
     const formattedDate = string.trim().split('/');
-    return new Date(formattedDate[2], formattedDate[0], formattedDate[1]);
+    return new Date(formattedDate[2], formattedDate[0] - 1, formattedDate[1]);
   }
 
   handleDateSubmit() {
-    if (this.state.startDateText === '-\u221E' || this.state.endDateText === '\u221E') {
-      return;
+    let startDate = this.stringToDate(this.state.startDateText);
+    let endDate = this.stringToDate(this.state.endDateText);
+    if (this.state.startDateText === '-\u221E') {
+      startDate = new Date(-8640000000000000);
     }
-    const startDate = this.stringToDate(this.state.startDateText);
-    const endDate = this.stringToDate(this.state.endDateText);
+    if (this.state.endDateText === '\u221E') {
+      endDate = new Date(8640000000000000);
+    }
     if (dateFns.isValid(startDate) && dateFns.isValid(endDate)) {
       this.setState({
         startDate: startDate,
