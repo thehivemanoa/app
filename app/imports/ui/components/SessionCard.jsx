@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Card, Header, Grid, Button, Icon, Loader, List, Form, Divider } from 'semantic-ui-react';
+import { Card, Header, Grid, Button, Icon, Loader, List, Form, Image } from 'semantic-ui-react';
 import dateFns from 'date-fns';
 
 const _ = require('underscore');
@@ -19,8 +19,13 @@ class SessionCard extends React.Component {
   usersToLabels(users) {
     return _.map(users, user => {
       return (
-          <List.Item key={user.username} style={{ display: 'inline-block' }}>
-            {`${user.profile.firstName} ${user.profile.lastName}`}
+          <List.Item key={user.username} style={{ display: 'inline-block', marginRight: '20px' }}>
+            <Image src={user.profile.image} avatar/>
+            <List.Content>
+              <List.Header style={{ lineHeight: '28px' }}>
+                {`${user.profile.firstName} ${user.profile.lastName}`}
+              </List.Header>
+            </List.Content>
           </List.Item>
       );
     });
@@ -58,8 +63,7 @@ class SessionCard extends React.Component {
       padding: '10px',
       // position: 'relative',
     };
-    const headerStyle = {
-    };
+    const headerStyle = {};
     const headerButtonStyle = {
       position: 'absolute',
       top: '50%',
@@ -125,27 +129,29 @@ class SessionCard extends React.Component {
                   <Form.TextArea value={this.props.session.display} readOnly placeholder="No description"/>
                 </Form>
               </Grid.Row>
-              <Grid.Row columns={3} style={style}>
-                <Grid.Column><Header as="h5">Royals</Header></Grid.Column>
-                <Grid.Column><Header as="h5">Workers</Header></Grid.Column>
-                <Grid.Column><Header as="h5">Creator</Header></Grid.Column>
+              <Grid.Row style={style}>
+                <Header as="h5">Creator</Header>
               </Grid.Row>
               <Grid.Row columns={3} style={style}>
-                <Grid.Column>
-                  <List style={{ textAlign: 'center' }}>
-                    {royalLabels}
-                  </List>
-                </Grid.Column>
-                <Grid.Column>
-                  <List style={{ textAlign: 'center' }}>
-                    {workerLabels}
-                  </List>
-                </Grid.Column>
-                <Grid.Column>
                   <List style={{ textAlign: 'center' }}>
                     {creatorLabel}
                   </List>
-                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row style={style}>
+                <Header as="h5">Royal Bees</Header>
+              </Grid.Row>
+              <Grid.Row columns={3} style={style}>
+                <List style={{ textAlign: 'center' }}>
+                  {royalLabels}
+                </List>
+              </Grid.Row>
+              <Grid.Row style={style}>
+                <Header as="h5">Worker Bees</Header>
+              </Grid.Row>
+              <Grid.Row columns={3} style={style}>
+                <List style={{ textAlign: 'center' }}>
+                  {workerLabels}
+                </List>
               </Grid.Row>
               <Grid.Row style={{ position: 'relative', paddingTop: '10px' }}>
                 <Button

@@ -132,10 +132,10 @@ class CalendarPage extends React.Component {
             <Grid.Column width={5}>
               <SessionList
                   handleNextDayClick={this.handleNextDayClick}
-                  sessions={this.props.sessions.filter(session => dateFns.isSameDay(
+                  sessions={_.sortBy(this.props.sessions.filter(session => dateFns.isSameDay(
                       session.startTime,
                       this.state.selectedDate,
-                  ))}
+                  )), 'startTime')}
                   handlePreviousDayClick={this.handlePreviousDayClick}
                   selectedDate={this.state.selectedDate}
                   handleLeave={this.handleLeave}
