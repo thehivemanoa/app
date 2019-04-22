@@ -147,6 +147,7 @@ class SessionCardFlat extends React.Component {
                       readOnly
                       value={this.props.session.description}
                       style={{ borderStyle: 'solid', borderColor: colors[this.props.session.course] }}
+                      placeholder="No description"
                   />
                 </Form>
               </Grid.Column>

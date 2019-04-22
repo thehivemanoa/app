@@ -122,7 +122,7 @@ class SessionCard extends React.Component {
               </Grid.Row>
               <Grid.Row style={style}>
                 <Form style={{ width: '100%' }}>
-                  <Form.TextArea value={this.props.session.display} readOnly />
+                  <Form.TextArea value={this.props.session.display} readOnly placeholder="No description"/>
                 </Form>
               </Grid.Row>
               <Grid.Row columns={3} style={style}>
