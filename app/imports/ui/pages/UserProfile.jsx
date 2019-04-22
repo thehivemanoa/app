@@ -1,26 +1,43 @@
 import React from 'react';
-import Alert from 'react-s-alert/';
+import Alert from 'react-s-alert';
+import { Bert } from 'meteor/themeteorchef:bert';
 import { Meteor } from 'meteor/meteor';
-import { Container, Loader, Grid, Card, Image, Icon, Progress, Tab } from 'semantic-ui-react';
+import { Container, Loader, Image, Tab, Modal, Divider, Button, Form } from 'semantic-ui-react';
 import ProfileCard from '../components/ProfileCard';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
-import AutoForm from 'uniforms-semantic/AutoForm';
-import TextField from 'uniforms-semantic/TextField';
-import SubmitField from 'uniforms-semantic/SubmitField';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 /** Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
 class UserProfile extends React.Component {
   constructor(props) {
     super(props);
+    const firstName = this.props.firstName;
+    const lastName = this.props.lastName;
+    const email = this.props.username;
+
+    this.state = ({
+      editing: false,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      submittedFirstName: firstName,
+      submittedLastName: lastName,
+      submittedEmail: email,
+    });
+
     this.info = this.info.bind(this);
+    this.pic = this.pic.bind(this);
     this.edit = this.edit.bind(this);
     this.save = this.save.bind(this);
+    this.updateState = this.updateState.bind(this);
     this.submitInfo = this.submitInfo.bind(this);
-    this.state = ({ editing: false });
+    this.renderInfoNormal = this.renderInfoNormal.bind(this);
+    this.renderInfoForm = this.renderInfoForm.bind(this);
+    this.renderPicNormal = this.renderPicNormal.bind(this);
+    this.renderPicForm = this.renderPicForm.bind(this);
+
     console.log('state: { editing: false }');
-    console.log(this.props.doc);
   }
 
   edit() {
@@ -37,47 +54,59 @@ class UserProfile extends React.Component {
     console.log('state: { editing: false }');
   }
 
-  submitInfo(data) {
-    const { emails, profile, username } = data;
-    Meteor.users.update({ _id: Meteor.userId() }, {
-      $set: {
-        emails: emails,
-        profile: profile,
-        username: username,
-      }
-    }, (error) => (error ?
-        Alert.error(`Update failed: ${error.message}`, {
-          position: 'top-right',
-          effect: 'slide',
-        }) :
-        Alert.success(`Update succeeded`, {
-          position: 'top-right',
-          effect: 'slide',
-        })));
+  submitInfo() {
+    const { firstName, lastName } = this.state;
+    this.setState({
+      submittedFirstName: firstName,
+      submittedLastName: lastName
+    });
+
+    const currentUserId = this.props.currentUser._id;
+    console.log('Updating Profile: ' + currentUserId);
+
+    Meteor.users.update(
+        currentUserId,
+        {
+          $set: {
+            "profile.firstName": firstName,
+            "profile.lastName": lastName,
+          },
+        }, (error) => (error ?
+            Alert.error('Update failed: ' + `${error.message}`, {
+              effect: 'slide',
+            }) :
+            Alert.success('Update succeeded', {
+              effect: 'slide',
+            })),
+    );
     return this.save()
   };
+
+  updateState = (e, { name, value }) => this.setState({ [name]: value });
 
   renderInfoNormal() {
     return (
         <div>
-          <p>First Name: {this.props.firstName}</p>
-          <p>Last Name: {this.props.lastName}</p>
-          <p>Email: {this.props.email[0].address}</p>
+          <p>First Name: {this.state.submittedFirstName}</p>
+          <p>Last Name: {this.state.submittedLastName}</p>
+          <p>Email: {this.state.submittedEmail}</p>
           <Divider/>
-          <Button style={{ fluid: 'right' }} onClick={this.edit}>Edit Profile</Button>
+          <Button onClick={this.edit}>Edit Profile</Button>
         </div>
     )
   }
 
   renderInfoForm() {
+    const { firstName, lastName, email } = this.state;
+
     return (
         <div>
-          <AutoForm schema={AccountSchema} model={this.props.doc}>
-            <TextField name='profile.firstName' label={'First Name'} />
-            <TextField name='profile.lastName' label={'Last Name'} />
-            <TextField name='emails.0.address' label={'Email'} />
-            <SubmitField value='Submit' onClick={this.submitInfo}/>
-          </AutoForm>
+          <Form onSubmit={this.submitInfo}>
+            <Form.Input label={'First Name'} name={'firstName'} value={firstName} onChange={this.updateState}/>
+            <Form.Input label={'Last Name'} name={'lastName'} value={lastName} onChange={this.updateState}/>
+            <Form.Input label={'Email'} name={'email'} value={email} onChange={this.updateState}/>
+            <Form.Button content={'Submit'}/>
+          </Form>
         </div>
     )
   }
@@ -132,21 +161,6 @@ class UserProfile extends React.Component {
       minHeight: '70vh',
     };
 
-    const center = {
-      position: 'absolute',
-      left: '.8em',
-      bottom: '.6em',
-      width: '100%',
-      textAlign: 'center',
-      fontSize: '1em',
-    };
-
-    const xpIcon = {
-      fontSize: '3em',
-      width: '100%',
-      height: '0',
-    };
-
     const panes = [
       {
         menuItem: 'Information',
@@ -186,92 +200,49 @@ class UserProfile extends React.Component {
             </Tab.Pane>),
       }
     ];
-    return (
-
-        <Container className="profile-page" style={containerPadding} fluid>
-          <Card style={{ float: 'left', marginRight: '3em' }}>
-            <Card.Content>
-              {this.pic()}
-              <div className="non-semantic-protector">
-                <h1 className="ribbon">
-                  <strong className="ribbon-content">{this.props.firstName} {this.props.lastName}</strong>
-                </h1>
-                <Grid columns={2} verticalAlign='middle'>
-                  <Grid.Column width={3}>
-                    {/** Honey pot with level */}
-                    <div style={{ position: 'relative' }}>
-                      <Icon name="star outline" style={xpIcon}/>
-                      <div style={center}>
-                        <h2 style={{ fontSize: 18 }}>{this.props.level}</h2>
-                      </div>
-                    </div>
-                  </Grid.Column>
-                  <Grid.Column width={13}>
-                    <Grid.Row>
-                      {/** current/total XP */}
-                      <p>{this.props.exp} XP</p>
-                    </Grid.Row>
-                    <Grid.Row>
-                      {/** Progress Bar */}
-                      <Progress value={this.props.exp} total='100' progress='percent'/>
-                    </Grid.Row>
-                  </Grid.Column>
-                </Grid>
-              </div>
-            </Card.Content>
-          </Card>
-          <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'left'}
-
-    const containerPadding = {
-      paddingTop: 20,
-      paddingBottom: 30,
-      paddingLeft: 50,
-      paddingRight: 50,
-      minHeight: '70vh',
-    };
 
     return (
         <Container className="profile-page" style={containerPadding} fluid>
           <ProfileCard
-              firstName={this.props.firstName}
-              lastName={this.props.lastName}
+              firstName={this.state.submittedFirstName}
+              lastName={this.state.submittedLastName}
               level={this.props.level}
               exp={this.props.exp}
               image={this.props.image}
               nextLevel={this.props.nextLevel}
           />
           <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
-               panes={panes}
-               renderActiveOnly={false}/>
+               panes={panes} renderActiveOnly={false}/>
         </Container>
-    )
-        ;
+    );
   }
 }
 
 /** Require an array of user documents in the props. */
 UserProfile.propTypes = {
-  ready: PropTypes.bool.isRequired,
   firstName: PropTypes.string,
   lastName: PropTypes.string,
   level: PropTypes.number,
   exp: PropTypes.number,
   nextLevel: PropTypes.number,
-  email: PropTypes.string,
-  image: PropTypes.string
+  email: PropTypes.array,
+  image: PropTypes.string,
+  currentUser: PropTypes.object,
+  username: PropTypes.string
 };
 
 export default withTracker(() => {
-  const subscription = Meteor.subscribe('Notifications');
+  const subscription = Meteor.subscribe('Profiles');
   return {
+    currentUser: Meteor.user(),
     firstName: Meteor.user() ? Meteor.user().profile.firstName : '',
     lastName: Meteor.user() ? Meteor.user().profile.lastName : '',
-    level: Meteor.user() ? Meteor.user().profile.level : '',
-    exp: Meteor.user() ? Meteor.user().profile.exp : '',
+    level: Meteor.user() ? Meteor.user().profile.level : null,
+    exp: Meteor.user() ? Meteor.user().profile.exp : null,
     email: Meteor.user() ? Meteor.user().emails : [],
     image: Meteor.user() ? Meteor.user().profile.image : '',
-    doc:  Meteor.users.findOne({ _id: Meteor.userId() }),
+    username: Meteor.user() ? Meteor.user().username : '',
+    nextLevel: Meteor.user() ? Math.round(50 * (0.04 * (Meteor.user().profile.level ^ 3) + 0.8 * (Meteor.user().profile.level ^ 2) + 2 * Meteor.user().profile.level)) : null,
     ready: subscription.ready(),
-    nextLevel: Meteor.user() ? Math.round( 50 * (0.04 * (Meteor.user().profile.level ^ 3) + 0.8 * (Meteor.user().profile.level ^ 2) + 2 * Meteor.user().profile.level)) : ''
   };
 })(UserProfile);
