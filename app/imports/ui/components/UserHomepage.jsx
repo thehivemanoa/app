@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Grid, Container, Divider, Button, Card, Image, Header, } from 'semantic-ui-react';
+import { Grid, Container, Divider, Button, Card, Image, Header, Icon, Segment } from 'semantic-ui-react';
 import { Sessions } from '/imports/api/session/session';
 import SessionCard from '/imports/ui/components/SessionCard';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -32,10 +32,13 @@ class UserHomepage extends React.Component {
               { /** *** UPCOMING SESSIONS **** */}
               <Grid columns='equal' verticalAlign='middle'>
                 <Grid.Column>
-                  <Divider horizontal><h2> Upcoming Sessions </h2></Divider>
+                  <h2> Upcoming Sessions </h2>
                 </Grid.Column>
-                <Grid.Column width={4} floated='right'>
-                  <Button size="tiny" floated="right" content="Schedule New Session"/>
+                <Grid.Column floated='right' textAlign="center">
+                  <Button size='tiny' style={{ backgroundColor: '#4cba6f', color: 'white' }}>
+                    <Icon style={{ opacity: 1 }} name='calendar plus outline'/>
+                    Schedule New Session
+                  </Button>
                 </Grid.Column>
               </Grid>
               <Grid.Row>
@@ -77,7 +80,7 @@ class UserHomepage extends React.Component {
                 </Card>
               </Card.Group>
               <br/>
-              <Button content='Add Course'/>
+              <Button size='tiny' style={{ backgroundColor: '#4cba6f', color: 'white' }}><Icon style={{ opacity: 1 }} name="plus"/>Add Courses</Button>
             </Grid.Column>
           </Grid>
         </Container>
