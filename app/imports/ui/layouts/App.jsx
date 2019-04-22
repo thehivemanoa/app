@@ -1,4 +1,5 @@
 import React from 'react';
+import Alert from 'react-s-alert';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import 'semantic-ui-css/semantic.css';
@@ -16,6 +17,7 @@ import NotFound from '../pages/NotFound';
 import Signin from '../pages/Signin';
 import Signup from '../pages/Signup';
 import Signout from '../pages/Signout';
+import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
 class App extends React.Component {
@@ -23,20 +25,23 @@ class App extends React.Component {
     return (
         <Router>
           <div>
-            <NavBar/>
-            <Switch>
-              <Route exact path="/" component={Landing}/>
-              <Route path="/signin" component={Signin}/>
-              <Route path="/signup" component={Signup}/>
-              <ProtectedRoute path="/Calendar" component={CalendarPage}/>
-              <ProtectedRoute path="/addsession" component={CreateSession}/>
-              <ProtectedRoute path="/profile" component={UserProfile}/>
-              <ProtectedRoute path="/Search" component={SearchPage}/>
-              <AdminProtectedRoute path="/admin" component={Admin}/>
-              <ProtectedRoute path="/signout" component={Signout}/>
-              <Route component={NotFound}/>
-            </Switch>
-            <Footer/>
+            <span>
+              <NavBar/>
+              <Switch>
+                <Route exact path="/" component={Landing}/>
+                <Route path="/signin" component={Signin}/>
+                <Route path="/signup" component={Signup}/>
+                <ProtectedRoute path="/Calendar" component={CalendarPage}/>
+                <ProtectedRoute path="/addsession" component={CreateSession}/>
+                <ProtectedRoute path="/profile" component={UserProfile}/>
+                <ProtectedRoute path="/Search" component={SearchPage}/>
+                <AdminProtectedRoute path="/admin" component={Admin}/>
+                <ProtectedRoute path="/signout" component={Signout}/>
+                <Route component={NotFound}/>
+              </Switch>
+              <Footer/>
+            </span>
+            <Alert stack={true} position={'top-right'} timeout={1000} />
           </div>
         </Router>
     );

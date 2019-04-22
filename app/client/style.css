@@ -117,11 +117,6 @@ h2 {
   margin: 21px 7px !important;
 }
 
-.ui.menu > .item:first-child {
-  padding-bottom: 0px !important;
-  padding-top:15px !important;
-}
-
 /**
 Progress Bar
  */

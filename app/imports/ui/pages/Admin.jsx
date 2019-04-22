@@ -105,7 +105,7 @@ Admin.propTypes = {
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
 export default withTracker(() => {
   // Get access to Stuff documents.
-  const courseSub = Meteor.subscribe('Courses');
+  const courseSub = Meteor.subscribe('Accounts');
   const sessionsSub = Meteor.subscribe('Sessions');
   const activitySub = Meteor.subscribe('ActivityLog');
   const reportLogSub = Meteor.subscribe('ReportLog');
