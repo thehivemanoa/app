@@ -18,6 +18,7 @@ class SearchPage extends React.Component {
     super(props);
     const currentDate = new Date();
     const maxDate = new Date(8640000000000000);
+    const minDate = new Date(-8640000000000000);
     const startOfDay = dateFns.startOfDay(currentDate);
     const endOfDay = dateFns.endOfDay(currentDate);
     const month = dateFns.startOfMonth(currentDate);
@@ -26,7 +27,7 @@ class SearchPage extends React.Component {
       hideJoined: false,
       hideConflicting: false,
       courses: {},
-      startDate: startOfDay,
+      startDate: minDate,
       endDate: maxDate,
       fromDate: currentDate,
       toDate: currentDate,
@@ -37,7 +38,7 @@ class SearchPage extends React.Component {
       course: '',
       isMouseDown: false,
       month: month,
-      startDateText: formattedDate,
+      startDateText: '-\u221E',
       endDateText: '\u221E',
       sortBy: 'startTime',
       ready: false,
@@ -382,6 +383,9 @@ class SearchPage extends React.Component {
   }
 
   handleDateSubmit() {
+    if (this.state.startDateText === '-\u221E' || this.state.endDateText === '\u221E') {
+      return;
+    }
     const startDate = this.stringToDate(this.state.startDateText);
     const endDate = this.stringToDate(this.state.endDateText);
     if (dateFns.isValid(startDate) && dateFns.isValid(endDate)) {
