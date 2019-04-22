@@ -1,11 +1,10 @@
 import React from 'react';
 import Alert from 'react-s-alert';
-import { Bert } from 'meteor/themeteorchef:bert';
 import { Meteor } from 'meteor/meteor';
 import { Container, Loader, Image, Tab, Modal, Divider, Button, Form } from 'semantic-ui-react';
-import ProfileCard from '../components/ProfileCard';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
+import ProfileCard from '../components/ProfileCard';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 /** Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
@@ -42,14 +41,14 @@ class UserProfile extends React.Component {
 
   edit() {
     this.setState({
-      editing: true
+      editing: true,
     });
     console.log('state: { editing: true }');
   }
 
   save() {
     this.setState({
-      editing: false
+      editing: false,
     });
     console.log('state: { editing: false }');
   }
@@ -58,29 +57,31 @@ class UserProfile extends React.Component {
     const { firstName, lastName } = this.state;
     this.setState({
       submittedFirstName: firstName,
-      submittedLastName: lastName
+      submittedLastName: lastName,
     });
 
     const currentUserId = this.props.currentUser._id;
-    console.log('Updating Profile: ' + currentUserId);
+    // console.log('Updating Profile: ' + currentUserId);
 
     Meteor.users.update(
         currentUserId,
         {
           $set: {
-            "profile.firstName": firstName,
-            "profile.lastName": lastName,
+            profile: {
+              firstName: firstName,
+              lastName: lastName,
+            },
           },
         }, (error) => (error ?
-            Alert.error('Update failed: ' + `${error.message}`, {
+            Alert.error(`Update failed: ${error.message}`, {
               effect: 'slide',
             }) :
             Alert.success('Update succeeded', {
               effect: 'slide',
             })),
     );
-    return this.save()
-  };
+    return this.save();
+  }
 
   updateState = (e, { name, value }) => this.setState({ [name]: value });
 
@@ -93,7 +94,7 @@ class UserProfile extends React.Component {
           <Divider/>
           <Button onClick={this.edit}>Edit Profile</Button>
         </div>
-    )
+    );
   }
 
   renderInfoForm() {
@@ -108,14 +109,14 @@ class UserProfile extends React.Component {
             <Form.Button content={'Submit'}/>
           </Form>
         </div>
-    )
+    );
   }
 
   renderPicNormal() {
     return (
         <Image src={this.props.image} circular
                style={{ marginBottom: 5 }}/>
-    )
+    );
   }
 
   renderPicForm() {
@@ -127,22 +128,22 @@ class UserProfile extends React.Component {
 
           </Modal.Content>
         </Modal>
-    )
+    );
   }
 
   info() {
     if (this.state.editing) {
-      return this.renderInfoForm()
+      return this.renderInfoForm();
     } else {
-      return this.renderInfoNormal()
+      return this.renderInfoNormal();
     }
   }
 
   pic() {
     if (this.state.editing) {
-      return this.renderPicForm()
+      return this.renderPicForm();
     } else {
-      return this.renderPicNormal()
+      return this.renderPicNormal();
     }
   }
 
