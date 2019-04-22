@@ -2,10 +2,10 @@ import React from 'react';
 import dateFns from 'date-fns';
 import PropTypes from 'prop-types';
 import { Card, Header, Divider, Container } from 'semantic-ui-react';
+import isAfter from 'date-fns/is_after';
+import startOfWeek from 'date-fns/start_of_week';
+import endOfWeek from 'date-fns/end_of_week';
 import SessionCard from './SessionCard';
-import isAfter from 'date-fns/is_after'
-import startOfWeek from 'date-fns/start_of_week'
-import endOfWeek from 'date-fns/end_of_week'
 
 const _ = require('underscore');
 
@@ -14,11 +14,11 @@ export default class UpcomingSessionList extends React.Component {
     const date = this.props.selectedDate;
 
     const upcomingSessions = _.sortBy(_.filter(this.props.sessions, (session) => {
-      return isAfter(date, session.startTime)
+      return isAfter(date, session.startTime);
     }, 'startTime'));
 
     const groupedSessions = _.groupBy(upcomingSessions, function (session) {
-      return startOfWeek(session.startTime)
+      return startOfWeek(session.startTime);
     });
     /** groupedSessions returns object grouped by startTime as keys:
      *  {startTime: [session1, sessions2], startTime: [session3]}
