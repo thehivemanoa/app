@@ -95,7 +95,7 @@ class SessionCard extends React.Component {
     const creatorLabel = this.usersToLabels(creator);
 
     return (
-        <Card fluid>
+        <Card>
           <Card.Content style={{ paddingBottom: 0 }}>
             <Grid>
               <Grid.Row style={headerRowStyle}>

@@ -81,7 +81,7 @@ export default class UpcomingSessionList extends React.Component {
     _.each(formattedDates, (formattedDate, index) => {
       const listItem = (<List.Item className="session_weekly_list" key={index}>
             <Divider horizontal><h2>{formattedDate}</h2></Divider>
-            <Card.Group centered items={groupedCards[formattedDate]}/>
+            <Card.Group centered>{groupedCards[formattedDate]}</Card.Group>
           </List.Item>
       );
       console.log(listItem);
