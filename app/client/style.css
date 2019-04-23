@@ -18,6 +18,7 @@ body {
 @media (max-width: 61.25rem) {
   .collapsable{
     display: none !important;
+    
   }
   .collapsed{
     display: block;
