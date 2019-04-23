@@ -235,15 +235,20 @@ NavBar.propTypes = {
   firstName: PropTypes.string,
   lastName: PropTypes.string,
   image: PropTypes.string,
+  ready: PropTypes.bool,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
-const NavBarContainer = withTracker(() => ({
-  currentUser: Meteor.user() ? Meteor.user().username : '',
-  firstName: Meteor.user() ? Meteor.user().firstName : '',
-  lastName: Meteor.user() ? Meteor.user().lastName : '',
-  image: Meteor.user() ? Meteor.user().image : '',
-}))(NavBar);
+const NavBarContainer = withTracker(() => {
+  const subscription = Meteor.subscribe('AccountProfileInfo');
+  return {
+    currentUser: Meteor.user() ? Meteor.user().username : '',
+    firstName: Meteor.user() ? Meteor.user().firstName : '',
+    lastName: Meteor.user() ? Meteor.user().lastName : '',
+    image: Meteor.user() ? Meteor.user().image : '',
+    ready: (subscription.ready()),
+  };
+})(NavBar);
 
 /** Enable ReactRouter for this component. https://reacttraining.com/react-router/web/api/withRouter */
 export default withRouter(NavBarContainer);
