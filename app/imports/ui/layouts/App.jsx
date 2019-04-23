@@ -17,6 +17,7 @@ import NotFound from '../pages/NotFound';
 import Signin from '../pages/Signin';
 import Signup from '../pages/Signup';
 import Signout from '../pages/Signout';
+import Leaderboard from '../pages/Leaderboard';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 /** Top-level layout component for this application. Called in imports/startup/client/startup.jsx. */
@@ -35,6 +36,7 @@ class App extends React.Component {
                 <ProtectedRoute path="/addsession" component={CreateSession}/>
                 <ProtectedRoute path="/profile" component={UserProfile}/>
                 <ProtectedRoute path="/Search" component={SearchPage}/>
+                <ProtectedRoute path="/Leaderboard" component={Leaderboard}/>
                 <AdminProtectedRoute path="/admin" component={Admin}/>
                 <ProtectedRoute path="/signout" component={Signout}/>
                 <Route component={NotFound}/>
