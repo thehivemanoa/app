@@ -13,7 +13,7 @@ export default class UpcomingSessionList extends React.Component {
   render() {
     const date = this.props.selectedDate;
 
-    const upcomingSessions = _.sortBy(_.filter(this.props.sessions, (session) => isAfter(date, session.startTime), 'startTime'));
+    const upcomingSessions = _.sortBy(_.filter(this.props.sessions, (session) => isAfter(session.startTime, date), 'startTime'));
 
     const groupedSessions = _.groupBy(upcomingSessions, function (session) {
       return startOfWeek(session.startTime);
