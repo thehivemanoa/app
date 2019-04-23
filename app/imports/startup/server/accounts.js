@@ -8,7 +8,6 @@ import { AccountInfo } from '../../api/accountInfo/accountInfo.js';
 function createUser(email, password, firstName, lastName, role) {
   console.log(`  Creating user ${email}.`);
   const userID = Accounts.createUser({
-    username: email,
     email: email,
     password: password,
     firstName: firstName,
@@ -24,7 +23,6 @@ Meteor.methods({
   serverCreateUser: function (email, password, firstName, lastName, role) {
     console.log(`  Creating user ${email}.`);
     const userID = Accounts.createUser({
-      username: email,
       email: email,
       password: password,
       firstName: firstName,
@@ -40,10 +38,9 @@ Meteor.methods({
     const courses = [];
     const joinedSessions = [];
     const createdSessions = [];
+    const owner = email;
     AccountInfo.insert({
-      username: email,
       email: email,
-      password: password,
       firstName: firstName,
       lastName: lastName,
       image: image,
@@ -52,6 +49,7 @@ Meteor.methods({
       courses: courses,
       joinedSessions: joinedSessions,
       createdSessions: createdSessions,
+      owner: owner,
     });
     Meteor.publish(userID);
   },

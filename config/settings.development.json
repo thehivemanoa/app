@@ -5,6 +5,26 @@
       "password": "changeme",
       "role": "admin",
       "firstName": "Waggle",
+      "lastName": "Admin"
+    },
+    {
+      "email": "john@foo.com",
+      "password": "changeme",
+      "firstName": "John",
+      "lastName": "Smith"
+    },
+    {
+      "email": "jhun@foo.com",
+      "password": "changeme",
+      "firstName": "Jhun",
+      "lastName": "Domingo"
+    }
+  ],
+  "defaultAccountInfo": [
+    {
+      "email": "admin@foo.com",
+      "password": "changeme",
+      "firstName": "Waggle",
       "lastName": "Admin",
       "image": "https://vignette.wikia.nocookie.net/bokunoheroacademia/images/a/a0/Shota_scar_headshot.png/revision/latest?cb=20171119144516",
       "level": 100,
@@ -13,11 +33,14 @@
         "ICS 311": true,
         "ICS 314": false
       },
-      "joinedSessions": ["xWdug9rdTySKRyvbM"],
+      "joinedSessions": [
+        "xWdug9rdTySKRyvbM"
+      ],
       "createdSessions": [
         "kgrZwBazYFvsLh3Ya",
         "3xwB6nHtsAEsu7T7z"
-      ]
+      ],
+      "owner": "admin@foo.com"
     },
     {
       "email": "john@foo.com",
@@ -27,12 +50,18 @@
       "image": "https://react.semantic-ui.com/images/avatar/large/matthew.png",
       "level": 12,
       "exp": 1000,
-      "courses": { "ICS 311": true, "ICS 314": true },
-      "joinedSessions": ["xWdug9rdTySKRyvbM"],
+      "courses": {
+        "ICS 311": true,
+        "ICS 314": true
+      },
+      "joinedSessions": [
+        "xWdug9rdTySKRyvbM"
+      ],
       "createdSessions": [
         "kgrZwBazYFvsLh3Ya",
         "3xwB6nHtsAEsu7T7z"
-      ]
+      ],
+      "owner": "john@foo.com"
     },
     {
       "email": "jhun@foo.com",
@@ -42,12 +71,20 @@
       "image": "https://philipmjohnson.github.io/images/philip2.jpeg",
       "level": 4,
       "exp": 80,
-      "courses": { "ICS 311": false, "ICS 314": true },
-      "joinedSessions": ["xWdug9rdTySKRyvbM"],
-      "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
+      "courses": {
+        "ICS 311": false,
+        "ICS 314": true
+      },
+      "joinedSessions": [
+        "xWdug9rdTySKRyvbM"
+      ],
+      "createdSessions": [
+        "kgrZwBazYFvsLh3Ya",
+        "3xwB6nHtsAEsu7T7z"
+      ],
+      "owner": "jhun@foo.com"
     }
   ],
-
   "defaultSessions": [
     {
       "title": "Digits 6",
@@ -90,7 +127,6 @@
       "owner": "john@foo.com"
     }
   ],
-
   "defaultCourses": [
     {
       "course": "ICS 111",
@@ -121,7 +157,6 @@
       "description": "Problem analysis and design, team-oriented development, quality assurance, configuration management, project planning."
     }
   ],
-
   "defaultReportLog": [
     {
       "owner": "john@foo.com",
@@ -139,7 +174,6 @@
       "createdAt": "Tue Apr 11 2019 16:57:51 GMT-1000 (Hawaii-Aleutian Standard Time)"
     }
   ],
-
   "defaultActivityLog": [
     {
       "owner": "admin@foo.com",
@@ -154,7 +188,6 @@
       "createdAt": "Tue Apr 11 2019 16:57:51 GMT-1000 (Hawaii-Aleutian Standard Time)"
     }
   ],
-
   "defaultTaskList": [
     {
       "task": "Go over open reports",
