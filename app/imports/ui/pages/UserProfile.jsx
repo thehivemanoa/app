@@ -1,12 +1,151 @@
 import React from 'react';
+import Alert from 'react-s-alert';
 import { Meteor } from 'meteor/meteor';
-import { Container, Loader, Grid, Card, Image, Icon, Progress, Tab } from 'semantic-ui-react';
-import ProfileCard from '../components/ProfileCard';
+import { Container, Loader, Image, Tab, Modal, Divider, Button, Form } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
+import ProfileCard from '../components/ProfileCard';
+import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 /** Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
 class UserProfile extends React.Component {
+  constructor(props) {
+    super(props);
+    const firstName = this.props.firstName;
+    const lastName = this.props.lastName;
+    const email = this.props.username;
+
+    this.state = ({
+      editing: false,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      submittedFirstName: firstName,
+      submittedLastName: lastName,
+      submittedEmail: email,
+    });
+
+    this.info = this.info.bind(this);
+    this.pic = this.pic.bind(this);
+    this.edit = this.edit.bind(this);
+    this.save = this.save.bind(this);
+    this.updateState = this.updateState.bind(this);
+    this.submitInfo = this.submitInfo.bind(this);
+    this.renderInfoNormal = this.renderInfoNormal.bind(this);
+    this.renderInfoForm = this.renderInfoForm.bind(this);
+    this.renderPicNormal = this.renderPicNormal.bind(this);
+    this.renderPicForm = this.renderPicForm.bind(this);
+
+    console.log('state: { editing: false }');
+  }
+
+  edit() {
+    this.setState({
+      editing: true,
+    });
+    console.log('state: { editing: true }');
+  }
+
+  save() {
+    this.setState({
+      editing: false,
+    });
+    console.log('state: { editing: false }');
+  }
+
+  submitInfo() {
+    const { firstName, lastName } = this.state;
+    this.setState({
+      submittedFirstName: firstName,
+      submittedLastName: lastName,
+    });
+
+    const currentUserId = this.props.currentUser._id;
+    // console.log('Updating Profile: ' + currentUserId);
+
+    Meteor.users.update(
+        currentUserId,
+        {
+          $set: {
+            profile: {
+              firstName: firstName,
+              lastName: lastName,
+            },
+          },
+        }, (error) => (error ?
+            Alert.error(`Update failed: ${error.message}`, {
+              effect: 'slide',
+            }) :
+            Alert.success('Update succeeded', {
+              effect: 'slide',
+            })),
+    );
+    return this.save();
+  }
+
+  updateState = (e, { name, value }) => this.setState({ [name]: value });
+
+  renderInfoNormal() {
+    return (
+        <div>
+          <p>First Name: {this.state.submittedFirstName}</p>
+          <p>Last Name: {this.state.submittedLastName}</p>
+          <p>Email: {this.state.submittedEmail}</p>
+          <Divider/>
+          <Button onClick={this.edit}>Edit Profile</Button>
+        </div>
+    );
+  }
+
+  renderInfoForm() {
+    const { firstName, lastName, email } = this.state;
+
+    return (
+        <div>
+          <Form onSubmit={this.submitInfo}>
+            <Form.Input label={'First Name'} name={'firstName'} value={firstName} onChange={this.updateState}/>
+            <Form.Input label={'Last Name'} name={'lastName'} value={lastName} onChange={this.updateState}/>
+            <Form.Input label={'Email'} name={'email'} value={email} onChange={this.updateState}/>
+            <Form.Button content={'Submit'}/>
+          </Form>
+        </div>
+    );
+  }
+
+  renderPicNormal() {
+    return (
+        <Image src={this.props.image} circular
+               style={{ marginBottom: 5 }}/>
+    );
+  }
+
+  renderPicForm() {
+    return (
+        <Modal id='login-modal' trigger={<Image src={this.props.image} circular disabled
+                                                style={{ marginBottom: 5 }}/>}>
+          <Modal.Header>Edit Profile Picture</Modal.Header>
+          <Modal.Content>
+
+          </Modal.Content>
+        </Modal>
+    );
+  }
+
+  info() {
+    if (this.state.editing) {
+      this.renderInfoForm();
+    } else {
+      this.renderInfoNormal();
+    }
+  }
+
+  pic() {
+    if (this.state.editing) {
+      this.renderPicForm();
+    } else {
+      this.renderPicNormal();
+    }
+  }
 
   /** If the subscription(s) have been received, render the page, otherwise show a loading icon. */
   render() {
@@ -14,21 +153,28 @@ class UserProfile extends React.Component {
   }
 
   renderPage() {
+
+    const containerPadding = {
+      paddingTop: 20,
+      paddingBottom: 30,
+      paddingLeft: 50,
+      paddingRight: 50,
+      minHeight: '70vh',
+    };
+
     const panes = [
       {
         menuItem: 'Information',
         pane: (
             <Tab.Pane attached={false} key={'Information'}>
-              <p>First Name: {this.props.firstName}</p>
-              <p>Last Name: {this.props.lastName}</p>
-              <p>Email: {this.props.email}</p>
+              {this.info()}
             </Tab.Pane>
         ),
       },
       {
-        menuItem: 'Courses',
+        menuItem: 'Accounts',
         pane: (
-            <Tab.Pane attached={false} key={'Courses'}>
+            <Tab.Pane attached={false} key={'Accounts'}>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur cumque dolore dolores, eveniet
                 facilis in itaque maxime, nihil optio, quia quo recusandae reprehenderit totam. Aperiam excepturi illo
                 inventore nemo nobis perspiciatis repellat vitae. At corporis iure magnam natus qui tempora, veritatis
@@ -53,33 +199,23 @@ class UserProfile extends React.Component {
                 aspernatur atque corporis dignissimos enim et explicabo laboriosam maiores molestias natus nemo nisi,
                 officiis quia ratione rerum vel voluptatibus? Ea!</p>
             </Tab.Pane>),
-      }
+      },
     ];
-
-    const containerPadding = {
-      paddingTop: 20,
-      paddingBottom: 30,
-      paddingLeft: 50,
-      paddingRight: 50,
-      minHeight: '70vh',
-    };
 
     return (
         <Container className="profile-page" style={containerPadding} fluid>
           <ProfileCard
-              firstName={this.props.firstName}
-              lastName={this.props.lastName}
+              firstName={this.state.submittedFirstName}
+              lastName={this.state.submittedLastName}
               level={this.props.level}
               exp={this.props.exp}
               image={this.props.image}
               nextLevel={this.props.nextLevel}
           />
           <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
-               panes={panes}
-               renderActiveOnly={false}/>
+               panes={panes} renderActiveOnly={false}/>
         </Container>
-    )
-        ;
+    );
   }
 }
 
@@ -90,20 +226,26 @@ UserProfile.propTypes = {
   level: PropTypes.number,
   exp: PropTypes.number,
   nextLevel: PropTypes.number,
-  email: PropTypes.string,
-  image: PropTypes.string
+  email: PropTypes.array,
+  image: PropTypes.string,
+  currentUser: PropTypes.object,
+  username: PropTypes.string,
+  ready: PropTypes.bool,
 };
 
 export default withTracker(() => {
-  const subscription = Meteor.subscribe('Courses');
+  const subscription = Meteor.subscribe('Profiles');
+  const level = Meteor.user().profile.level;
   return {
+    currentUser: Meteor.user(),
     firstName: Meteor.user() ? Meteor.user().profile.firstName : '',
     lastName: Meteor.user() ? Meteor.user().profile.lastName : '',
-    level: Meteor.user() ? Meteor.user().profile.level : '',
-    exp: Meteor.user() ? Meteor.user().profile.exp : '',
-    email: Meteor.user() ? Meteor.user().username : '',
+    level: Meteor.user() ? Meteor.user().profile.level : null,
+    exp: Meteor.user() ? Meteor.user().profile.exp : null,
+    email: Meteor.user() ? Meteor.user().emails : [],
     image: Meteor.user() ? Meteor.user().profile.image : '',
+    username: Meteor.user() ? Meteor.user().username : '',
+    nextLevel: Meteor.user() ? Math.round(50 * (0.04 * (level ** 3) + 0.8 * (level ** 2) + 2 * level)) : null,
     ready: subscription.ready(),
-    nextLevel: Meteor.user() ? Math.round( 50 * (0.04 * (Meteor.user().profile.level ^ 3) + 0.8 * (Meteor.user().profile.level ^ 2) + 2 * Meteor.user().profile.level)) : ''
   };
 })(UserProfile);

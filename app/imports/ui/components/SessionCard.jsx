@@ -59,11 +59,6 @@ class SessionCard extends React.Component {
       // position: 'relative',
     };
     const headerStyle = {
-      // position: 'absolute',
-      // top: '50%',
-      // left: '50%',
-      // transform: 'translate(-50%,-50%)',
-      // textAlign: 'left',
     };
     const headerButtonStyle = {
       position: 'absolute',
@@ -95,7 +90,15 @@ class SessionCard extends React.Component {
     const creatorLabel = this.usersToLabels(creator);
 
     return (
-        <Card fluid={this.props.isFluid}>
+        <Card
+            fluid
+            style={{
+              borderColor: colors[this.props.session.course],
+              borderStyle: 'solid',
+              borderWidth: '1px',
+              boxShadow: 'none',
+            }}
+        >
           <Card.Content style={{ paddingBottom: 0 }}>
             <Grid>
               <Grid.Row style={headerRowStyle}>
@@ -119,8 +122,7 @@ class SessionCard extends React.Component {
               </Grid.Row>
               <Grid.Row style={style}>
                 <Form style={{ width: '100%' }}>
-                  <Form.TextArea value={this.props.session.display} readOnly />
-                </Form>
+                  <Form.TextArea value={this.props.session.display} readOnly placeholder="No description"/>                </Form>
               </Grid.Row>
               <Grid.Row columns={3} style={style}>
                 <Grid.Column><Header as="h5">Royals</Header></Grid.Column>

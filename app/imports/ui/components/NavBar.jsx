@@ -147,7 +147,7 @@ class NavBar extends React.Component {
                          hideOnScroll
                          trigger={
                            <Label className="collapsable"
-                                  as='a' style={{ 'background': 'transparent', position: 'relative' }}>
+                                  as='a' style={{ background: 'transparent', position: 'relative' }}>
                              <Image avatar spaced='right' src={this.props.image}/>
                              <Icon inverted name='caret down'/>
                            </Label>
@@ -179,8 +179,8 @@ class NavBar extends React.Component {
                          style={popupStyle}
                          hideOnScroll
                          trigger={
-                           <Button className='collapsed' inverted icon size='medium' color='white'
-                                   style={{ position: 'relative', bottom: '.65em' }}>
+                           <Button className='collapsed' inverted icon size='medium'
+                                   style={{ position: 'relative', bottom: '.65em', backgroundColor: 'white' }}>
                              <Icon name={'bars'}/>
                            </Button>
                          }

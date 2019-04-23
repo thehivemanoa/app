@@ -76,6 +76,15 @@ class SessionCardFlat extends React.Component {
       padding: 0,
       zIndex: buttonIndex,
     };
+    const cardHeaderStyle = {
+      backgroundColor: colors[this.props.session.course],
+      borderTopLeftRadius: '5px',
+      borderTopRightRadius: '5px',
+    };
+    if (this.state.isCollapsed) {
+      cardHeaderStyle.borderBottomLeftRadius = '5px';
+      cardHeaderStyle.borderBottomRightRadius = '5px';
+    }
     const attendees = Meteor.users.find({ username: { $in: this.props.session.attendees } }).fetch();
     const royals = _.filter(attendees, attendee => attendee.profile.courses[this.props.session.course]);
     const workers = _.filter(attendees, attendee => !attendee.profile.courses[this.props.session.course]);
@@ -94,7 +103,7 @@ class SessionCardFlat extends React.Component {
               fontSize: '12px',
             }}
         >
-          <Card.Content style={{ backgroundColor: colors[this.props.session.course] }}>
+          <Card.Content style={cardHeaderStyle}>
             <Grid columns="equal" style={{ height: '45px' }}>
               <Grid.Column>{this.props.session.title}</Grid.Column>
               <Grid.Column width={3}>{`${formattedStartTime} - ${formattedEndTime}`}</Grid.Column>
@@ -126,6 +135,9 @@ class SessionCardFlat extends React.Component {
           <Card.Content
               style={{
                 display: this.state.isCollapsed ? 'none' : '',
+                borderStyle: 'solid',
+                borderWidth: '1px',
+                borderColor: colors[this.props.session.course],
               }}
           >
             <Grid>
@@ -134,7 +146,8 @@ class SessionCardFlat extends React.Component {
                   <Form.TextArea
                       readOnly
                       value={this.props.session.description}
-                      style={{ borderStyle: 'dashed', borderColor: colors[this.props.session.course] }}
+                      style={{ borderStyle: 'solid', borderColor: colors[this.props.session.course] }}
+                      placeholder="No description"
                   />
                 </Form>
               </Grid.Column>
