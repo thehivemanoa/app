@@ -240,9 +240,9 @@ NavBar.propTypes = {
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
 const NavBarContainer = withTracker(() => ({
   currentUser: Meteor.user() ? Meteor.user().username : '',
-  firstName: Meteor.user() ? Meteor.user().profile.firstName : '',
-  lastName: Meteor.user() ? Meteor.user().profile.lastName : '',
-  image: Meteor.user() ? Meteor.user().profile.image : '',
+  firstName: Meteor.user() ? Meteor.user().firstName : '',
+  lastName: Meteor.user() ? Meteor.user().lastName : '',
+  image: Meteor.user() ? Meteor.user().image : '',
 }))(NavBar);
 
 /** Enable ReactRouter for this component. https://reacttraining.com/react-router/web/api/withRouter */
