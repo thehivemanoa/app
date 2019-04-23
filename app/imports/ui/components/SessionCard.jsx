@@ -90,6 +90,7 @@ class SessionCard extends React.Component {
     const creatorLabel = this.usersToLabels(creator);
 
     return (
+<<<<<<< HEAD
         <Card
             fluid
             style={{
@@ -99,6 +100,9 @@ class SessionCard extends React.Component {
               boxShadow: 'none',
             }}
         >
+=======
+        <Card>
+>>>>>>> parent of 0680c32... Added isFluid prop to SessionCard so that the cards appear compactly on the Home page
           <Card.Content style={{ paddingBottom: 0 }}>
             <Grid>
               <Grid.Row style={headerRowStyle}>
@@ -170,7 +174,6 @@ class SessionCard extends React.Component {
 }
 
 SessionCard.propTypes = {
-  isFluid: PropTypes.bool.isRequired,
   isJoined: PropTypes.bool.isRequired,
   handleUpdate: PropTypes.func.isRequired,
   session: PropTypes.object.isRequired,
