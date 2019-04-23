@@ -5,9 +5,11 @@ import { AccountInfo } from '../../api/accountInfo/accountInfo.js';
 
 /* eslint-disable no-console */
 
-function createUser(email, password, role) {
+function createUser(firstName, lastName, email, password, role) {
   console.log(`  Creating user ${email}.`);
   const userID = Accounts.createUser({
+    firstName: firstName,
+    lastName: lastName,
     username: email,
     email: email,
     password: password,
@@ -15,12 +17,6 @@ function createUser(email, password, role) {
   if (role === 'admin') {
     Roles.addUsersToRoles(userID, 'admin');
   }
-
-}
-
-function addData(data) {
-  console.log(`  Adding profile info for: ${Meteor.users.findOne(this.userId).username}`);
-  AccountInfo.insert(data);
 }
 
 /** When running app for first time, pass a settings file to set up a default user account. */
