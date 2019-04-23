@@ -3,21 +3,42 @@
     {
       "email": "admin@foo.com",
       "password": "changeme",
-      "role": "admin",
+      "role": "admin"
+    },
+    {
+      "email": "john@foo.com",
+      "password": "changeme"
+    },
+    {
+      "email": "jhun@foo.com",
+      "password": "changeme"
+    }
+  ],
+
+  "defaultAccountInfo": [
+    {
+      "_id": "",
       "profile": {
         "firstName": "Waggle",
         "lastName": "Admin",
         "image": "https://vignette.wikia.nocookie.net/bokunoheroacademia/images/a/a0/Shota_scar_headshot.png/revision/latest?cb=20171119144516",
         "level": 100,
         "exp": 0,
-        "courses": { "ICS 311": true, "ICS 314": false },
-        "joinedSessions": ["xWdug9rdTySKRyvbM"],
-        "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
+        "courses": {
+          "ICS 311": true,
+          "ICS 314": false
+        },
+        "joinedSessions": [
+          "xWdug9rdTySKRyvbM"
+        ],
+        "createdSessions": [
+          "kgrZwBazYFvsLh3Ya",
+          "3xwB6nHtsAEsu7T7z"
+        ]
       }
     },
     {
-      "email": "john@foo.com",
-      "password": "changeme",
+      "_id": "",
       "profile": {
         "firstName": "John",
         "lastName": "Smith",
@@ -30,8 +51,7 @@
       }
     },
     {
-      "email": "jhun@foo.com",
-      "password": "changeme",
+      "_id": "",
       "profile": {
         "firstName": "Jhun",
         "lastName": "Domingo",
@@ -44,6 +64,7 @@
       }
     }
   ],
+
   "defaultSessions": [
     {
       "title": "Digits 6",
@@ -86,6 +107,7 @@
       "owner": "john@foo.com"
     }
   ],
+
   "defaultCourses": [
     {
       "course": "ICS 111",
