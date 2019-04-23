@@ -49,6 +49,7 @@ export default class UpcomingSessionList extends React.Component {
                 <SessionCard
                     key={session.startTime}
                     session={session}
+                    fluid
                     handleUpdate={() => handleUpdate(session._id)}
                     isJoined={isJoined}
                 />

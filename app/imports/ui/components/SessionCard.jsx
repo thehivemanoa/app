@@ -90,7 +90,7 @@ class SessionCard extends React.Component {
     const creatorLabel = this.usersToLabels(creator);
 
     return (
-        <Card fluid={this.props.isFluid}>
+        <Card>
           <Card.Content style={{ paddingBottom: 0 }}>
             <Grid>
               <Grid.Row style={headerRowStyle}>
@@ -162,7 +162,6 @@ class SessionCard extends React.Component {
 }
 
 SessionCard.propTypes = {
-  isFluid: PropTypes.bool.isRequired,
   isJoined: PropTypes.bool.isRequired,
   handleUpdate: PropTypes.func.isRequired,
   session: PropTypes.object.isRequired,
