@@ -91,6 +91,7 @@ class SessionCard extends React.Component {
 
     return (
 <<<<<<< HEAD
+<<<<<<< HEAD
         <Card
             fluid
             style={{
@@ -100,6 +101,9 @@ class SessionCard extends React.Component {
               boxShadow: 'none',
             }}
         >
+=======
+        <Card>
+>>>>>>> parent of 0680c32... Added isFluid prop to SessionCard so that the cards appear compactly on the Home page
 =======
         <Card>
 >>>>>>> parent of 0680c32... Added isFluid prop to SessionCard so that the cards appear compactly on the Home page
