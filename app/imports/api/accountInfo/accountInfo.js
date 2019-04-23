@@ -7,17 +7,17 @@ const AccountInfo = new Mongo.Collection('Accounts');
 
 /** Create a schema to constrain the structure of documents associated with this collection. */
 const AccountSchema = new SimpleSchema({
-  owner: String,
-  profile: {
-    firstName: String,
-    lastName: String,
-    image: String,
-    level: String,
-    exp: String,
-    courses: [String],
-    joinedSessions: [String],
-    createdSessions: [String],
-  },
+  username: String,
+  email: String,
+  password: String,
+  firstName: String,
+  lastName: String,
+  image: String,
+  level: String,
+  exp: String,
+  courses: [String],
+  joinedSessions: [String],
+  createdSessions: [String],
 }, { tracker: Tracker });
 
 /** Attach this schema to the collection. */
