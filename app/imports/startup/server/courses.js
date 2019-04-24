@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Roles } from 'meteor/alanning:roles';
 import { Courses } from '../../api/courses/courses.js';
 import { Stuffs } from '../../api/stuff/stuff';
 
@@ -21,6 +22,14 @@ Meteor.publish('myCourses', function publish() {
   if (this.userId) {
     const username = Meteor.users.findOne(this.userId).username;
     return Stuffs.find({ owner: username });
+  }
+  return this.ready();
+});
+
+/** This subscription publishes all documents provided that the user is logged in */
+Meteor.publish('allCourses', function publish() {
+  if (this.userId && Roles.userIsInRole(this.userId, 'admin')) {
+    return Stuffs.find();
   }
   return this.ready();
 });
