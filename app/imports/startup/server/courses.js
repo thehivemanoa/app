@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { Courses } from '../../api/courses/courses.js';
-import { Stuffs } from '../../api/stuff/stuff';
 
 /** Initialize the database with a default data document. */
 function addData(data) {
@@ -20,7 +19,16 @@ if (Courses.find().count() === 0) {
 Meteor.publish('myCourses', function publish() {
   if (this.userId) {
     const username = Meteor.users.findOne(this.userId).username;
-    return Stuffs.find({ owner: username });
+    return Courses.find({ owner: username });
+  }
+  return this.ready();
+});
+
+/** This subscription publishes all documents provided that the user is logged in */
+Meteor.publish('Courses', function publish() {
+  if (this.userId) {
+    const username = Meteor.users.findOne(this.userId).username;
+    return Courses.find({ owner: username });
   }
   return this.ready();
 });
