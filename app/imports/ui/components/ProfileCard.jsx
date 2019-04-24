@@ -31,7 +31,7 @@ export default class ProfileCard extends React.Component {
                 <strong className="ribbon-content">{this.props.firstName} {this.props.lastName}</strong>
               </h1>
 
-              {/** Progress Bar*/}
+              {/** Progress Bar */}
               <Grid columns={2} verticalAlign='middle'>
                 <Grid.Column width={3}>
                   {/** Change start to honey pot */}
