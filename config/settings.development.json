@@ -3,45 +3,15 @@
     {
       "email": "admin@foo.com",
       "password": "changeme",
-      "role": "admin",
-      "profile": {
-        "firstName": "Waggle",
-        "lastName": "Admin",
-        "image": "https://vignette.wikia.nocookie.net/bokunoheroacademia/images/a/a0/Shota_scar_headshot.png/revision/latest?cb=20171119144516",
-        "level": 100,
-        "exp": 0,
-        "courses": { "ICS 311": true, "ICS 314": false },
-        "joinedSessions": ["xWdug9rdTySKRyvbM"],
-        "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
-      }
+      "role": "admin"
     },
     {
       "email": "john@foo.com",
-      "password": "changeme",
-      "profile": {
-        "firstName": "John",
-        "lastName": "Smith",
-        "image": "https://react.semantic-ui.com/images/avatar/large/matthew.png",
-        "level": 12,
-        "exp": 1000,
-        "courses": { "ICS 311": true, "ICS 314": true },
-        "joinedSessions": ["xWdug9rdTySKRyvbM"],
-        "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
-      }
+      "password": "changeme"
     },
     {
       "email": "jhun@foo.com",
-      "password": "changeme",
-      "profile": {
-        "firstName": "Jhun",
-        "lastName": "Domingo",
-        "image": "https://philipmjohnson.github.io/images/philip2.jpeg",
-        "level": 4,
-        "exp": 80,
-        "courses": { "ICS 311": false, "ICS 314": true },
-        "joinedSessions": ["xWdug9rdTySKRyvbM"],
-        "createdSessions": ["kgrZwBazYFvsLh3Ya", "3xwB6nHtsAEsu7T7z"]
-      }
+      "password": "changeme"
     }
   ],
   "defaultSessions": [
@@ -116,7 +86,6 @@
       "description": "Problem analysis and design, team-oriented development, quality assurance, configuration management, project planning."
     }
   ],
-
   "defaultReportLog": [
     {
       "owner": "john@foo.com",
@@ -134,7 +103,6 @@
       "createdAt": "Tue Apr 11 2019 16:57:51 GMT-1000 (Hawaii-Aleutian Standard Time)"
     }
   ],
-
   "defaultActivityLog": [
     {
       "owner": "admin@foo.com",
@@ -149,7 +117,6 @@
       "createdAt": "Tue Apr 11 2019 16:57:51 GMT-1000 (Hawaii-Aleutian Standard Time)"
     }
   ],
-
   "defaultTaskList": [
     {
       "task": "Go over open reports",
@@ -160,6 +127,65 @@
       "task": "Complete weekly pulse report",
       "createdAt": "Tue Apr 11 2019 16:58:51 GMT-1000 (Hawaii-Aleutian Standard Time)",
       "isDone": false
+    }
+  ],
+  "defaultProfiles": [
+    {
+      "firstName": "Waggle",
+      "lastName": "Admin",
+      "image": "https://vignette.wikia.nocookie.net/bokunoheroacademia/images/a/a0/Shota_scar_headshot.png/revision/latest?cb=20171119144516",
+      "level": 100,
+      "exp": 0,
+      "courses": {
+        "ICS 311": true,
+        "ICS 314": false
+      },
+      "joinedSessions": [
+        "xWdug9rdTySKRyvbM"
+      ],
+      "createdSessions": [
+        "kgrZwBazYFvsLh3Ya",
+        "3xwB6nHtsAEsu7T7z"
+      ],
+      "owner": "admin@foo.com"
+    },
+    {
+      "firstName": "John",
+      "lastName": "Smith",
+      "image": "https://react.semantic-ui.com/images/avatar/large/matthew.png",
+      "level": 12,
+      "exp": 1000,
+      "courses": {
+        "ICS 311": true,
+        "ICS 314": true
+      },
+      "joinedSessions": [
+        "xWdug9rdTySKRyvbM"
+      ],
+      "createdSessions": [
+        "kgrZwBazYFvsLh3Ya",
+        "3xwB6nHtsAEsu7T7z"
+      ],
+      "owner": "john@foo.com"
+    },
+    {
+      "firstName": "Jhun",
+      "lastName": "Domingo",
+      "image": "https://philipmjohnson.github.io/images/philip2.jpeg",
+      "level": 4,
+      "exp": 80,
+      "courses": {
+        "ICS 311": false,
+        "ICS 314": true
+      },
+      "joinedSessions": [
+        "xWdug9rdTySKRyvbM"
+      ],
+      "createdSessions": [
+        "kgrZwBazYFvsLh3Ya",
+        "3xwB6nHtsAEsu7T7z"
+      ],
+      "owner": "jhun@foo.com"
     }
   ]
 }
