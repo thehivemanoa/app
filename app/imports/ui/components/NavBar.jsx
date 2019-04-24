@@ -5,6 +5,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
 import { Menu, Header, Popup, Label, Divider, Icon, Modal, Form, Image, Button, Container } from 'semantic-ui-react';
 import { Roles } from 'meteor/alanning:roles';
+import { AccountInfo } from '../../api/accountInfo/accountInfo.js';
 
 // import { Roles } from 'meteor/alanning:roles';
 
@@ -79,7 +80,7 @@ class NavBar extends React.Component {
               <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
             </Menu.Item>
 
-            {this.props.currentUser === '' ? (
+            {this.props.data.currentUser === '' ? (
                 <Menu.Menu position='right'>
                   <Modal id='login-modal' trigger={<Menu.Item style={{ color: 'white' }}>Log In</Menu.Item>}>
                     <Modal.Header>Log in to your account</Modal.Header>
@@ -111,7 +112,7 @@ class NavBar extends React.Component {
 
             ) : ''}
 
-            {this.props.currentUser ? (
+            {this.props.data.currentUser ? (
                 <Menu.Menu position={'right'}>
                   <Menu.Item as={NavLink} exact to='/' content={'Home'}
                              className='collapsable'
@@ -148,14 +149,14 @@ class NavBar extends React.Component {
                          trigger={
                            <Label className="collapsable"
                                   as='a' style={{ background: 'transparent', position: 'relative' }}>
-                             <Image avatar spaced='right' src={this.props.image}/>
+                             <Image avatar spaced='right' src={this.props.data.image}/>
                              <Icon inverted name='caret down'/>
                            </Label>
                          }
                   >
                     <Menu className="collapsable" vertical borderless secondary>
                       <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                        {this.props.firstName} {this.props.lastName}
+                        {this.props.data.firstName} {this.props.data.lastName}
                         <br/>
                         <Divider/>
                       </Menu.Item>
@@ -187,7 +188,7 @@ class NavBar extends React.Component {
                   >
                     <Menu vertical borderless secondary>
                       <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                        {this.props.firstName} {this.props.lastName}
+                        {this.props.data.firstName} {this.props.data.lastName}
                         <br/>
                         <Divider/>
                       </Menu.Item>
@@ -229,26 +230,19 @@ class NavBar extends React.Component {
   }
 }
 
-/** Declare the types of all properties. */
 NavBar.propTypes = {
+  data: PropTypes.object,
   currentUser: PropTypes.string,
-  firstName: PropTypes.string,
-  lastName: PropTypes.string,
-  image: PropTypes.string,
-  ready: PropTypes.bool,
+  ready: PropTypes.bool.isRequired,
 };
 
-/** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
-const NavBarContainer = withTracker(() => {
-  const subscription = Meteor.subscribe('AccountProfileInfo');
+export default withTracker(() => {
+  const documentId = Meteor.userId();
+  const subscription = Meteor.subscribe('AccountInfo');
+  const acc = AccountInfo.findOne(documentId);
   return {
+    data: acc,
     currentUser: Meteor.user() ? Meteor.user().username : '',
-    firstName: Meteor.user() ? Meteor.user().firstName : '',
-    lastName: Meteor.user() ? Meteor.user().lastName : '',
-    image: Meteor.user() ? Meteor.user().image : '',
-    ready: (subscription.ready()),
+    ready: subscription.ready(),
   };
 })(NavBar);
-
-/** Enable ReactRouter for this component. https://reacttraining.com/react-router/web/api/withRouter */
-export default withRouter(NavBarContainer);

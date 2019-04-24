@@ -34,7 +34,7 @@ Meteor.publish('AccountInfo', function publish() {
 
 /** This subscription publishes all documents owned by a specific account. */
 Meteor.publish('AccountProfileInfo', function publish() {
-  const username = Meteor.users.findOne(this.userId).username;
+  const username = Meteor.users.findOne(this.userId).email;
   if (this.userId) {
     return AccountInfo.find({ owner: username });
   }
