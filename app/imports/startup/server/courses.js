@@ -24,3 +24,11 @@ Meteor.publish('myCourses', function publish() {
   }
   return this.ready();
 });
+
+/** This subscription publishes all documents provided that the user is logged in */
+Meteor.publish('Courses', function publish() {
+  if (this.userId) {
+    return Courses.find();
+  }
+  return this.ready();
+});
