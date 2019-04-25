@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Card, Header, Grid, Button, Icon, Loader, List, Form, Divider } from 'semantic-ui-react';
 import dateFns from 'date-fns';
+import { Profiles } from '/imports/api/profile/profile';
 
 const _ = require('underscore');
 
@@ -20,7 +21,7 @@ class SessionCard extends React.Component {
     return _.map(users, user => {
       return (
           <List.Item key={user.username} style={{ display: 'inline-block' }}>
-            {`${user.profile.firstName} ${user.profile.lastName}`}
+            {`${profile.firstName} ${profile.lastName}`}
           </List.Item>
       );
     });
@@ -174,14 +175,20 @@ SessionCard.propTypes = {
   isJoined: PropTypes.bool.isRequired,
   handleUpdate: PropTypes.func.isRequired,
   session: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
+  profiles: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
-export default withTracker(() => {
+export default withTracker(({ match }) => {
   // Get access to Stuff documents.
-  const subscription = Meteor.subscribe('Profiles');
+  const documentId = match.params._id;
+  // Get access to Profile documents.
+  const subscription = Meteor.subscribe('Profile');
+  const subscription2 = Meteor.subscribe('Profiles');
   return {
-    profiles: Meteor.users.find({}).fetch(),
-    ready: subscription.ready(),
+    profile: Profiles.findOne(documentId),
+    profiles: Profiles.find({}).fetch(),
+    ready: subscription.ready() && subscription2.ready(),
   };
 })(SessionCard);

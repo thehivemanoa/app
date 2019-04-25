@@ -8,6 +8,7 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import { Sessions } from '../../api/session/session';
 import Calendar from '../components/Calendar';
 import SessionList from '../components/SessionList';
+import { Profiles } from '/imports/api/profile/profile';
 
 const _ = require('underscore');
 
@@ -66,7 +67,7 @@ class CalendarPage extends React.Component {
   }
 
   isJoined(sessionId) {
-    const joinedSessions = this.props.joinedSessions;
+    const joinedSessions = this.props.profile.joinedSessions;
     return _.some(joinedSessions, session => session === sessionId);
   }
 
@@ -150,21 +151,26 @@ class CalendarPage extends React.Component {
 }
 
 CalendarPage.propTypes = {
-  joinedSessions: PropTypes.array.isRequired,
   currentUsername: PropTypes.string.isRequired,
   currentUserId: PropTypes.string.isRequired,
   sessions: PropTypes.array.isRequired,
+  profiles: PropTypes.array.isRequired,
+  profile: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
-export default withTracker(() => {
+export default withTracker(({ match }) => {
+  const documentId = match.params._id;
   // Get access to Stuff documents.
-  const subscription = Meteor.subscribe('MySessions');
+  const subscription = Meteor.subscribe('Sessions');
+  const subscription2 = Meteor.subscribe('Profile');
+  const doc = Profiles.findOne(documentId);
   return {
     currentUserId: Meteor.user() ? Meteor.user()._id : '',
     currentUsername: Meteor.user() ? Meteor.user().username : '',
-    joinedSessions: Meteor.user() ? Meteor.user().profile.joinedSessions : [],
+    profile: doc,
     sessions: Sessions.find({}).fetch(),
-    ready: (subscription.ready()),
+    profiles: Profiles.find({}).fetch(),
+    ready: (subscription.ready() && subscription2.ready()),
   };
 })(CalendarPage);

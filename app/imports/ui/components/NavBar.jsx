@@ -233,17 +233,21 @@ class NavBar extends React.Component {
 /** Declare the types of all properties. */
 NavBar.propTypes = {
   currentUser: PropTypes.string,
-  profile: PropTypes.array.isRequired,
+  profile: PropTypes.object.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
-const subscription = Meteor.subscribe('Profile');
-const NavBarContainer = withTracker(() => ({
-  currentUser: Meteor.user() ? Meteor.user().username : '',
-  profile: Profiles.find({}).fetch(),
-  ready: (subscription.ready()),
-}))(NavBar);
+const NavBarContainer = withTracker(({ match }) => {
+  const documentId = match.params._id;
+  const subscription = Meteor.subscribe('Profile');
+  const doc = Profiles.findOne(documentId);
+  return {
+    currentUser: Meteor.user() ? Meteor.user().username : '',
+    profile: doc,
+    ready: (subscription.ready()),
+  };
+})(NavBar);
 
 /** Enable ReactRouter for this component. https://reacttraining.com/react-router/web/api/withRouter */
 export default withRouter(NavBarContainer);

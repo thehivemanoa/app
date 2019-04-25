@@ -222,16 +222,18 @@ class UserProfile extends React.Component {
 
 /** Require an array of user documents in the props.profile. */
 UserProfile.propTypes = {
-  profile: PropTypes.array.isRequired,
+  profile: PropTypes.object.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
-export default withTracker(() => {
+export default withTracker(({ match }) => {
+  const documentId = match.params._id;
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe('Profile');
+  const doc = Profiles.findOne(documentId);
   return {
-    Profile: Profiles.find({}).fetch(),
+    profile: doc,
     ready: (subscription.ready()),
   };
 })(UserProfile);
