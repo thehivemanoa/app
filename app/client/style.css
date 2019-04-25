@@ -6,7 +6,7 @@ html, body {
 }
 
 body {
-  margin-top: 150px !important;
+  /*margin-top: 150px !important;*/
 }
 
 @media (min-width: 61.25rem) {
@@ -28,13 +28,22 @@ body {
   font-family: 'Montserrat', sans-serif !important;
 }
 
+.landing-page {
+  top: -33px;
+}
+
 .landing-text {
   font-size: 20px;
+  color: whitesmoke;
+  opacity: 0.75;
+  text-align: left;
 }
 
 landing-header {
   font-size: 32px;
-  line-height: 1.25em;
+  line-height: 1.75em;
+  color: orange;
+  text-align: left;
 }
 
 .ui.menu .item {
@@ -48,33 +57,65 @@ h2 {
   letter-spacing: 2px;
 }
 
-.blue-bg {
+/* Register form background. */
+.landing-register-panel {
   background-color: #081B34;
-  height: 86vh;
-  padding: 15vh 0vh 25vh 0vh;
+  height: 100vh;
+  padding: 28vh 0vh 25vh 0vh;
   color: whitesmoke;
   position: relative;
-  top: -33px;
   z-index: 99;
+  bottom: -50px;
+  background-position: center;
+  background-size: cover;
 }
 
-.white-bg {
-  background-color: white;
-  height: 100vh;
+/* Endless sidewalk image. */
+.landing-panel-1 {
+  background-image: url("/images/landing-endless-sidewalk-bg.svg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #081B34;
+  width: 100vw;
+  height: 700px;
   padding: 20vh 0vh 20vh 0vh;
 }
 
-.yellow-bg {
-  background-color: #fff53f;
-  height: 70vh;
+/* Calendar image. */
+.landing-panel-2 {
+  background-image: url("/images/landing-calendar-bg.svg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #081B34;
+  width: 100vw;
+  height: 700px;
   padding: 20vh 0vh 20vh 0vh;
 }
 
-.black-bg {
-  background-color: #020202;
-  height: 70vh;
-  padding: 0vh 10vh 20vh 0vh;
-  color: whitesmoke;
+/* Guy thinking image. */
+.landing-panel-3 {
+  background-image: url("/images/landing-guy-thinking-bg.svg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #081B34;
+  width: 100vw;
+  height: 700px;
+  padding: 20vh 0vh 20vh 0vh;
+}
+
+/* Top 3 image. */
+.landing-panel-4 {
+  background-image: url("/images/landing-top-3-bg.svg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #081B34;
+  width: 100vw;
+  height: 700px;
+  padding: 20vh 0vh 20vh 0vh;
 }
 
 .backgroundImage {
