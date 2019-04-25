@@ -9,6 +9,8 @@ const Courses = new Mongo.Collection('Courses');
 const CourseSchema = new SimpleSchema({
   course: String,
   description: String,
+  isRoyal: Boolean,
+  // color: String,
 }, { tracker: Tracker });
 
 /** Attach this schema to the collection. */
