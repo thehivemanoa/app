@@ -14,7 +14,7 @@ class UserProfile extends React.Component {
     super(props);
     const firstName = this.props.profile.firstName;
     const lastName = this.props.profile.lastName;
-    const email = this.props.profile.username;
+    const email = this.props.profile.owner;
 
     this.state = ({
       editing: false,
@@ -36,22 +36,18 @@ class UserProfile extends React.Component {
     this.renderInfoForm = this.renderInfoForm.bind(this);
     this.renderPicNormal = this.renderPicNormal.bind(this);
     this.renderPicForm = this.renderPicForm.bind(this);
-
-    console.log('state: { editing: false }');
   }
 
   edit() {
     this.setState({
       editing: true,
     });
-    console.log('state: { editing: true }');
   }
 
   save() {
     this.setState({
       editing: false,
     });
-    console.log('state: { editing: false }');
   }
 
   submitInfo() {
@@ -61,8 +57,7 @@ class UserProfile extends React.Component {
       submittedLastName: lastName,
     });
 
-    const currentUserId = this.props.profile.currentUser._id;
-    // console.log('Updating Profile: ' + currentUserId);
+    const currentUserId = this.props.currentUser._id;
 
     Meteor.users.update(
         currentUserId,
@@ -150,10 +145,13 @@ class UserProfile extends React.Component {
 
   /** If the subscription(s) have been received, render the page, otherwise show a loading icon. */
   render() {
-    return (this.props.profile.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
+    return this.renderPage();
   }
 
   renderPage() {
+
+    const level = this.props.profile.level;
+    const nextLevel = Math.round(50 * (0.04 * (level ** 3) + 0.8 * (level ** 2) + 2 * level));
 
     const containerPadding = {
       paddingTop: 20,
@@ -208,10 +206,10 @@ class UserProfile extends React.Component {
           <ProfileCard
               firstName={this.state.submittedFirstName}
               lastName={this.state.submittedLastName}
-              level={this.props.profile.level}
+              level={level}
               exp={this.props.profile.exp}
               image={this.props.profile.image}
-              nextLevel={this.props.profile.nextLevel}
+              nextLevel={nextLevel}
           />
           <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
                panes={panes} renderActiveOnly={false}/>
@@ -224,16 +222,15 @@ class UserProfile extends React.Component {
 UserProfile.propTypes = {
   profile: PropTypes.object.isRequired,
   ready: PropTypes.bool.isRequired,
+  currentUser: PropTypes.object,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
-export default withTracker(({ match }) => {
-  const documentId = match.params._id;
-  // Get access to Stuff documents.
+export default withTracker(() => {
   const subscription = Meteor.subscribe('Profile');
-  const doc = Profiles.findOne(documentId);
   return {
-    profile: doc,
+    profile: Profiles.find({}).fetch()[0],
+    currentUser: Meteor.user(),
     ready: (subscription.ready()),
   };
 })(UserProfile);

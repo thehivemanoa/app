@@ -8,13 +8,15 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import { Sessions } from '../../api/session/session';
 import Calendar from '../components/Calendar';
 import SessionList from '../components/SessionList';
-import { Profiles } from '/imports/api/profile/profile';
+import { Profiles } from '../../api/profile/profile';
 
 const _ = require('underscore');
 
 class CalendarPage extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this.props.sessions);
+    console.log(this.props.profile);
     const initialDate = new Date();
     this.state = {
       selectedDate: initialDate,
@@ -153,22 +155,21 @@ class CalendarPage extends React.Component {
 CalendarPage.propTypes = {
   currentUsername: PropTypes.string.isRequired,
   currentUserId: PropTypes.string.isRequired,
-  sessions: PropTypes.array.isRequired,
+  sessions: PropTypes.object,
   profiles: PropTypes.array.isRequired,
-  profile: PropTypes.array.isRequired,
+  profile: PropTypes.object.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
-export default withTracker(({ match }) => {
-  const documentId = match.params._id;
+export default withTracker(() => {
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe('Sessions');
   const subscription2 = Meteor.subscribe('Profile');
-  const doc = Profiles.findOne(documentId);
+  const doc = Profiles.find().fetch();
   return {
     currentUserId: Meteor.user() ? Meteor.user()._id : '',
     currentUsername: Meteor.user() ? Meteor.user().username : '',
-    profile: doc,
+    profile: doc[0],
     sessions: Sessions.find({}).fetch(),
     profiles: Profiles.find({}).fetch(),
     ready: (subscription.ready() && subscription2.ready()),
