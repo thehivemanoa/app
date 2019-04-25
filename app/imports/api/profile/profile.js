@@ -3,7 +3,7 @@ import SimpleSchema from 'simpl-schema';
 import { Tracker } from 'meteor/tracker';
 
 /** Create a Meteor collection. */
-const Profile = new Mongo.Collection('Profiles');
+const Profiles = new Mongo.Collection('Profiles');
 
 /** Create a schema to constrain the structure of documents associated with this collection. */
 const ProfileSchema = new SimpleSchema({
@@ -21,7 +21,7 @@ const ProfileSchema = new SimpleSchema({
 }, { tracker: Tracker });
 
 /** Attach this schema to the collection. */
-Profile.attachSchema(ProfileSchema);
+Profiles.attachSchema(ProfileSchema);
 
 /** Make the collection and schema available to other code. */
-export { Profile, ProfileSchema };
+export { Profiles, ProfileSchema };
