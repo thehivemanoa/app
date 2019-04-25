@@ -1,1 +1,1 @@
-import './profiles.js';
+import './profile.js';

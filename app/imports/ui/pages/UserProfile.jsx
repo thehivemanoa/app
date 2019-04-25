@@ -2,7 +2,7 @@ import React from 'react';
 import Alert from 'react-s-alert';
 import { Meteor } from 'meteor/meteor';
 import { Container, Loader, Image, Tab, Modal, Divider, Button, Form } from 'semantic-ui-react';
-import { Profiles } from '/imports/api/profilecontact/profile';
+import { Profiles } from '/imports/api/profile/profile';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import ProfileCard from '../components/ProfileCard';
