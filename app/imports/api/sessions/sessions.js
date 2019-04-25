@@ -1,25 +1,25 @@
-import { Meteor } from 'meteor/meteor';
-import { Sessions } from '../../api/contact/contact.js';
+import { Mongo } from 'meteor/mongo';
+import SimpleSchema from 'simpl-schema';
+import { Tracker } from 'meteor/tracker';
 
-/** Initialize the database with a default data document. */
-function addData(data) {
-  console.log(`  Adding: ${data.lastName} (${data.owner})`);
-  Sessions.insert(data);
-}
+/** Create a Meteor collection. */
+const Sessions = new Mongo.Collection('Sessions');
 
-/** Initialize the collection if empty. */
-if (Sessions.find().count() === 0) {
-  if (Meteor.settings.defaultSessions) {
-    console.log('Creating default contacts.');
-    Meteor.settings.defaultSessions.map(data => addData(data));
-  }
-}
+/** Create a schema to constrain the structure of documents associated with this collection. */
+const SessionSchema = new SimpleSchema({
+  title: String,
+  course: String,
+  description: { type: String, required: false },
+  date: Date,
+  startTime: Date,
+  endTime: Date,
+  attendees: Array,
+  'attendees.$': String,
+  owner: String,
+}, { tracker: Tracker });
 
-/** This subscription publishes all documents provided that the user is logged in */
-Meteor.publish('mySessions', function publish() {
-  if (this.userId) {
-    const username = Meteor.users.findOne(this.userId).username;
-    return Sessions.find({ owner: username });
-  }
-  return this.ready();
-});
+/** Attach this schema to the collection. */
+Sessions.attachSchema(SessionSchema);
+
+/** Make the collection and schema available to other code. */
+export { Sessions, SessionSchema };
