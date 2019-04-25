@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import dateFns from 'date-fns';
-import { Sessions } from '../../api/sessions/sessions.js';
+import { Sessions } from '../../api/session/session.js';
 
 /** Initialize the database with a default data document. */
 function addData(data) {
