@@ -8,6 +8,7 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import SearchResults from '../components/SearchResults';
 import SearchBox from '../components/SearchBox';
 import { Sessions } from '../../api/session/session';
+import { Profiles } from '../../api/profile/profile';
 import SessionCardFlat from '../components/SessionCardFlat';
 import SessionCard from '../components/SessionCard';
 
@@ -471,7 +472,7 @@ class SearchPage extends React.Component {
 SearchPage.propTypes = {
   currentUser: PropTypes.object,
   currentUsername: PropTypes.string.isRequired,
-  currentProfile: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
   sessions: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
@@ -480,11 +481,11 @@ export default withTracker(() => {
   // Get access to Stuff documents.
 
   const subscription = Meteor.subscribe('Sessions');
-  const subscription2 = Meteor.subscribe('Profiles');
+  const subscription2 = Meteor.subscribe('Profile');
   return {
     currentUser: Meteor.user(),
     currentUsername: Meteor.user() ? Meteor.user().username : '',
-    currentProfile: Meteor.user() ? Meteor.user().profile : {},
+    Profile: Profiles.find({}).fetch(),
     sessions: Sessions.find({}).fetch(),
     ready: (subscription.ready() && subscription2.ready()),
   };

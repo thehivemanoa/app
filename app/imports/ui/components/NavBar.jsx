@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
 import { Menu, Header, Popup, Label, Divider, Icon, Modal, Form, Image, Button, Container } from 'semantic-ui-react';
+import { Profiles } from '/imports/api/profile/profile';
 import { Roles } from 'meteor/alanning:roles';
 
 // import { Roles } from 'meteor/alanning:roles';
@@ -148,14 +149,14 @@ class NavBar extends React.Component {
                          trigger={
                            <Label className="collapsable"
                                   as='a' style={{ background: 'transparent', position: 'relative' }}>
-                             <Image avatar spaced='right' src={this.props.image}/>
+                             <Image avatar spaced='right' src={this.props.profile.image}/>
                              <Icon inverted name='caret down'/>
                            </Label>
                          }
                   >
                     <Menu className="collapsable" vertical borderless secondary>
                       <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                        {this.props.firstName} {this.props.lastName}
+                        {this.props.profile.firstName} {this.props.profile.lastName}
                         <br/>
                         <Divider/>
                       </Menu.Item>
@@ -187,7 +188,7 @@ class NavBar extends React.Component {
                   >
                     <Menu vertical borderless secondary>
                       <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                        {this.props.firstName} {this.props.lastName}
+                        {this.props.profile.firstName} {this.props.profile.lastName}
                         <br/>
                         <Divider/>
                       </Menu.Item>
@@ -232,17 +233,16 @@ class NavBar extends React.Component {
 /** Declare the types of all properties. */
 NavBar.propTypes = {
   currentUser: PropTypes.string,
-  firstName: PropTypes.string,
-  lastName: PropTypes.string,
-  image: PropTypes.string,
+  profile: PropTypes.array.isRequired,
+  ready: PropTypes.bool.isRequired,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
+const subscription = Meteor.subscribe('Profile');
 const NavBarContainer = withTracker(() => ({
   currentUser: Meteor.user() ? Meteor.user().username : '',
-  firstName: Meteor.user() ? Meteor.user().profile.firstName : '',
-  lastName: Meteor.user() ? Meteor.user().profile.lastName : '',
-  image: Meteor.user() ? Meteor.user().profile.image : '',
+  profile: Profiles.find({}).fetch(),
+  ready: (subscription.ready()),
 }))(NavBar);
 
 /** Enable ReactRouter for this component. https://reacttraining.com/react-router/web/api/withRouter */

@@ -2,6 +2,7 @@ import React from 'react';
 import Alert from 'react-s-alert';
 import { Meteor } from 'meteor/meteor';
 import { Container, Loader, Image, Tab, Modal, Divider, Button, Form } from 'semantic-ui-react';
+import { Profiles } from '/imports/api/profilecontact/profile';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import ProfileCard from '../components/ProfileCard';
@@ -11,9 +12,9 @@ import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 class UserProfile extends React.Component {
   constructor(props) {
     super(props);
-    const firstName = this.props.firstName;
-    const lastName = this.props.lastName;
-    const email = this.props.username;
+    const firstName = this.props.profile.firstName;
+    const lastName = this.props.profile.lastName;
+    const email = this.props.profile.username;
 
     this.state = ({
       editing: false,
@@ -60,7 +61,7 @@ class UserProfile extends React.Component {
       submittedLastName: lastName,
     });
 
-    const currentUserId = this.props.currentUser._id;
+    const currentUserId = this.props.profile.currentUser._id;
     // console.log('Updating Profile: ' + currentUserId);
 
     Meteor.users.update(
@@ -114,14 +115,14 @@ class UserProfile extends React.Component {
 
   renderPicNormal() {
     return (
-        <Image src={this.props.image} circular
+        <Image src={this.props.profile.image} circular
                style={{ marginBottom: 5 }}/>
     );
   }
 
   renderPicForm() {
     return (
-        <Modal id='login-modal' trigger={<Image src={this.props.image} circular disabled
+        <Modal id='login-modal' trigger={<Image src={this.props.profile.image} circular disabled
                                                 style={{ marginBottom: 5 }}/>}>
           <Modal.Header>Edit Profile Picture</Modal.Header>
           <Modal.Content>
@@ -149,7 +150,7 @@ class UserProfile extends React.Component {
 
   /** If the subscription(s) have been received, render the page, otherwise show a loading icon. */
   render() {
-    return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
+    return (this.props.profile.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
   renderPage() {
@@ -207,10 +208,10 @@ class UserProfile extends React.Component {
           <ProfileCard
               firstName={this.state.submittedFirstName}
               lastName={this.state.submittedLastName}
-              level={this.props.level}
-              exp={this.props.exp}
-              image={this.props.image}
-              nextLevel={this.props.nextLevel}
+              level={this.props.profile.level}
+              exp={this.props.profile.exp}
+              image={this.props.profile.image}
+              nextLevel={this.props.profile.nextLevel}
           />
           <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
                panes={panes} renderActiveOnly={false}/>
@@ -219,33 +220,18 @@ class UserProfile extends React.Component {
   }
 }
 
-/** Require an array of user documents in the props. */
+/** Require an array of user documents in the props.profile. */
 UserProfile.propTypes = {
-  firstName: PropTypes.string,
-  lastName: PropTypes.string,
-  level: PropTypes.number,
-  exp: PropTypes.number,
-  nextLevel: PropTypes.number,
-  email: PropTypes.array,
-  image: PropTypes.string,
-  currentUser: PropTypes.object,
-  username: PropTypes.string,
-  ready: PropTypes.bool,
+  profile: PropTypes.array.isRequired,
+  ready: PropTypes.bool.isRequired,
 };
 
+/** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
 export default withTracker(() => {
-  const subscription = Meteor.subscribe('Profiles');
-  const level = Meteor.user().profile.level;
+  // Get access to Stuff documents.
+  const subscription = Meteor.subscribe('Profile');
   return {
-    currentUser: Meteor.user(),
-    firstName: Meteor.user() ? Meteor.user().profile.firstName : '',
-    lastName: Meteor.user() ? Meteor.user().profile.lastName : '',
-    level: Meteor.user() ? Meteor.user().profile.level : null,
-    exp: Meteor.user() ? Meteor.user().profile.exp : null,
-    email: Meteor.user() ? Meteor.user().emails : [],
-    image: Meteor.user() ? Meteor.user().profile.image : '',
-    username: Meteor.user() ? Meteor.user().username : '',
-    nextLevel: Meteor.user() ? Math.round(50 * (0.04 * (level ** 3) + 0.8 * (level ** 2) + 2 * level)) : null,
-    ready: subscription.ready(),
+    Profile: Profiles.find({}).fetch(),
+    ready: (subscription.ready()),
   };
 })(UserProfile);
