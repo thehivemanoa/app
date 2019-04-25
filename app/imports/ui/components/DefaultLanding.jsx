@@ -17,7 +17,7 @@ class DefaultLanding extends React.Component {
                 </Grid.Column>
 
                 <Grid.Column>
-                  <h2><Icon id="triangle-icon" fitted name='triangle right'/> Register Now!</h2>
+                  <h2><Icon id="triangle-icon" fitted name='triangle right'/> Register Today!</h2>
                   <Form id='registration-form' inverted>
                     <Form.Field>
                       <label>First Name</label>
@@ -32,7 +32,7 @@ class DefaultLanding extends React.Component {
                     <Divider inverted/>
 
                     <Form.Field>
-                      <label>email</label>
+                      <label>Email</label>
                       <Input fluid transparent placeholder='example@email.com'/>
                     </Form.Field>
                     <Divider inverted/>
@@ -44,7 +44,7 @@ class DefaultLanding extends React.Component {
                     <Divider/>
 
                     <Form.Field>
-                      <Checkbox label='I agree to the Terms and Conditions'/>
+                      <Checkbox label='I agree to the Terms and Conditions.'/>
                     </Form.Field>
                     <Button id='register-button' type='submit'>Submit</Button>
                   </Form>
@@ -54,7 +54,7 @@ class DefaultLanding extends React.Component {
           </div>
 
           <Grid verticalAlign='middle' textAlign='center' style={{ marginTop: '0' }}>
-            <Grid.Row columns={2} className="white-bg">
+            <Grid.Row columns={2} className="landing-panel-1">
               <Grid.Column width={5}>
                 <Header as={'landing-header'}>What is Waggle?</Header>
                 <p className="landing-text">
@@ -62,14 +62,14 @@ class DefaultLanding extends React.Component {
                   study groups for their classes, or help other students with coursework and projects.
                 </p>
               </Grid.Column>
-              <Grid.Column width={7}>
-                <Image src={'https://semantic-ui.com/images/wireframe/image.png'} style={{ width: '500px' }}/>
+              <Grid.Column width={5}>
+                <Image src={''} style={{ width: '500px' }}/>
               </Grid.Column>
             </Grid.Row>
 
-            <Grid.Row className="yellow-bg">
-              <Grid.Column width={7}>
-                <Image src={'https://semantic-ui.com/images/wireframe/image.png'} style={{ width: '500px' }}/>
+            <Grid.Row className="landing-panel-2">
+              <Grid.Column width={5}>
+                <Image src={''} style={{ width: '500px' }}/>
               </Grid.Column>
               <Grid.Column width={5}>
                 <Header as={'landing-header'}>Schedule a session</Header>
@@ -80,7 +80,7 @@ class DefaultLanding extends React.Component {
               </Grid.Column>
             </Grid.Row>
 
-            <Grid.Row className="white-bg">
+            <Grid.Row className="landing-panel-3">
               <Grid.Column width={5}>
                 <Header as={'landing-header'}>Discover new study sessions and plan ahead</Header>
                 <p className="landing-text">
@@ -93,14 +93,14 @@ class DefaultLanding extends React.Component {
                   button.
                 </p>
               </Grid.Column>
-              <Grid.Column width={7}>
-                <Image src={'../images/calendar-page-v1.PNG'} style={{ width: '500px' }}/>
+              <Grid.Column width={5}>
+                <Image src={''} style={{ width: '500px' }}/>
               </Grid.Column>
             </Grid.Row>
 
-            <Grid.Row className="black-bg">
-              <Grid.Column width={7}>
-                <Image src={'https://semantic-ui.com/images/wireframe/image.png'} style={{ width: '500px' }}/>
+            <Grid.Row className="landing-panel-4">
+              <Grid.Column width={5}>
+                <Image src={''} style={{ width: '500px' }}/>
               </Grid.Column>
               <Grid.Column width={5}>
                 <Header as={'landing-header'} style={{ color: 'white' }}>Move up the leaderboard</Header>
