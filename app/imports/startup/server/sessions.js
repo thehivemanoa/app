@@ -1,51 +1,33 @@
 import { Meteor } from 'meteor/meteor';
-import dateFns from 'date-fns';
-import { Sessions } from '../../api/sessions/sessions.js';
-import { Courses } from '../../api/courses/courses';
+import { Sessions } from '../../api/sessions /sessions.js';
 
 /** Initialize the database with a default data document. */
 function addData(data) {
-  console.log(`  Adding: ${data.title} (${data.owner})`);
-  const { startOffSetFromCurrentDay, endOffSetFromCurrentDay } = data;
-  const currentTime = new Date();
-  const currentDay = dateFns.startOfDay(currentTime);
-  const startTime = dateFns.addHours(currentDay, Number(startOffSetFromCurrentDay));
-  const endTime = dateFns.addHours(currentDay, Number(endOffSetFromCurrentDay));
-  const date = dateFns.startOfDay(startTime);
-  const session = {
-    title: data.title,
-    course: data.course,
-    description: data.description,
-    date: date,
-    startTime: startTime,
-    endTime: endTime,
-    attendees: [data.owner],
-    owner: data.owner,
-  };
-  Sessions.insert(session);
+  console.log(`  Adding: ${data.session}`);
+  Sessions.insert(data);
 }
 
 /** Initialize the collection if empty. */
 if (Sessions.find().count() === 0) {
   if (Meteor.settings.defaultSessions) {
-    console.log('Creating default sessions.');
+    console.log('Creating default session list.');
     Meteor.settings.defaultSessions.map(data => addData(data));
   }
 }
 
-/** This subscription publishes only the documents associated with the logged in user */
-Meteor.publish('MySessions', function publish() {
+/** This subscription publishes all documents provided that the user is logged in */
+Meteor.publish('mySessions', function publish() {
   if (this.userId) {
-    const sessionIds = Meteor.users.find(this.userId).fetch()[0].profile.joinedSessions;
-    return Sessions.find({ _id: { $in: sessionIds } });
+    const username = Meteor.users.findOne(this.userId).username;
+    return Sessions.find({ owner: username });
   }
   return this.ready();
 });
 
 /** This subscription publishes all documents provided that the user is logged in */
-Meteor.publish('Courses', function publish() {
+Meteor.publish('Sessions', function publish() {
   if (this.userId) {
-    return Courses.find();
+    return Sessions.find();
   }
   return this.ready();
 });
