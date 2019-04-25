@@ -1,25 +1,50 @@
-import { Mongo } from 'meteor/mongo';
-import SimpleSchema from 'simpl-schema';
-import { Tracker } from 'meteor/tracker';
+import { Meteor } from 'meteor/meteor';
+import dateFns from 'date-fns';
+import { Sessions } from '../../api/sessions/sessions.js';
 
-/** Create a Meteor collection. */
-const Sessions = new Mongo.Collection('Sessions');
+/** Initialize the database with a default data document. */
+function addData(data) {
+  console.log(`  Adding: ${data.title} (${data.owner})`);
+  const { startOffSetFromCurrentDay, endOffSetFromCurrentDay } = data;
+  const currentTime = new Date();
+  const currentDay = dateFns.startOfDay(currentTime);
+  const startTime = dateFns.addHours(currentDay, Number(startOffSetFromCurrentDay));
+  const endTime = dateFns.addHours(currentDay, Number(endOffSetFromCurrentDay));
+  const date = dateFns.startOfDay(startTime);
+  const session = {
+    title: data.title,
+    course: data.course,
+    description: data.description,
+    date: date,
+    startTime: startTime,
+    endTime: endTime,
+    attendees: [data.owner],
+    isCancelled: data.isCancelled,
+    owner: data.owner,
+  };
+  Sessions.insert(session);
+}
 
-/** Create a schema to constrain the structure of documents associated with this collection. */
-const SessionSchema = new SimpleSchema({
-  title: String,
-  course: String,
-  description: { type: String, required: false },
-  date: Date,
-  startTime: Date,
-  endTime: Date,
-  attendees: Array,
-  'attendees.$': String,
-  owner: String,
-}, { tracker: Tracker });
+/** Initialize the collection if empty. */
+if (Sessions.find().count() === 0) {
+  if (Meteor.settings.defaultSessions) {
+    console.log('Creating default sessions.');
+    Meteor.settings.defaultSessions.map(data => addData(data));
+  }
+}
 
-/** Attach this schema to the collection. */
-Sessions.attachSchema(SessionSchema);
+/** This subscription publishes only the documents associated with the logged in user */
+Meteor.publish('Sessions', function publish() {
+  if (this.userId) {
+    return Sessions.find();
+  }
+  return this.ready();
+});
 
-/** Make the collection and schema available to other code. */
-export { Sessions, SessionSchema };
+Meteor.publish('MySessions', function publish() {
+  if (this.userId) {
+    const sessionIds = Meteor.users.find(this.userId).fetch()[0].profile.joinedSessions;
+    return Sessions.find({ _id: { $in: sessionIds } });
+  }
+  return this.ready();
+});

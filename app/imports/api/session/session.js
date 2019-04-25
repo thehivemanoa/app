@@ -15,6 +15,7 @@ const SessionSchema = new SimpleSchema({
   endTime: Date,
   attendees: Array,
   'attendees.$': String,
+  isCancelled: Boolean,
   owner: String,
 }, { tracker: Tracker });
 

@@ -17,15 +17,6 @@ if (Courses.find().count() === 0) {
 }
 
 /** This subscription publishes all documents provided that the user is logged in */
-Meteor.publish('myCourses', function publish() {
-  if (this.userId) {
-    const username = Meteor.users.findOne(this.userId).username;
-    return Courses.find({ owner: username });
-  }
-  return this.ready();
-});
-
-/** This subscription publishes all documents provided that the user is logged in */
 Meteor.publish('Courses', function publish() {
   if (this.userId) {
     return Courses.find();

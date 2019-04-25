@@ -21,6 +21,7 @@
       "description": "",
       "startOffSetFromCurrentDay": "15",
       "endOffSetFromCurrentDay": "16",
+      "isCancelled": false,
       "owner": "john@foo.com"
     },
     {
@@ -29,6 +30,7 @@
       "description": "",
       "startOffSetFromCurrentDay": "15.5",
       "endOffSetFromCurrentDay": "16.5",
+      "isCancelled": false,
       "owner": "john@foo.com"
     },
     {
@@ -37,6 +39,7 @@
       "description": "",
       "startOffSetFromCurrentDay": "16",
       "endOffSetFromCurrentDay": "18",
+      "isCancelled": false,
       "owner": "john@foo.com"
     },
     {
@@ -45,6 +48,7 @@
       "description": "",
       "startOffSetFromCurrentDay": "18",
       "endOffSetFromCurrentDay": "20",
+      "isCancelled": false,
       "owner": "john@foo.com"
     },
     {
@@ -53,6 +57,7 @@
       "description": "",
       "startOffSetFromCurrentDay": "36",
       "endOffSetFromCurrentDay": "38",
+      "isCancelled": false,
       "owner": "john@foo.com"
     }
   ],
