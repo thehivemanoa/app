@@ -34,11 +34,16 @@ body {
 
 .landing-text {
   font-size: 20px;
+  color: whitesmoke;
+  opacity: 0.75;
+  text-align: left;
 }
 
 landing-header {
   font-size: 32px;
-  line-height: 1.25em;
+  line-height: 1.75em;
+  color: orange;
+  text-align: left;
 }
 
 .ui.menu .item {
@@ -52,8 +57,8 @@ h2 {
   letter-spacing: 2px;
 }
 
-/* Endless sidewalk image. */
-.blue-bg {
+/* Register form background. */
+.landing-register-panel {
   background-color: #081B34;
   height: 100vh;
   padding: 28vh 0vh 25vh 0vh;
@@ -67,7 +72,7 @@ h2 {
 
 /* Endless sidewalk image. */
 .landing-panel-1 {
-  background-image: url("/images/landing-endless-sidewalk-bg.png");
+  background-image: url("/images/landing-endless-sidewalk-bg.svg");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -79,7 +84,7 @@ h2 {
 
 /* Calendar image. */
 .landing-panel-2 {
-  background-image: url("/images/landing-calendar-bg.png");
+  background-image: url("/images/landing-calendar-bg.svg");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -91,7 +96,7 @@ h2 {
 
 /* Guy thinking image. */
 .landing-panel-3 {
-  background-image: url("/images/landing-guy-thinking-bg.png");
+  background-image: url("/images/landing-guy-thinking-bg.svg");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -103,7 +108,7 @@ h2 {
 
 /* Top 3 image. */
 .landing-panel-4 {
-  background-image: url("/images/landing-top-3-bg.png");
+  background-image: url("/images/landing-top-3-bg.svg");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;

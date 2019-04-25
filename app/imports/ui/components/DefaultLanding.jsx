@@ -7,7 +7,7 @@ class DefaultLanding extends React.Component {
   render() {
     return (
         <div className="landing-page">
-          <div className='blue-bg'>
+          <div className='landing-register-panel'>
             <Container>
               <Grid columns={2} divided>
                 <Grid.Column>
@@ -58,8 +58,7 @@ class DefaultLanding extends React.Component {
               <Grid.Column width={5}>
                 <Header as={'landing-header'}>What is Waggle?</Header>
                 <p className="landing-text">
-                  Waggle provides ICS students of UH Manoa a platform to easily organize in-person
-                  study groups for their classes, or help other students with coursework and projects.
+                  Waggle provides students of the University of Hawaiʻi at Mānoa a platform to easily   organize in-person study groups and help other students with coursework and projects for any class.  How un-BEE-lievable!
                 </p>
               </Grid.Column>
               <Grid.Column width={5}>
@@ -72,25 +71,18 @@ class DefaultLanding extends React.Component {
                 <Image src={''} style={{ width: '500px' }}/>
               </Grid.Column>
               <Grid.Column width={5}>
-                <Header as={'landing-header'}>Schedule a session</Header>
+                <Header as={'landing-header'}>Schedule a Session</Header>
                 <p className="landing-text">
-                  Start a study session for other bees to join!<br/>
-                  Just choose a time and place and the course you want to study for.
+                  Create and schedule a study session for other students to join. All you need to do is choose a time, location, and the course you want to study for then you'll BEE all set!
                 </p>
               </Grid.Column>
             </Grid.Row>
 
             <Grid.Row className="landing-panel-3">
               <Grid.Column width={5}>
-                <Header as={'landing-header'}>Discover new study sessions and plan ahead</Header>
+                <Header as={'landing-header'}>Plan in Advance</Header>
                 <p className="landing-text">
-                  Waggle’s built-in calendar manages to be detailed without being overcrowded, making it easy to browse
-                  new
-                  study sessions. Read through the descriptions and look over an exhaustive list of the attendees to
-                  find
-                  out which sessions work for you. Once you’ve made a decision, you can join or leave with the click of
-                  a
-                  button.
+                  Waggle’s built-in calendar is detailed without BEE-ing overcrowded, making it easy to browse new study sessions. Once you’ve made a decision, you can choose to join or leave with the click of a button!
                 </p>
               </Grid.Column>
               <Grid.Column width={5}>
@@ -103,10 +95,9 @@ class DefaultLanding extends React.Component {
                 <Image src={''} style={{ width: '500px' }}/>
               </Grid.Column>
               <Grid.Column width={5}>
-                <Header as={'landing-header'} style={{ color: 'white' }}>Move up the leaderboard</Header>
+                <Header as={'landing-header'}>Move Up the Ranks</Header>
                 <p className="landing-text">
-                  The more you Waggle, the more honey you collect!<br/>
-                  Join and create study sessions to level up and move up the leaderboard!
+                  The more you Waggle, the more honey you collect. Join and create study sessions to level up  your profile and climb the user leaderboard. Go and get your BUZZ on!
                 </p>
               </Grid.Column>
             </Grid.Row>
