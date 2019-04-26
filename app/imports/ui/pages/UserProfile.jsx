@@ -12,9 +12,9 @@ import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 class UserProfile extends React.Component {
   constructor(props) {
     super(props);
-    const firstName = this.props.profile.firstName;
-    const lastName = this.props.profile.lastName;
-    const email = this.props.profile.owner;
+    const firstName = Profiles.findOne({ owner: this.props.currentUser }).firstName;
+    const lastName = Profiles.findOne({ owner: this.props.currentUser }).lastName;
+    const email = this.props.currentUser;
 
     this.state = ({
       editing: false,
@@ -26,14 +26,12 @@ class UserProfile extends React.Component {
       submittedEmail: email,
     });
 
-    this.info = this.info.bind(this);
+    console.log(this.state);
     this.pic = this.pic.bind(this);
     this.edit = this.edit.bind(this);
     this.save = this.save.bind(this);
     this.updateState = this.updateState.bind(this);
     this.submitInfo = this.submitInfo.bind(this);
-    this.renderInfoNormal = this.renderInfoNormal.bind(this);
-    this.renderInfoForm = this.renderInfoForm.bind(this);
     this.renderPicNormal = this.renderPicNormal.bind(this);
     this.renderPicForm = this.renderPicForm.bind(this);
   }
@@ -57,7 +55,7 @@ class UserProfile extends React.Component {
       submittedLastName: lastName,
     });
 
-    const currentUserId = this.props.currentUser._id;
+    const currentUserId = this.props.currentId;
 
     Meteor.users.update(
         currentUserId,
@@ -81,43 +79,18 @@ class UserProfile extends React.Component {
 
   updateState = (e, { name, value }) => this.setState({ [name]: value });
 
-  renderInfoNormal() {
-    return (
-        <div>
-          <p>First Name: {this.state.submittedFirstName}</p>
-          <p>Last Name: {this.state.submittedLastName}</p>
-          <p>Email: {this.state.submittedEmail}</p>
-          <Divider/>
-          <Button onClick={this.edit}>Edit Profile</Button>
-        </div>
-    );
-  }
-
-  renderInfoForm() {
-    const { firstName, lastName, email } = this.state;
-
-    return (
-        <div>
-          <Form onSubmit={this.submitInfo}>
-            <Form.Input label={'First Name'} name={'firstName'} value={firstName} onChange={this.updateState}/>
-            <Form.Input label={'Last Name'} name={'lastName'} value={lastName} onChange={this.updateState}/>
-            <Form.Input label={'Email'} name={'email'} value={email} onChange={this.updateState}/>
-            <Form.Button content={'Submit'}/>
-          </Form>
-        </div>
-    );
-  }
-
   renderPicNormal() {
+    const image = Profiles.findOne({ owner: this.props.currentUser }).image;
     return (
-        <Image src={this.props.profile.image} circular
+        <Image src={image} circular
                style={{ marginBottom: 5 }}/>
     );
   }
 
   renderPicForm() {
+    const image = Profiles.findOne({ owner: this.props.currentUser }).image;
     return (
-        <Modal id='login-modal' trigger={<Image src={this.props.profile.image} circular disabled
+        <Modal id='login-modal' trigger={<Image src={image} circular disabled
                                                 style={{ marginBottom: 5 }}/>}>
           <Modal.Header>Edit Profile Picture</Modal.Header>
           <Modal.Content>
@@ -125,14 +98,6 @@ class UserProfile extends React.Component {
           </Modal.Content>
         </Modal>
     );
-  }
-
-  info() {
-    if (this.state.editing) {
-      this.renderInfoForm();
-    } else {
-      this.renderInfoNormal();
-    }
   }
 
   pic() {
@@ -150,15 +115,35 @@ class UserProfile extends React.Component {
 
   renderPage() {
 
-    const level = this.props.profile.level;
+    const level = Profiles.findOne({ owner: this.props.currentUser }).level;
+    const exp = Profiles.findOne({ owner: this.props.currentUser }).exp;
+    const image = Profiles.findOne({ owner: this.props.currentUser }).image;
     const nextLevel = Math.round(50 * (0.04 * (level ** 3) + 0.8 * (level ** 2) + 2 * level));
-
+    const { firstName, lastName, email } = this.state;
     const panes = [
       {
         menuItem: 'Information',
         pane: (
             <Tab.Pane attached={false} key={'Information'}>
-              {this.info()}
+              {this.state.editing ? (
+                  <div>
+                    <Form onSubmit={this.submitInfo}>
+                      <Form.Input label={'First Name'} name={'firstName'}
+                                  value={firstName} onChange={this.updateState}/>
+                      <Form.Input label={'Last Name'} name={'lastName'} value={lastName} onChange={this.updateState}/>
+                      <Form.Input label={'Email'} name={'email'} value={email} onChange={this.updateState}/>
+                      <Form.Button content={'Submit'}/>
+                    </Form>
+                  </div>
+                  ) : (
+                  <div>
+                    <p>First Name: {this.state.submittedFirstName}</p>
+                    <p>Last Name: {this.state.submittedLastName}</p>
+                    <p>Email: {this.state.submittedEmail}</p>
+                    <Divider/>
+                    <Button onClick={this.edit}>Edit Profile</Button>
+                  </div>
+              )}
             </Tab.Pane>
         ),
       },
@@ -199,8 +184,8 @@ class UserProfile extends React.Component {
               firstName={this.state.submittedFirstName}
               lastName={this.state.submittedLastName}
               level={level}
-              exp={this.props.profile.exp}
-              image={this.props.profile.image}
+              exp={exp}
+              image={image}
               nextLevel={nextLevel}
           />
           <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
@@ -212,17 +197,19 @@ class UserProfile extends React.Component {
 
 /** Require an array of user documents in the props.profile. */
 UserProfile.propTypes = {
-  profile: PropTypes.object.isRequired,
+  // profile: PropTypes.object,
   ready: PropTypes.bool.isRequired,
-  currentUser: PropTypes.object,
+  currentUser: PropTypes.string,
+  currentId: PropTypes.string,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
 export default withTracker(() => {
-  const subscription = Meteor.subscribe('Profile');
+  const subscription = Meteor.subscribe('Profiles');
   return {
-    profile: Profiles.find({}).fetch()[0],
-    currentUser: Meteor.user(),
+    // profile: Profiles.find({}).fetch()[0],
+    currentUser: Meteor.user() ? Meteor.user().username : '',
+    currentId: Meteor.user() ? Meteor.userId() : '',
     ready: (subscription.ready()),
   };
 })(UserProfile);
