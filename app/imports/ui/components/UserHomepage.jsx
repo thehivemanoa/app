@@ -12,7 +12,7 @@ class UserHomepage extends React.Component {
   render() {
 
     const containerPadding = {
-      paddingTop: 20,
+      paddingTop: 150,
       paddingBottom: 70,
     }
 

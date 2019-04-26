@@ -15,7 +15,6 @@ class NavBar extends React.Component {
   /** Initialize component state with properties for login and redirection. */
   constructor(props) {
     super(props);
-    console.log(this.props.profile.firstName);
     this.state = { email: '', password: '', error: '', redirectToReferer: false };
     // Ensure that 'this' is bound to this component in these two functions.
     // https://medium.freecodecamp.org/react-binding-patterns-5-approaches-for-handling-this-92c651b5af56
@@ -243,7 +242,7 @@ const NavBarContainer = withTracker(() => {
   const subscription = Meteor.subscribe('Profile');
   return {
     currentUser: Meteor.user() ? Meteor.user().username : '',
-    profile: Profiles.find({}),
+     profile: Profiles.find({}),
     ready: (subscription.ready()),
   };
 })(NavBar);

@@ -84,11 +84,8 @@ class UserProfile extends React.Component {
   renderInfoNormal() {
     return (
         <div>
-          <p>First Name: {this.state.submittedFirstName}</p>
-          <p>Last Name: {this.state.submittedLastName}</p>
-          <p>Email: {this.state.submittedEmail}</p>
-          <Divider/>
-          <Button onClick={this.edit}>Edit Profile</Button>
+          <p>First Name</p>
+          ${console.log('Hello')}
         </div>
     );
   }
