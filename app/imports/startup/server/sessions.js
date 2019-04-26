@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import dateFns from 'date-fns';
 import { Sessions } from '../../api/session/session.js';
+import { Profiles } from '../../api/profile/profile.js';
 
 /** Initialize the database with a default data document. */
 function addData(data) {
@@ -42,7 +43,7 @@ Meteor.publish('Sessions', function publish() {
 
 Meteor.publish('MySessions', function publish() {
   if (this.userId) {
-    const sessionIds = Meteor.users.find(this.userId).fetch()[0].profile.joinedSessions;
+    const sessionIds = Profiles.findOne({ owner: Meteor.user().username }).joinedSessions;
     return Sessions.find({ _id: { $in: sessionIds } });
   }
   return this.ready();

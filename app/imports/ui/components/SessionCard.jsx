@@ -21,7 +21,7 @@ class SessionCard extends React.Component {
     return _.map(users, user => {
       return (
           <List.Item key={user.username} style={{ display: 'inline-block' }}>
-            {`${profile.firstName} ${profile.lastName}`}
+            {`${user.firstName} ${user.lastName}`}
           </List.Item>
       );
     });
@@ -82,10 +82,10 @@ class SessionCard extends React.Component {
       paddingTop: '7px',
       paddingBottom: '7px',
     };
-    const attendees = Meteor.users.find({ username: { $in: this.props.session.attendees } }).fetch();
-    const royals = _.filter(attendees, attendee => attendee.profile.courses[this.props.session.course]);
-    const workers = _.filter(attendees, attendee => !attendee.profile.courses[this.props.session.course]);
-    const creator = Meteor.users.find({ username: this.props.session.owner }).fetch();
+    const attendees = Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch();
+    const royals = _.filter(attendees, attendee => attendee.courses[this.props.session.course]);
+    const workers = _.filter(attendees, attendee => !attendee.courses[this.props.session.course]);
+    const creator = Profiles.find({ owner: this.props.session.owner }).fetch();
     const royalLabels = this.usersToLabels(royals);
     const workerLabels = this.usersToLabels(workers);
     const creatorLabel = this.usersToLabels(creator);
@@ -175,20 +175,16 @@ SessionCard.propTypes = {
   isJoined: PropTypes.bool.isRequired,
   handleUpdate: PropTypes.func.isRequired,
   session: PropTypes.object.isRequired,
-  profile: PropTypes.object.isRequired,
   profiles: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
-export default withTracker(({ match }) => {
+export default withTracker(() => {
   // Get access to Stuff documents.
-  const documentId = match.params._id;
   // Get access to Profile documents.
-  const subscription = Meteor.subscribe('Profile');
-  const subscription2 = Meteor.subscribe('Profiles');
+  const subscription = Meteor.subscribe('Profiles');
   return {
-    profile: Profiles.findOne(documentId),
     profiles: Profiles.find({}).fetch(),
-    ready: subscription.ready() && subscription2.ready(),
+    ready: subscription.ready(),
   };
 })(SessionCard);
