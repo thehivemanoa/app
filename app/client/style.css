@@ -29,12 +29,12 @@ body {
 }
 
 .page-container {
-  marginTop: 150;
-  paddingTop: 100;
-  paddingBottom: 30;
-  paddingLeft: 50;
-  paddingRight: 50;
-  minHeight: '70vh';
+  marginTop: 150px;
+  paddingTop: 20px;
+  paddingBottom: 30px;
+  paddingLeft: 50px;
+  paddingRight: 50px;
+  minHeight: 70vh;
 }
 
 .landing-page {
