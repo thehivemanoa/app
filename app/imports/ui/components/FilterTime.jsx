@@ -55,7 +55,7 @@ export default class FilterTime extends React.Component {
             />
           </List.Item>
           <List.Item style={style}>
-            <Form onSubmit={this.props.onTimeSubmit} inline>
+            <Form onSubmit={this.props.onTimeSubmit}>
               <Form.Group>
                 <Form.Input
                     value={this.props.startTimeText}

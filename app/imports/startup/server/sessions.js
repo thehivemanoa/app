@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import dateFns from 'date-fns';
 import { Sessions } from '../../api/session/session.js';
-import { Stuffs } from '../../api/stuff/stuff';
+import { Profiles } from '../../api/profile/profile.js';
 
 /** Initialize the database with a default data document. */
 function addData(data) {
@@ -36,14 +36,14 @@ if (Sessions.find().count() === 0) {
 /** This subscription publishes only the documents associated with the logged in user */
 Meteor.publish('Sessions', function publish() {
   if (this.userId) {
-    return Sessions.find();
+    return Sessions.find({});
   }
   return this.ready();
 });
 
 Meteor.publish('MySessions', function publish() {
   if (this.userId) {
-    const sessionIds = Meteor.users.find(this.userId).fetch()[0].profile.joinedSessions;
+    const sessionIds = Profiles.findOne({ owner: Meteor.user().username }).joinedSessions;
     return Sessions.find({ _id: { $in: sessionIds } });
   }
   return this.ready();

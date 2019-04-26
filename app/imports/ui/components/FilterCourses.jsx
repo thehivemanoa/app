@@ -77,7 +77,7 @@ FilterCourses.propTypes = {
   courseCollapse: PropTypes.bool.isRequired,
   addCourse: PropTypes.func.isRequired,
   deleteCourse: PropTypes.func.isRequired,
-  courses: PropTypes.array.isRequired,
+  courses: PropTypes.object.isRequired,
   handleChange: PropTypes.func.isRequired,
   course: PropTypes.string.isRequired,
 };
