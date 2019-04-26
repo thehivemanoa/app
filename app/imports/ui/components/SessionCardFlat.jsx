@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Card, Grid, Button, Icon, List, Form, Loader, Header } from 'semantic-ui-react';
 import dateFns from 'date-fns';
+import { Profiles } from '../../api/profile/profile';
 
 const _ = require('underscore');
 
@@ -19,8 +20,8 @@ class SessionCardFlat extends React.Component {
   usersToLabels(users) {
     return _.map(users, user => {
       return (
-          <List.Item key={user.username}>
-            {`${user.profile.firstName} ${user.profile.lastName}`}
+          <List.Item key={user._id}>
+            {`${user.firstName} ${user.lastName}`}
           </List.Item>
       );
     });
@@ -85,10 +86,11 @@ class SessionCardFlat extends React.Component {
       cardHeaderStyle.borderBottomLeftRadius = '5px';
       cardHeaderStyle.borderBottomRightRadius = '5px';
     }
-    const attendees = Meteor.users.find({ username: { $in: this.props.session.attendees } }).fetch();
-    const royals = _.filter(attendees, attendee => attendee.profile.courses[this.props.session.course]);
-    const workers = _.filter(attendees, attendee => !attendee.profile.courses[this.props.session.course]);
-    const creator = Meteor.users.find({ username: this.props.session.owner }).fetch();
+    const attendees = Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch();
+    console.log(attendees);
+    const royals = _.filter(attendees, attendee => attendee.courses[this.props.session.course]);
+    const workers = _.filter(attendees, attendee => !attendee.courses[this.props.session.course]);
+    const creator = Profiles.find({ username: this.props.session.owner }).fetch();
     const royalLabels = this.usersToLabels(royals);
     const workerLabels = this.usersToLabels(workers);
     const creatorLabel = this.usersToLabels(creator);
@@ -212,6 +214,7 @@ class SessionCardFlat extends React.Component {
 }
 
 SessionCardFlat.propTypes = {
+  profiles: PropTypes.array.isRequired,
   isConflicting: PropTypes.bool.isRequired,
   session: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
@@ -224,7 +227,7 @@ export default withTracker(() => {
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe('Profiles');
   return {
-    profiles: Meteor.users.find({}).fetch(),
+    profiles: Profiles.find({}).fetch(),
     ready: subscription.ready(),
   };
 })(SessionCardFlat);

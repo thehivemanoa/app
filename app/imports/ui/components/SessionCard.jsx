@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Card, Header, Grid, Button, Icon, Loader, List, Form, Divider } from 'semantic-ui-react';
 import dateFns from 'date-fns';
+import { Profiles } from '/imports/api/profile/profile';
 
 const _ = require('underscore');
 
@@ -20,7 +21,7 @@ class SessionCard extends React.Component {
     return _.map(users, user => {
       return (
           <List.Item key={user.username} style={{ display: 'inline-block' }}>
-            {`${user.profile.firstName} ${user.profile.lastName}`}
+            {`${user.firstName} ${user.lastName}`}
           </List.Item>
       );
     });
@@ -81,10 +82,10 @@ class SessionCard extends React.Component {
       paddingTop: '7px',
       paddingBottom: '7px',
     };
-    const attendees = Meteor.users.find({ username: { $in: this.props.session.attendees } }).fetch();
-    const royals = _.filter(attendees, attendee => attendee.profile.courses[this.props.session.course]);
-    const workers = _.filter(attendees, attendee => !attendee.profile.courses[this.props.session.course]);
-    const creator = Meteor.users.find({ username: this.props.session.owner }).fetch();
+    const attendees = Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch();
+    const royals = _.filter(attendees, attendee => attendee.courses[this.props.session.course]);
+    const workers = _.filter(attendees, attendee => !attendee.courses[this.props.session.course]);
+    const creator = Profiles.find({ owner: this.props.session.owner }).fetch();
     const royalLabels = this.usersToLabels(royals);
     const workerLabels = this.usersToLabels(workers);
     const creatorLabel = this.usersToLabels(creator);
@@ -174,14 +175,16 @@ SessionCard.propTypes = {
   isJoined: PropTypes.bool.isRequired,
   handleUpdate: PropTypes.func.isRequired,
   session: PropTypes.object.isRequired,
+  profiles: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
   // Get access to Stuff documents.
+  // Get access to Profile documents.
   const subscription = Meteor.subscribe('Profiles');
   return {
-    profiles: Meteor.users.find({}).fetch(),
+    profiles: Profiles.find({}).fetch(),
     ready: subscription.ready(),
   };
 })(SessionCard);

@@ -8,6 +8,7 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import { Sessions } from '../../api/session/session';
 import Calendar from '../components/Calendar';
 import SessionList from '../components/SessionList';
+import { Profiles } from '../../api/profile/profile';
 
 const _ = require('underscore');
 
@@ -30,43 +31,29 @@ class CalendarPage extends React.Component {
   }
 
   handleLeave(sessionId) {
-    const currentUserId = this.props.currentUserId;
-    const throwError = function (error) {
-      return error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
-          Bert.alert({ type: 'success', message: 'Leave succeeded' });
-    };
-    Meteor.users.update(
-        currentUserId,
-        { $pull: { 'profile.joinedSessions': sessionId } },
-        error => throwError(error),
+    const profileId = Profiles.findOne({ owner: this.props.currentUsername })._id;
+    Profiles.update(
+        profileId,
+        { $pull: { joinedSessions: sessionId } },
+        error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
+            Bert.alert({ type: 'success', message: 'Leave succeeded' })),
     );
-    Sessions.update(
-        sessionId,
-        { $pull: { attendees: this.props.currentUsername } },
-        error => throwError(error),
-    );
+    Sessions.update(sessionId, { $pull: { attendees: this.props.currentUsername } });
   }
 
   handleJoin(sessionId) {
-    const currentUserId = this.props.currentUserId;
-    const throwError = function (error) {
-      return error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
-          Bert.alert({ type: 'success', message: 'Join succeeded' });
-    };
-    Meteor.users.update(
-        currentUserId,
-        { $push: { 'profile.joinedSessions': sessionId } },
-        error => throwError(error),
+    const profileId = Profiles.findOne({ owner: this.props.currentUsername })._id;
+    Profiles.update(
+        profileId,
+        { $push: { joinedSessions: sessionId } },
+        error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
+            Bert.alert({ type: 'success', message: 'Join succeeded' })),
     );
-    Sessions.update(
-        sessionId,
-        { $push: { attendees: this.props.currentUsername } },
-        error => throwError(error),
-    );
+    Sessions.update(sessionId, { $addToSet: { attendees: this.props.currentUsername } });
   }
 
   isJoined(sessionId) {
-    const joinedSessions = this.props.joinedSessions;
+    const joinedSessions = Profiles.findOne({ owner: this.props.currentUsername }).joinedSessions;
     return _.some(joinedSessions, session => session === sessionId);
   }
 
@@ -150,21 +137,22 @@ class CalendarPage extends React.Component {
 }
 
 CalendarPage.propTypes = {
-  joinedSessions: PropTypes.array.isRequired,
   currentUsername: PropTypes.string.isRequired,
   currentUserId: PropTypes.string.isRequired,
   sessions: PropTypes.array.isRequired,
+  profiles: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe('MySessions');
+  const subscription2 = Meteor.subscribe('Profiles');
   return {
     currentUserId: Meteor.user() ? Meteor.user()._id : '',
     currentUsername: Meteor.user() ? Meteor.user().username : '',
-    joinedSessions: Meteor.user() ? Meteor.user().profile.joinedSessions : [],
     sessions: Sessions.find({}).fetch(),
-    ready: (subscription.ready()),
+    profiles: Profiles.find({}).fetch(),
+    ready: (subscription.ready() && subscription2.ready()),
   };
 })(CalendarPage);

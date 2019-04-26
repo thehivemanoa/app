@@ -8,8 +8,8 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import SearchResults from '../components/SearchResults';
 import SearchBox from '../components/SearchBox';
 import { Sessions } from '../../api/session/session';
+import { Profiles } from '../../api/profile/profile';
 import SessionCardFlat from '../components/SessionCardFlat';
-import SessionCard from '../components/SessionCard';
 
 const _ = require('underscore');
 
@@ -22,7 +22,6 @@ class SearchPage extends React.Component {
     const startOfDay = dateFns.startOfDay(currentDate);
     const endOfDay = dateFns.endOfDay(currentDate);
     const month = dateFns.startOfMonth(currentDate);
-    const formattedDate = this.formatDate(currentDate);
     this.state = {
       hideJoined: false,
       hideConflicting: false,
@@ -108,7 +107,7 @@ class SearchPage extends React.Component {
         startTime: startTime,
         endTime: endTime,
       });
-    } else {
+    } else {i
       Bert.alert({ type: 'danger', message: 'Invalid time' });
     }
   }
@@ -118,22 +117,22 @@ class SearchPage extends React.Component {
   }
 
   initializeCourses() {
-    const courses = this.props.currentProfile.courses;
+    const courses = Profiles.findOne({ owner: this.props.currentUsername }).courses;
     this.setState({
       courses: _.mapObject(courses, () => null),
     });
   }
 
   isJoined(sessionId) {
-    const joinedSessions = this.props.currentProfile.joinedSessions;
-    return _.some(joinedSessions, session => session === sessionId);
+    const joinedSessionIds = Profiles.findOne({ owner: this.props.currentUsername }).joinedSessions;
+    return _.some(joinedSessionIds, session => session === sessionId);
   }
 
   handleLeave(sessionId) {
-    const currentUserId = this.props.currentUser._id;
-    Meteor.users.update(
-        currentUserId,
-        { $pull: { 'profile.joinedSessions': sessionId } },
+    const profileId = Profiles.findOne({ owner: this.props.currentUsername })._id;
+    Profiles.update(
+        profileId,
+        { $pull: { joinedSessions: sessionId } },
         error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
             Bert.alert({ type: 'success', message: 'Leave succeeded' })),
     );
@@ -141,10 +140,10 @@ class SearchPage extends React.Component {
   }
 
   handleJoin(sessionId) {
-    const currentUserId = this.props.currentUser._id;
-    Meteor.users.update(
-        currentUserId,
-        { $push: { 'profile.joinedSessions': sessionId } },
+    const profileId = Profiles.findOne({ owner: this.props.currentUsername })._id;
+    Profiles.update(
+        profileId,
+        { $push: { joinedSessions: sessionId } },
         error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
             Bert.alert({ type: 'success', message: 'Join succeeded' })),
     );
@@ -153,7 +152,7 @@ class SearchPage extends React.Component {
 
   getFilteredSessions() {
     let results = [];
-    const joinedSessionIds = this.props.currentProfile.joinedSessions;
+    const joinedSessionIds = Profiles.findOne({ owner: this.props.currentUsername }).joinedSessions;
     const joinedSessions = Sessions.find({ _id: { $in: joinedSessionIds } }).fetch();
     const notJoinedSessions = Sessions.find({ _id: { $not: { $in: joinedSessionIds } } }).fetch();
     const A = _.sortBy(joinedSessions, 'startTime');
@@ -469,9 +468,9 @@ class SearchPage extends React.Component {
 }
 
 SearchPage.propTypes = {
-  currentUser: PropTypes.object,
+  currentUserId: PropTypes.string.isRequired,
   currentUsername: PropTypes.string.isRequired,
-  currentProfile: PropTypes.object.isRequired,
+  profiles: PropTypes.array.isRequired,
   sessions: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
@@ -482,9 +481,9 @@ export default withTracker(() => {
   const subscription = Meteor.subscribe('Sessions');
   const subscription2 = Meteor.subscribe('Profiles');
   return {
-    currentUser: Meteor.user(),
+    currentUserId: Meteor.user() ? Meteor.user()._id : '',
     currentUsername: Meteor.user() ? Meteor.user().username : '',
-    currentProfile: Meteor.user() ? Meteor.user().profile : {},
+    profiles: Profiles.find({}).fetch(),
     sessions: Sessions.find({}).fetch(),
     ready: (subscription.ready() && subscription2.ready()),
   };

@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
 import { Menu, Header, Popup, Label, Divider, Icon, Modal, Form, Image, Button, Container } from 'semantic-ui-react';
+import { Profiles } from '/imports/api/profile/profile';
 import { Roles } from 'meteor/alanning:roles';
 
 // import { Roles } from 'meteor/alanning:roles';
@@ -14,6 +15,7 @@ class NavBar extends React.Component {
   /** Initialize component state with properties for login and redirection. */
   constructor(props) {
     super(props);
+    console.log(this.props.profile.firstName);
     this.state = { email: '', password: '', error: '', redirectToReferer: false };
     // Ensure that 'this' is bound to this component in these two functions.
     // https://medium.freecodecamp.org/react-binding-patterns-5-approaches-for-handling-this-92c651b5af56
@@ -148,14 +150,14 @@ class NavBar extends React.Component {
                          trigger={
                            <Label className="collapsable"
                                   as='a' style={{ background: 'transparent', position: 'relative' }}>
-                             <Image avatar spaced='right' src={this.props.image}/>
+                             <Image avatar spaced='right' src={this.props.profile.image}/>
                              <Icon inverted name='caret down'/>
                            </Label>
                          }
                   >
                     <Menu className="collapsable" vertical borderless secondary>
                       <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                        {this.props.firstName} {this.props.lastName}
+                        {this.props.profile.firstName} {this.props.profile.lastName}
                         <br/>
                         <Divider/>
                       </Menu.Item>
@@ -187,7 +189,7 @@ class NavBar extends React.Component {
                   >
                     <Menu vertical borderless secondary>
                       <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                        {this.props.firstName} {this.props.lastName}
+                        {this.props.profile.firstName} {this.props.profile.lastName}
                         <br/>
                         <Divider/>
                       </Menu.Item>
@@ -232,18 +234,19 @@ class NavBar extends React.Component {
 /** Declare the types of all properties. */
 NavBar.propTypes = {
   currentUser: PropTypes.string,
-  firstName: PropTypes.string,
-  lastName: PropTypes.string,
-  image: PropTypes.string,
+  profile: PropTypes.object,
+  ready: PropTypes.bool.isRequired,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
-const NavBarContainer = withTracker(() => ({
-  currentUser: Meteor.user() ? Meteor.user().username : '',
-  firstName: Meteor.user() ? Meteor.user().profile.firstName : '',
-  lastName: Meteor.user() ? Meteor.user().profile.lastName : '',
-  image: Meteor.user() ? Meteor.user().profile.image : '',
-}))(NavBar);
+const NavBarContainer = withTracker(() => {
+  const subscription = Meteor.subscribe('Profile');
+  return {
+    currentUser: Meteor.user() ? Meteor.user().username : '',
+    profile: Profiles.find({}),
+    ready: (subscription.ready()),
+  };
+})(NavBar);
 
 /** Enable ReactRouter for this component. https://reacttraining.com/react-router/web/api/withRouter */
 export default withRouter(NavBarContainer);
