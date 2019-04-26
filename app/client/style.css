@@ -24,8 +24,17 @@ body {
   }
 }
 
-.landing-page, .profile-page, user-homepage {
+.landing-page, .page-container {
   font-family: 'Montserrat', sans-serif !important;
+}
+
+.page-container {
+  marginTop: 150;
+  paddingTop: 100;
+  paddingBottom: 30;
+  paddingLeft: 50;
+  paddingRight: 50;
+  minHeight: '70vh';
 }
 
 .landing-page {
