@@ -2,7 +2,6 @@ import React from 'react';
 import dateFns from 'date-fns';
 import { List, Divider, Grid, Input, Form, Button, Header } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import TimeSelector from './TimeSelector';
 
 export default class FilterTime extends React.Component {
   constructor(props) {

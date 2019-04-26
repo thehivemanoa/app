@@ -87,7 +87,6 @@ class SessionCardFlat extends React.Component {
       cardHeaderStyle.borderBottomRightRadius = '5px';
     }
     const attendees = Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch();
-    console.log(attendees);
     const royals = _.filter(attendees, attendee => attendee.courses[this.props.session.course]);
     const workers = _.filter(attendees, attendee => !attendee.courses[this.props.session.course]);
     const creator = Profiles.find({ username: this.props.session.owner }).fetch();
@@ -148,7 +147,7 @@ class SessionCardFlat extends React.Component {
                   <Form.TextArea
                       readOnly
                       value={this.props.session.description}
-                      style={{ borderStyle: 'solid', borderColor: colors[this.props.session.course] }}
+                      style={{ borderStyle: 'solid', borderColor: colors[this.props.session.course], height: '100%' }}
                       placeholder="No description"
                   />
                 </Form>

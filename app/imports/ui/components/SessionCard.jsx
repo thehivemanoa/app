@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Card, Header, Grid, Button, Icon, Loader, List, Form, Divider } from 'semantic-ui-react';
+import { Card, Header, Grid, Button, Icon, Loader, List, Form, Image } from 'semantic-ui-react';
 import dateFns from 'date-fns';
-import { Profiles } from '/imports/api/profile/profile';
+import { Profiles } from '../../api/profile/profile';
 
 const _ = require('underscore');
 
@@ -20,8 +20,13 @@ class SessionCard extends React.Component {
   usersToLabels(users) {
     return _.map(users, user => {
       return (
-          <List.Item key={user.username} style={{ display: 'inline-block' }}>
-            {`${user.firstName} ${user.lastName}`}
+          <List.Item key={user._id} style={{ display: 'inline-block', marginRight: '20px' }}>
+            <Image src={user.image} avatar/>
+            <List.Content>
+              <List.Header style={{ lineHeight: '28px' }}>
+                {`${user.firstName} ${user.lastName}`}
+              </List.Header>
+            </List.Content>
           </List.Item>
       );
     });
@@ -59,8 +64,7 @@ class SessionCard extends React.Component {
       padding: '10px',
       // position: 'relative',
     };
-    const headerStyle = {
-    };
+    const headerStyle = {};
     const headerButtonStyle = {
       position: 'absolute',
       top: '50%',
@@ -85,7 +89,7 @@ class SessionCard extends React.Component {
     const attendees = Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch();
     const royals = _.filter(attendees, attendee => attendee.courses[this.props.session.course]);
     const workers = _.filter(attendees, attendee => !attendee.courses[this.props.session.course]);
-    const creator = Profiles.find({ owner: this.props.session.owner }).fetch();
+    const creator = Profiles.find({ username: this.props.session.owner }).fetch();
     const royalLabels = this.usersToLabels(royals);
     const workerLabels = this.usersToLabels(workers);
     const creatorLabel = this.usersToLabels(creator);
@@ -126,27 +130,29 @@ class SessionCard extends React.Component {
                   <Form.TextArea value={this.props.session.display} readOnly placeholder="No description"/>
                 </Form>
               </Grid.Row>
-              <Grid.Row columns={3} style={style}>
-                <Grid.Column><Header as="h5">Royals</Header></Grid.Column>
-                <Grid.Column><Header as="h5">Workers</Header></Grid.Column>
-                <Grid.Column><Header as="h5">Creator</Header></Grid.Column>
+              <Grid.Row style={style}>
+                <Header as="h5">Creator</Header>
               </Grid.Row>
               <Grid.Row columns={3} style={style}>
-                <Grid.Column>
-                  <List style={{ textAlign: 'center' }}>
-                    {royalLabels}
-                  </List>
-                </Grid.Column>
-                <Grid.Column>
-                  <List style={{ textAlign: 'center' }}>
-                    {workerLabels}
-                  </List>
-                </Grid.Column>
-                <Grid.Column>
                   <List style={{ textAlign: 'center' }}>
                     {creatorLabel}
                   </List>
-                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row style={style}>
+                <Header as="h5">Royal Bees</Header>
+              </Grid.Row>
+              <Grid.Row columns={3} style={style}>
+                <List style={{ textAlign: 'center' }}>
+                  {royalLabels}
+                </List>
+              </Grid.Row>
+              <Grid.Row style={style}>
+                <Header as="h5">Worker Bees</Header>
+              </Grid.Row>
+              <Grid.Row columns={3} style={style}>
+                <List style={{ textAlign: 'center' }}>
+                  {workerLabels}
+                </List>
               </Grid.Row>
               <Grid.Row style={{ position: 'relative', paddingTop: '10px' }}>
                 <Button
@@ -175,16 +181,14 @@ SessionCard.propTypes = {
   isJoined: PropTypes.bool.isRequired,
   handleUpdate: PropTypes.func.isRequired,
   session: PropTypes.object.isRequired,
-  profiles: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
 export default withTracker(() => {
   // Get access to Stuff documents.
-  // Get access to Profile documents.
   const subscription = Meteor.subscribe('Profiles');
   return {
-    profiles: Profiles.find({}).fetch(),
+    profiles: Meteor.users.find({}).fetch(),
     ready: subscription.ready(),
   };
 })(SessionCard);
