@@ -87,7 +87,6 @@ class SessionCardFlat extends React.Component {
       cardHeaderStyle.borderBottomRightRadius = '5px';
     }
     const attendees = Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch();
-    console.log(attendees);
     const royals = _.filter(attendees, attendee => attendee.courses[this.props.session.course]);
     const workers = _.filter(attendees, attendee => !attendee.courses[this.props.session.course]);
     const creator = Profiles.find({ username: this.props.session.owner }).fetch();

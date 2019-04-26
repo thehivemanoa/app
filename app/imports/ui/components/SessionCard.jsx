@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Card, Header, Grid, Button, Icon, Loader, List, Form, Image } from 'semantic-ui-react';
 import dateFns from 'date-fns';
+import { Profiles } from '../../api/profile/profile';
 
 const _ = require('underscore');
 
@@ -19,11 +20,11 @@ class SessionCard extends React.Component {
   usersToLabels(users) {
     return _.map(users, user => {
       return (
-          <List.Item key={user.username} style={{ display: 'inline-block', marginRight: '20px' }}>
-            <Image src={user.profile.image} avatar/>
+          <List.Item key={user._id} style={{ display: 'inline-block', marginRight: '20px' }}>
+            <Image src={user.image} avatar/>
             <List.Content>
               <List.Header style={{ lineHeight: '28px' }}>
-                {`${user.profile.firstName} ${user.profile.lastName}`}
+                {`${user.firstName} ${user.lastName}`}
               </List.Header>
             </List.Content>
           </List.Item>
@@ -85,10 +86,10 @@ class SessionCard extends React.Component {
       paddingTop: '7px',
       paddingBottom: '7px',
     };
-    const attendees = Meteor.users.find({ username: { $in: this.props.session.attendees } }).fetch();
-    const royals = _.filter(attendees, attendee => attendee.profile.courses[this.props.session.course]);
-    const workers = _.filter(attendees, attendee => !attendee.profile.courses[this.props.session.course]);
-    const creator = Meteor.users.find({ username: this.props.session.owner }).fetch();
+    const attendees = Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch();
+    const royals = _.filter(attendees, attendee => attendee.courses[this.props.session.course]);
+    const workers = _.filter(attendees, attendee => !attendee.courses[this.props.session.course]);
+    const creator = Profiles.find({ username: this.props.session.owner }).fetch();
     const royalLabels = this.usersToLabels(royals);
     const workerLabels = this.usersToLabels(workers);
     const creatorLabel = this.usersToLabels(creator);
