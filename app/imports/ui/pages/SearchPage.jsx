@@ -143,6 +143,17 @@ class SearchPage extends React.Component {
         error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
             Bert.alert({ type: 'success', message: 'Leave succeeded' })),
     );
+    Sessions.update(
+        sessionId,
+        {
+          $unset: {
+            [`hasResponded.${this.props.currentUserId}`]: false,
+            [`honeyDistribution.${this.props.currentUserId}`]: 0,
+          },
+        },
+        error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
+            Bert.alert({ type: 'success', message: 'Leave succeeded' })),
+    );
   }
 
   handleJoin(sessionId) {
@@ -156,6 +167,17 @@ class SearchPage extends React.Component {
     Sessions.update(
         sessionId,
         { $push: { attendees: this.props.currentUsername } },
+        error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
+            Bert.alert({ type: 'success', message: 'Join succeeded' })),
+    );
+    Sessions.update(
+        sessionId,
+        {
+          $set: {
+            [`hasResponded.${this.props.currentUserId}`]: false,
+            [`honeyDistribution.${this.props.currentUserId}`]: 0,
+          },
+        },
         error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
             Bert.alert({ type: 'success', message: 'Join succeeded' })),
     );

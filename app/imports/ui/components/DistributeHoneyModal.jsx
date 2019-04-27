@@ -32,6 +32,21 @@ export default class DistributeHoneyModal extends React.Component {
     }));
   }
 
+  // distributeHoney() {
+  //   Sessions.update(
+  //       this.props.session._id,
+  //       { $set: { respondents: this.props.session.respondents + 1, [`hasResponded.${this.props.currentUserId}`]: true } }
+  //   );
+  //   _.mapObject(this.state.attendeeScores, (honey, username) => {
+  //     const userId = Meteor.users.findOne({ username: username })._id;
+  //     Sessions.update(
+  //         this.props.session._id,
+  //         { $set: { [`honeyDistribution.${userId}`]: this.props.session.honeyDistribution[userId] + honey } },
+  //     );
+  //   });
+  //   Profiles.update(currentUserProfileId, { $pull: { joinedSessions: this.props.session._id } });
+  // }
+
   render() {
     const colors = {
       'ICS 311': '#E692F8',
