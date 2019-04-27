@@ -8,10 +8,16 @@ import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import { withRouter, NavLink } from 'react-router-dom';
 
+const _ = require('underscore');
+
 /** Renders a table containing all of the Session documents. Use <SessionCard> to render each row. */
 class UserHomepage extends React.Component {
 
   render() {
+
+    const completedSessionCards = _.map(this.props.sessions, session => {
+      return <SessionCard session={session} isCompleted={true} isFluid={false}/>;
+    });
 
     const containerPadding = {
       paddingTop: '160px',
@@ -30,7 +36,7 @@ class UserHomepage extends React.Component {
 
           {/** 2 column grid */}
           <Grid columns={2} divided>
-            <Grid.Column width={12}>
+            <Grid.Column width={12} style={{ paddingLeft: 0 }}>
               {/** *** COMPLETED SESSIONS **** */}
               <Grid.Row>
                 <Grid columns='equal' verticalAlign='middle'>
@@ -38,25 +44,16 @@ class UserHomepage extends React.Component {
                     <Divider horizontal><h2> Completed Sessions </h2></Divider>
                   </Grid.Column>
                   <Grid.Column width={4} floated='right'>
-                    <Button size="tiny" floated="right" as={NavLink} exact to="/collect">Collect Honey x2</Button>
+                    <Button size="tiny" floated="right" as={NavLink} exact to="/collect">
+                      {`Collect Honey x${this.props.sessions.length}`}
+                    </Button>
                   </Grid.Column>
                 </Grid>
               </Grid.Row>
               <Grid.Row>
                 {/** Session Cards */}
-                <Card.Group>
-                  <Card>
-                    <Card.Content>
-                      <Card.Header>ICS 314</Card.Header>
-                      <Card.Meta>Worker Bee</Card.Meta>
-                    </Card.Content>
-                  </Card>
-                  <Card>
-                    <Card.Content>
-                      <Card.Header>ICS 311</Card.Header>
-                      <Card.Meta>Royal Bee</Card.Meta>
-                    </Card.Content>
-                  </Card>
+                <Card.Group centered>
+                  {completedSessionCards}
                 </Card.Group>
               </Grid.Row>
               <Grid.Row>
@@ -119,13 +116,13 @@ class UserHomepage extends React.Component {
 UserHomepage.propTypes = {
   currentUser: PropTypes.string,
   profile: PropTypes.object,
+  sessions: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
-
 const UserHomepageContainer = withTracker(() => {
   const subscription = Meteor.subscribe('Profile');
-  const subscription2 = Meteor.subscribe('Sessions');
+  const subscription2 = Meteor.subscribe('MyCompletedSessions');
   return {
     currentUser: Meteor.user() ? Meteor.user().username : '',
     profile: Profiles.find({}).fetch(),

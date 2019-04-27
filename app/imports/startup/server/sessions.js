@@ -48,3 +48,12 @@ Meteor.publish('MySessions', function publish() {
   }
   return this.ready();
 });
+
+Meteor.publish('MyCompletedSessions', function publish() {
+  if (this.userId) {
+    const currentTime = new Date();
+    const sessionIds = Profiles.findOne({ owner: Meteor.user().username }).joinedSessions;
+    return Sessions.find({ _id: { $in: sessionIds }, endTime: { $lte: currentTime } });
+  }
+  return this.ready();
+});

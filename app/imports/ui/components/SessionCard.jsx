@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Card, Header, Grid, Button, Icon, Loader, List, Form, Image } from 'semantic-ui-react';
+import { Card, Header, Grid, Button, Icon, Loader, List, Form, Image, Modal, Label } from 'semantic-ui-react';
 import dateFns from 'date-fns';
 import { Profiles } from '../../api/profile/profile';
 
@@ -43,6 +43,13 @@ class SessionCard extends React.Component {
   }
 
   renderComponent() {
+    const attendees = Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch();
+    const royals = _.filter(attendees, attendee => attendee.courses[this.props.session.course]);
+    const workers = _.filter(attendees, attendee => !attendee.courses[this.props.session.course]);
+    const creator = Profiles.find({ username: this.props.session.owner }).fetch();
+    const royalLabels = this.usersToLabels(royals);
+    const workerLabels = this.usersToLabels(workers);
+    const creatorLabel = this.usersToLabels(creator);
     const colors = {
       'ICS 311': '#E692F8',
       'ICS 314': '#FFB4B0',
@@ -86,17 +93,47 @@ class SessionCard extends React.Component {
       paddingTop: '7px',
       paddingBottom: '7px',
     };
-    const attendees = Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch();
-    const royals = _.filter(attendees, attendee => attendee.courses[this.props.session.course]);
-    const workers = _.filter(attendees, attendee => !attendee.courses[this.props.session.course]);
-    const creator = Profiles.find({ username: this.props.session.owner }).fetch();
-    const royalLabels = this.usersToLabels(royals);
-    const workerLabels = this.usersToLabels(workers);
-    const creatorLabel = this.usersToLabels(creator);
+    const showMoreButtonStyle = {
+      position: 'absolute',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      borderRadius: '50%',
+      backgroundColor: colors[this.props.session.course],
+      width: '18px',
+      height: '18px',
+      padding: 0,
+    };
+    if (this.props.isCompleted) {
+      showMoreButtonStyle.display = 'none';
+    }
+    let button;
+    if (this.props.isCompleted) {
+      button = (
+          <Modal trigger={<Button style={headerButtonStyle}>Collect</Button>}>
+            <Modal.Content>
+              <Header as="h1" style={{ display: 'inline-block' }}>Distribute Honey</Header>
+              <Label style={{ float: 'right', backgroundColor: 'white' }} image>
+                <img src="/images/honey.png"
+                     style={{ width: '35px', marginTop: '-10px' }}/>
+                {`x${6} remaining`}
+              </Label>
+            </Modal.Content>
+            <Modal.Content>
+              <List>
+              </List>
+            </Modal.Content>
+          </Modal>
+      );
+    } else
+      if (this.props.isJoined) {
+        button = <Button style={headerButtonStyle} onClick={this.props.handleUpdate}>Leave</Button>;
+      } else {
+        button = <Button style={headerButtonStyle} onClick={this.props.handleUpdate}>Join</Button>;
+      }
 
     return (
         <Card
-            fluid
+            fluid={this.props.isFluid}
             style={{
               borderColor: colors[this.props.session.course],
               borderStyle: 'solid',
@@ -111,9 +148,7 @@ class SessionCard extends React.Component {
                   <Header as="h5" style={headerStyle}>{this.props.session.title}</Header>
                 </Grid.Column>
                 <Grid.Column width={6} style={headerColumnStyle}>
-                  <Button style={headerButtonStyle} onClick={this.props.handleUpdate}>
-                    {this.props.isJoined ? 'Leave' : 'Join'}
-                  </Button>
+                  {button}
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row centered columns="equal" style={{ paddingTop: '10px', paddingBottom: '10px' }}>
@@ -134,9 +169,9 @@ class SessionCard extends React.Component {
                 <Header as="h5">Creator</Header>
               </Grid.Row>
               <Grid.Row columns={3} style={style}>
-                  <List style={{ textAlign: 'center' }}>
-                    {creatorLabel}
-                  </List>
+                <List style={{ textAlign: 'center' }}>
+                  {creatorLabel}
+                </List>
               </Grid.Row>
               <Grid.Row style={style}>
                 <Header as="h5">Royal Bees</Header>
@@ -158,16 +193,7 @@ class SessionCard extends React.Component {
                 <Button
                     icon={this.state.isCollapsed ? 'plus' : 'minus'}
                     onClick={this.toggleCollapsed}
-                    style={{
-                      position: 'absolute',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      borderRadius: '50%',
-                      backgroundColor: colors[this.props.session.course],
-                      width: '18px',
-                      height: '18px',
-                      padding: 0,
-                    }}
+                    style={showMoreButtonStyle}
                 />
               </Grid.Row>
             </Grid>
@@ -178,8 +204,10 @@ class SessionCard extends React.Component {
 }
 
 SessionCard.propTypes = {
-  isJoined: PropTypes.bool.isRequired,
-  handleUpdate: PropTypes.func.isRequired,
+  isFluid: PropTypes.bool,
+  isCompleted: PropTypes.bool,
+  isJoined: PropTypes.bool,
+  handleUpdate: PropTypes.func,
   session: PropTypes.object.isRequired,
   ready: PropTypes.bool.isRequired,
 };

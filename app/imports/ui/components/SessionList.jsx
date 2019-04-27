@@ -20,7 +20,7 @@ export default class SessionList extends React.Component {
           <SessionCard
               key={session.startTime}
               session={session}
-              fluid
+              isFluid={true}
               handleUpdate={() => handleUpdate(session._id)}
               isJoined={isJoined}
           />
