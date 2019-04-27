@@ -5,6 +5,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Card, Header, Grid, Button, Icon, Loader, List, Form, Image, Modal, Label } from 'semantic-ui-react';
 import dateFns from 'date-fns';
 import { Profiles } from '../../api/profile/profile';
+import AttendeeReview from './AttendeeReview';
 
 const _ = require('underscore');
 
@@ -13,8 +14,21 @@ class SessionCard extends React.Component {
     super(props);
     this.state = {
       isCollapsed: true,
+      attendeeScores: _.object(this.props.session.attendees, new Array(this.props.session.attendees.length).fill(0)),
+      honeyRemaining: 6,
     };
     this.toggleCollapsed = this.toggleCollapsed.bind(this);
+  }
+
+  setAttendeeScore(username, score) {
+    const changeInScore = Math.min(score - this.state.attendeeScores[username], this.state.honeyRemaining);
+    this.setState(prevState => ({
+      attendeeScores: {
+        ...prevState.attendeeScores,
+        [username]: this.state.attendeeScores[username] + changeInScore,
+      },
+      honeyRemaining: this.state.honeyRemaining - changeInScore,
+    }));
   }
 
   usersToLabels(users) {
@@ -115,11 +129,15 @@ class SessionCard extends React.Component {
               <Label style={{ float: 'right', backgroundColor: 'white' }} image>
                 <img src="/images/honey.png"
                      style={{ width: '35px', marginTop: '-10px' }}/>
-                {`x${6} remaining`}
+                {`x${this.state.honeyRemaining} remaining`}
               </Label>
             </Modal.Content>
             <Modal.Content>
               <List>
+                {_.map(
+                    Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch(),
+                    attendee => <AttendeeReview attendee={attendee}/>,
+                )}
               </List>
             </Modal.Content>
           </Modal>
