@@ -5,6 +5,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Card, Header, Grid, Button, Icon, Loader, List, Form, Image, Modal, Label } from 'semantic-ui-react';
 import dateFns from 'date-fns';
 import { Profiles } from '../../api/profile/profile';
+import { Sessions } from '../../api/session/session';
 import DistributeHoneyModal from './DistributeHoneyModal';
 
 const _ = require('underscore');
@@ -18,6 +19,43 @@ class SessionCard extends React.Component {
       honeyRemaining: 6,
     };
     this.toggleCollapsed = this.toggleCollapsed.bind(this);
+    this.setAttendeeScore = this.setAttendeeScore.bind(this);
+  }
+
+  setAttendeeScore(username, score) {
+    let changeInScore;
+    if (score === this.state.attendeeScores[username]) {
+      changeInScore = -score;
+    } else {
+      changeInScore = Math.min(score - this.state.attendeeScores[username], this.state.honeyRemaining);
+    }
+    this.setState(prevState => ({
+      attendeeScores: {
+        ...prevState.attendeeScores,
+        [username]: this.state.attendeeScores[username] + changeInScore,
+      },
+      honeyRemaining: this.state.honeyRemaining - changeInScore,
+    }));
+  }
+
+  distributeHoney() {
+    Sessions.update(
+        this.props.session._id,
+        {
+          $set: {
+            respondents: this.props.session.respondents + 1,
+            [`hasResponded.${this.props.currentUserId}`]: true,
+          },
+        },
+    );
+    _.mapObject(this.state.attendeeScores, (honey, username) => {
+      const userId = Meteor.users.findOne({ username: username })._id;
+      Sessions.update(
+          this.props.session._id,
+          { $set: { [`honeyDistribution.${userId}`]: this.props.session.honeyDistribution[userId] + honey } },
+      );
+    });
+    Profiles.update(this.props.currentProfileId, { $pull: { joinedSessions: this.props.session._id } });
   }
 
   usersToLabels(users) {
@@ -115,6 +153,9 @@ class SessionCard extends React.Component {
           <DistributeHoneyModal
               session={this.props.session}
               attendeeProfiles={Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch()}
+              attendeeScores={this.state.attendeeScores}
+              setAttendeeScore={this.setAttendeeScore}
+              honeyRemaining={this.state.honeyRemaining}
           />
       );
     } else
@@ -203,13 +244,24 @@ SessionCard.propTypes = {
   handleUpdate: PropTypes.func,
   session: PropTypes.object.isRequired,
   ready: PropTypes.bool.isRequired,
+  currentUserId: PropTypes.string.isRequired,
+  currentProfileId: PropTypes.string.isRequired,
 };
 
 export default withTracker(() => {
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe('Profiles');
+  const subscription2 = Meteor.subscribe('Sessions');
+  let currentUserId = '';
+  let currentProfileId = '';
+  if (subscription.ready() && subscription2.ready() && Meteor.user()) {
+    currentUserId = Meteor.user()._id;
+    currentProfileId = Profiles.findOne({ owner: Meteor.user().username })._id;
+  }
   return {
+    currentUserId: currentUserId,
+    currentProfileId: currentProfileId,
     profiles: Meteor.users.find({}).fetch(),
-    ready: subscription.ready(),
+    ready: (subscription.ready() && subscription2.ready()),
   };
 })(SessionCard);
