@@ -18,10 +18,16 @@ class SessionCard extends React.Component {
       honeyRemaining: 6,
     };
     this.toggleCollapsed = this.toggleCollapsed.bind(this);
+    this.setAttendeeScore = this.setAttendeeScore.bind(this);
   }
 
   setAttendeeScore(username, score) {
-    const changeInScore = Math.min(score - this.state.attendeeScores[username], this.state.honeyRemaining);
+    let changeInScore;
+    if (score === this.state.attendeeScores[username]) {
+      changeInScore = -score;
+    } else {
+      changeInScore = Math.min(score - this.state.attendeeScores[username], this.state.honeyRemaining);
+    }
     this.setState(prevState => ({
       attendeeScores: {
         ...prevState.attendeeScores,
@@ -136,7 +142,12 @@ class SessionCard extends React.Component {
               <List>
                 {_.map(
                     Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch(),
-                    attendee => <AttendeeReview attendee={attendee}/>,
+                    attendee => <AttendeeReview
+                        attendee={attendee}
+                        setAttendeeScore={this.setAttendeeScore}
+                        maxHoney={6}
+                        honey={this.state.attendeeScores[attendee.owner]}
+                    />,
                 )}
               </List>
             </Modal.Content>
