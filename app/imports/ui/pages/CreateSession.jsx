@@ -14,6 +14,8 @@ class CreateSession extends React.Component {
   }
 
   renderPage() {
+    console.log(this.props.courses);
+
     return (
         <Container className="page-container">
           <AddSession courses={this.props.courses}/>
@@ -28,7 +30,7 @@ CreateSession.propTypes = {
 };
 
 export default withTracker(() => {
-  const subscription = Meteor.subscribe('ReportLog');
+  const subscription = Meteor.subscribe('Courses');
   return {
     courses: Courses.find({}).fetch(),
     ready: subscription.ready(),

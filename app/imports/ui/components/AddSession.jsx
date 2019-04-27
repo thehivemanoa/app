@@ -13,7 +13,6 @@ import HiddenField from 'uniforms-semantic/HiddenField';
 import ErrorsField from 'uniforms-semantic/ErrorsField';
 import { Sessions, SessionSchema } from '/imports/api/session/session';
 
-
 /** Renders the Page for adding a document. */
 class AddSession extends React.Component {
 
@@ -45,16 +44,35 @@ class AddSession extends React.Component {
   submit(data) {
     const { title, course, description, date, startTime, endTime } = data;
     const owner = Meteor.user().username;
-    const attendees = owner;
-    Sessions.insert({
-      title, course, description, date, startTime, endTime, attendees, owner }, this.insertCallback);
-    console.log(date);
+    const userId = Meteor.userId();
+    const attendees = [owner];
+    const honeyDistribution = { [userId]: 0 };
+    const hasResponded = { [userId]: false };
+    const respondents = 0;
+    Sessions.insert(
+        {
+          title,
+          course,
+          description,
+          date,
+          startTime,
+          endTime,
+          attendees,
+          honeyDistribution,
+          hasResponded,
+          respondents,
+          owner,
+        },
+        this.insertCallback,
+    );
   }
 
   /** Render the form. Use Uniforms: https://github.com/vazco/uniforms */
   render() {
     return (
-        <AutoForm ref={(ref) => { this.formRef = ref; }} schema={SessionSchema} onSubmit={this.submit}>
+        <AutoForm ref={(ref) => {
+          this.formRef = ref;
+        }} schema={SessionSchema} onSubmit={this.submit}>
           <Segment>
             <TextField label={'Title'} name={'title'}/>
             <SelectField label={'Course'} name={'course'}

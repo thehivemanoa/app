@@ -5,7 +5,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Card, Header, Grid, Button, Icon, Loader, List, Form, Image, Modal, Label } from 'semantic-ui-react';
 import dateFns from 'date-fns';
 import { Profiles } from '../../api/profile/profile';
-import AttendeeReview from './AttendeeReview';
+import DistributeHoneyModal from './DistributeHoneyModal';
 
 const _ = require('underscore');
 
@@ -18,23 +18,6 @@ class SessionCard extends React.Component {
       honeyRemaining: 6,
     };
     this.toggleCollapsed = this.toggleCollapsed.bind(this);
-    this.setAttendeeScore = this.setAttendeeScore.bind(this);
-  }
-
-  setAttendeeScore(username, score) {
-    let changeInScore;
-    if (score === this.state.attendeeScores[username]) {
-      changeInScore = -score;
-    } else {
-      changeInScore = Math.min(score - this.state.attendeeScores[username], this.state.honeyRemaining);
-    }
-    this.setState(prevState => ({
-      attendeeScores: {
-        ...prevState.attendeeScores,
-        [username]: this.state.attendeeScores[username] + changeInScore,
-      },
-      honeyRemaining: this.state.honeyRemaining - changeInScore,
-    }));
   }
 
   usersToLabels(users) {
@@ -129,29 +112,10 @@ class SessionCard extends React.Component {
     let button;
     if (this.props.isCompleted) {
       button = (
-          <Modal trigger={<Button style={headerButtonStyle}>Collect</Button>} size="tiny">
-            <Modal.Content>
-              <Header as="h1" style={{ display: 'inline-block' }}>Distribute Honey</Header>
-              <Label style={{ float: 'right', backgroundColor: 'white' }} image>
-                <img src="/images/honey.png"
-                     style={{ width: '35px', marginTop: '-10px' }}/>
-                {`x${this.state.honeyRemaining} remaining`}
-              </Label>
-            </Modal.Content>
-            <Modal.Content>
-                <List>
-                  {_.map(
-                      Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch(),
-                      attendee => <AttendeeReview
-                          attendee={attendee}
-                          setAttendeeScore={this.setAttendeeScore}
-                          maxHoney={6}
-                          honey={this.state.attendeeScores[attendee.owner]}
-                      />,
-                  )}
-                </List>
-            </Modal.Content>
-          </Modal>
+          <DistributeHoneyModal
+              session={this.props.session}
+              attendeeProfiles={Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch()}
+          />
       );
     } else
       if (this.props.isJoined) {

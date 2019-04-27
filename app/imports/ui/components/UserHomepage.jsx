@@ -1,5 +1,6 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
+import dateFns from 'date-fns';
 import { Grid, Container, Divider, Button, Card, Image, Header, } from 'semantic-ui-react';
 import { Sessions } from '/imports/api/session/session';
 import { Profiles } from '/imports/api/profile/profile';
@@ -14,9 +15,8 @@ const _ = require('underscore');
 class UserHomepage extends React.Component {
 
   render() {
-
     const completedSessionCards = _.map(this.props.sessions, session => {
-      return <SessionCard session={session} isCompleted={true} isFluid={false}/>;
+      return <SessionCard key={session._id} session={session} isCompleted={true} isFluid={false}/>;
     });
 
     const containerPadding = {
@@ -116,17 +116,28 @@ class UserHomepage extends React.Component {
 UserHomepage.propTypes = {
   currentUser: PropTypes.string,
   profile: PropTypes.object,
-  sessions: PropTypes.array.isRequired,
+  sessions: PropTypes.array,
   ready: PropTypes.bool.isRequired,
 };
 
 const UserHomepageContainer = withTracker(() => {
   const subscription = Meteor.subscribe('Profile');
-  const subscription2 = Meteor.subscribe('MyCompletedSessions');
+  const subscription2 = Meteor.subscribe('Sessions');
+  let currentUser = '';
+  let joinedSessionIds = [];
+  let completedSessions = [];
+  if (subscription.ready() && subscription2.ready() && Meteor.user()) {
+    currentUser = Meteor.user().username;
+    joinedSessionIds = Profiles.findOne({ owner: currentUser }).joinedSessions;
+    completedSessions = Sessions.find({
+      _id: { $in: joinedSessionIds },
+      endTime: { $lte: new Date() },
+    }).fetch();
+  }
   return {
-    currentUser: Meteor.user() ? Meteor.user().username : '',
+    currentUser: currentUser,
     profile: Profiles.find({}).fetch(),
-    sessions: Sessions.find({}).fetch(),
+    sessions: completedSessions,
     ready: (subscription.ready() && subscription2.ready()),
   };
 })(UserHomepage);
