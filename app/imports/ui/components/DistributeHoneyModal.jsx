@@ -7,46 +7,6 @@ import AttendeeReview from './AttendeeReview';
 const _ = require('underscore');
 
 export default class DistributeHoneyModal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      attendeeScores: _.object(this.props.session.attendees, new Array(this.props.session.attendees.length).fill(0)),
-      honeyRemaining: 6,
-    };
-    this.setAttendeeScore = this.setAttendeeScore.bind(this);
-  }
-
-  setAttendeeScore(username, score) {
-    let changeInScore;
-    if (score === this.state.attendeeScores[username]) {
-      changeInScore = -score;
-    } else {
-      changeInScore = Math.min(score - this.state.attendeeScores[username], this.state.honeyRemaining);
-    }
-    this.setState(prevState => ({
-      attendeeScores: {
-        ...prevState.attendeeScores,
-        [username]: this.state.attendeeScores[username] + changeInScore,
-      },
-      honeyRemaining: this.state.honeyRemaining - changeInScore,
-    }));
-  }
-
-  // distributeHoney() {
-  //   Sessions.update(
-  //       this.props.session._id,
-  //       { $set: { respondents: this.props.session.respondents + 1, [`hasResponded.${this.props.currentUserId}`]: true } }
-  //   );
-  //   _.mapObject(this.state.attendeeScores, (honey, username) => {
-  //     const userId = Meteor.users.findOne({ username: username })._id;
-  //     Sessions.update(
-  //         this.props.session._id,
-  //         { $set: { [`honeyDistribution.${userId}`]: this.props.session.honeyDistribution[userId] + honey } },
-  //     );
-  //   });
-  //   Profiles.update(currentUserProfileId, { $pull: { joinedSessions: this.props.session._id } });
-  // }
-
   render() {
     const colors = {
       'ICS 311': '#E692F8',
@@ -94,7 +54,7 @@ export default class DistributeHoneyModal extends React.Component {
             <Label style={headerHoneyStyle} image>
               <img src="/images/honey.png"
                    style={{ width: '45px', marginTop: '-10px' }}/>
-              {`x${this.state.honeyRemaining} remaining`}
+              {`x${this.props.honeyRemaining} remaining`}
             </Label>
           </Modal.Content>
           <Modal.Content>
@@ -104,9 +64,9 @@ export default class DistributeHoneyModal extends React.Component {
                   attendee => <AttendeeReview
                       key={attendee._id}
                       attendee={attendee}
-                      setAttendeeScore={this.setAttendeeScore}
+                      setAttendeeScore={this.props.setAttendeeScore}
                       maxHoney={6}
-                      honey={this.state.attendeeScores[attendee.owner]}
+                      honey={this.props.attendeeScores[attendee.owner]}
                   />,
               )}
             </List>
@@ -124,4 +84,7 @@ export default class DistributeHoneyModal extends React.Component {
 DistributeHoneyModal.propTypes = {
   session: PropTypes.object.isRequired,
   attendeeProfiles: PropTypes.array.isRequired,
+  attendeeScores: PropTypes.array.isRequired,
+  setAttendeeScore: PropTypes.func.isRequired,
+  honeyRemaining: PropTypes.number.isRequired,
 };

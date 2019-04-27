@@ -137,6 +137,7 @@ class CalendarPage extends React.Component {
       minWidth: '1200px',
       marginTop: '120px',
     };
+    console.log(_.map(this.props.sessions, session => session._id));
 
     return (
         <div>
