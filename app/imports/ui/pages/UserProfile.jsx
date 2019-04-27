@@ -1,11 +1,11 @@
 import React from 'react';
 import Alert from 'react-s-alert';
 import { Meteor } from 'meteor/meteor';
-import { Container, Loader, Image, Tab, Modal, Divider, Button, Form } from 'semantic-ui-react';
+import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader }
+  from 'semantic-ui-react';
 import { Profiles } from '/imports/api/profile/profile';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
-import ProfileCard from '../components/ProfileCard';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 /** Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
@@ -14,6 +14,7 @@ class UserProfile extends React.Component {
     super(props);
     const firstName = Profiles.findOne({ owner: this.props.currentUser }).firstName;
     const lastName = Profiles.findOne({ owner: this.props.currentUser }).lastName;
+    const image = Profiles.findOne({ owner: this.props.currentUser }).image;
     const email = this.props.currentUser;
 
     this.state = ({
@@ -21,19 +22,17 @@ class UserProfile extends React.Component {
       firstName: firstName,
       lastName: lastName,
       email: email,
+      image: image,
       submittedFirstName: firstName,
       submittedLastName: lastName,
       submittedEmail: email,
+      submittedImage: image,
     });
-
-    console.log(this.state);
-    this.pic = this.pic.bind(this);
     this.edit = this.edit.bind(this);
     this.save = this.save.bind(this);
     this.updateState = this.updateState.bind(this);
     this.submitInfo = this.submitInfo.bind(this);
-    this.renderPicNormal = this.renderPicNormal.bind(this);
-    this.renderPicForm = this.renderPicForm.bind(this);
+    this.submitPic = this.submitPic.bind(this);
   }
 
   edit() {
@@ -55,69 +54,66 @@ class UserProfile extends React.Component {
       submittedLastName: lastName,
     });
 
-    const currentUserId = this.props.currentId;
+    const id = this.props.profile._id;
 
-    Meteor.users.update(
-        currentUserId,
-        {
-          $set: {
-            profile: {
-              firstName: firstName,
-              lastName: lastName,
-            },
-          },
-        }, (error) => (error ?
+    Profiles.update(id, { $set: { firstName, lastName } },
+        (error) => (error ?
             Alert.error(`Update failed: ${error.message}`, {
               effect: 'slide',
             }) :
             Alert.success('Update succeeded', {
               effect: 'slide',
-            })),
-    );
+            })));
     return this.save();
   }
 
-  updateState = (e, { name, value }) => this.setState({ [name]: value });
+  submitPic() {
+    const image = this.state.image;
+    this.setState({
+      submittedImage: image,
+    });
 
-  renderPicNormal() {
-    const image = Profiles.findOne({ owner: this.props.currentUser }).image;
-    return (
-        <Image src={image} circular
-               style={{ marginBottom: 5 }}/>
-    );
+    const id = this.props.profile._id;
+
+    Profiles.update(id, { $set: { image } },
+        (error) => (error ?
+            Alert.error(`Update failed: ${error.message}`, {
+              effect: 'slide',
+            }) :
+            Alert.success('Update succeeded', {
+              effect: 'slide',
+            })));
+    return this.save();
   }
 
-  renderPicForm() {
-    const image = Profiles.findOne({ owner: this.props.currentUser }).image;
-    return (
-        <Modal id='login-modal' trigger={<Image src={image} circular disabled
-                                                style={{ marginBottom: 5 }}/>}>
-          <Modal.Header>Edit Profile Picture</Modal.Header>
-          <Modal.Content>
-
-          </Modal.Content>
-        </Modal>
-    );
-  }
-
-  pic() {
-    if (this.state.editing) {
-      this.renderPicForm();
-    } else {
-      this.renderPicNormal();
-    }
+  updateState(e, { name, value }) {
+    this.setState({ [name]: value });
   }
 
   /** If the subscription(s) have been received, render the page, otherwise show a loading icon. */
   render() {
-    return this.renderPage();
+    return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
   renderPage() {
 
+    const center = {
+      position: 'absolute',
+      left: '.8em',
+      bottom: '.6em',
+      width: '100%',
+      textAlign: 'center',
+      fontSize: '1em',
+    };
+
+    const xpIcon = {
+      fontSize: '3em',
+      width: '100%',
+      height: '0',
+    };
+
     const level = Profiles.findOne({ owner: this.props.currentUser }).level;
     const exp = Profiles.findOne({ owner: this.props.currentUser }).exp;
-    const image = Profiles.findOne({ owner: this.props.currentUser }).image;
     const nextLevel = Math.round(50 * (0.04 * (level ** 3) + 0.8 * (level ** 2) + 2 * level));
     const { firstName, lastName, email } = this.state;
     const panes = [
@@ -135,7 +131,7 @@ class UserProfile extends React.Component {
                       <Form.Button content={'Submit'}/>
                     </Form>
                   </div>
-                  ) : (
+              ) : (
                   <div>
                     <p>First Name: {this.state.submittedFirstName}</p>
                     <p>Last Name: {this.state.submittedLastName}</p>
@@ -180,14 +176,58 @@ class UserProfile extends React.Component {
 
     return (
         <Container className="page-container" fluid>
-          <ProfileCard
-              firstName={this.state.submittedFirstName}
-              lastName={this.state.submittedLastName}
-              level={level}
-              exp={exp}
-              image={image}
-              nextLevel={nextLevel}
-          />
+          <Card style={{ float: 'left', marginRight: '3em' }}>
+            <Card.Content>
+              {this.state.editing ? (
+                  <div>
+                    <Modal id='login-modal' trigger={<Image src={this.state.submittedImage} circular disabled
+                                                            style={{ marginBottom: 5 }}/>}>
+                      <Modal.Header>Edit Profile Picture</Modal.Header>
+                      <Modal.Content>
+                        <Form onSubmit={this.submitPic}>
+                          <Form.Input label={'Image'} name={'image'}
+                                      value={this.state.image} onChange={this.updateState}/>
+                          <Divider/>
+                          <Button onClick={this.edit}>Edit Profile</Button>
+                        </Form>
+                      </Modal.Content>
+                    </Modal>
+                  </div>
+              ) : (
+                  <div>
+                    <Image src={this.state.submittedImage} circular
+                           style={{ marginBottom: 5 }}/>
+                  </div>
+              )}
+              <div className="non-semantic-protector">
+                <h1 className="ribbon">
+                  <strong className="ribbon-content">{this.state.submittedFirstName}
+                    {this.state.submittedLastName}</strong>
+                </h1>
+
+                {/** Progress Bar */}
+                <Grid columns={2} verticalAlign='middle'>
+                  <Grid.Column width={3}>
+                    {/** Change start to honey pot */}
+                    <div style={{ position: 'relative' }}>
+                      <Icon name="star outline" style={xpIcon}/>
+                      <div style={center}>
+                        <h2 style={{ fontSize: 18 }}>{level}</h2>
+                      </div>
+                    </div>
+                  </Grid.Column>
+                  <Grid.Column width={13}>
+                    <Grid.Row>
+                      <p>{exp}/{nextLevel} XP</p>
+                    </Grid.Row>
+                    <Grid.Row>
+                      <Progress value={exp} total={nextLevel}/>
+                    </Grid.Row>
+                  </Grid.Column>
+                </Grid>
+              </div>
+            </Card.Content>
+          </Card>
           <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
                panes={panes} renderActiveOnly={false}/>
         </Container>
@@ -197,7 +237,7 @@ class UserProfile extends React.Component {
 
 /** Require an array of user documents in the props.profile. */
 UserProfile.propTypes = {
-  // profile: PropTypes.object,
+  profile: PropTypes.object,
   ready: PropTypes.bool.isRequired,
   currentUser: PropTypes.string,
   currentId: PropTypes.string,
@@ -207,7 +247,7 @@ UserProfile.propTypes = {
 export default withTracker(() => {
   const subscription = Meteor.subscribe('Profiles');
   return {
-    // profile: Profiles.find({}).fetch()[0],
+    profile: Profiles.find({}).fetch()[0],
     currentUser: Meteor.user() ? Meteor.user().username : '',
     currentId: Meteor.user() ? Meteor.userId() : '',
     ready: (subscription.ready()),
