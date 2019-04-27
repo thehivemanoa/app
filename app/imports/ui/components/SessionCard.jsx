@@ -251,10 +251,9 @@ SessionCard.propTypes = {
 export default withTracker(() => {
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe('Profiles');
-  const subscription2 = Meteor.subscribe('Sessions');
   let currentUserId = '';
   let currentProfileId = '';
-  if (subscription.ready() && subscription2.ready() && Meteor.user()) {
+  if (subscription.ready() && Meteor.user()) {
     currentUserId = Meteor.user()._id;
     currentProfileId = Profiles.findOne({ owner: Meteor.user().username })._id;
   }
@@ -262,6 +261,6 @@ export default withTracker(() => {
     currentUserId: currentUserId,
     currentProfileId: currentProfileId,
     profiles: Meteor.users.find({}).fetch(),
-    ready: (subscription.ready() && subscription2.ready()),
+    ready: (subscription.ready()),
   };
 })(SessionCard);
