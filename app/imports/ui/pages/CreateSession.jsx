@@ -15,7 +15,7 @@ class CreateSession extends React.Component {
 
   renderPage() {
     return (
-        <Container style={{ marginBottom: '14px' }}>
+        <Container className="page-container">
           <AddSession courses={this.props.courses}/>
         </Container>
     );

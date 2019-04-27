@@ -153,14 +153,6 @@ class UserProfile extends React.Component {
     const level = this.props.profile.level;
     const nextLevel = Math.round(50 * (0.04 * (level ** 3) + 0.8 * (level ** 2) + 2 * level));
 
-    const containerPadding = {
-      paddingTop: 20,
-      paddingBottom: 30,
-      paddingLeft: 50,
-      paddingRight: 50,
-      minHeight: '70vh',
-    };
-
     const panes = [
       {
         menuItem: 'Information',
@@ -202,7 +194,7 @@ class UserProfile extends React.Component {
     ];
 
     return (
-        <Container className="profile-page" style={containerPadding} fluid>
+        <Container className="page-container" fluid>
           <ProfileCard
               firstName={this.state.submittedFirstName}
               lastName={this.state.submittedLastName}
