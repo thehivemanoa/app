@@ -7,12 +7,18 @@ const _ = require('underscore');
 export default class AttendeeReview extends React.Component {
   render() {
     const honeyButtons = _.times(this.props.maxHoney, index => {
+      const style = {
+        width: '35px',
+      };
+      if (index + 1 > this.props.honey) {
+        style.opacity = 0.33;
+      }
       return (
           <List.Item>
             <img
                 onClick={() => this.props.setAttendeeScore(this.props.attendee.owner, index + 1)}
                 src="/images/honey.png"
-                style={{ width: '35px' }}
+                style={style}
             />
           </List.Item>
       );
@@ -20,20 +26,16 @@ export default class AttendeeReview extends React.Component {
 
     return (
         <List.Item>
-          <Image src={this.props.attendee.image} avatar/>
+          <Image src={this.props.attendee.image} avatar style={{ height: '74px', width: '74px' }}/>
           <List.Content>
-            <List style={{ paddingTop: 0 }}>
-              <List.Item>
-                <List.Header style={{ lineHeight: '28px' }}>
-                  {`${this.props.attendee.firstName} ${this.props.attendee.lastName} ${this.props.honey} honey`}
-                </List.Header>
-              </List.Item>
-              <List.Item>
-                <List horizontal>
-                  {honeyButtons}
-                </List>
-              </List.Item>
-            </List>
+            <List.Header style={{ lineHeight: '28px' }}>
+              {`${this.props.attendee.firstName} ${this.props.attendee.lastName}`}
+            </List.Header>
+            <List.Description>
+              <List horizontal>
+                {honeyButtons}
+              </List>
+            </List.Description>
           </List.Content>
         </List.Item>
     );

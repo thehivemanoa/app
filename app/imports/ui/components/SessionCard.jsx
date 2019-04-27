@@ -129,7 +129,7 @@ class SessionCard extends React.Component {
     let button;
     if (this.props.isCompleted) {
       button = (
-          <Modal trigger={<Button style={headerButtonStyle}>Collect</Button>}>
+          <Modal trigger={<Button style={headerButtonStyle}>Collect</Button>} size="tiny">
             <Modal.Content>
               <Header as="h1" style={{ display: 'inline-block' }}>Distribute Honey</Header>
               <Label style={{ float: 'right', backgroundColor: 'white' }} image>
@@ -139,17 +139,17 @@ class SessionCard extends React.Component {
               </Label>
             </Modal.Content>
             <Modal.Content>
-              <List>
-                {_.map(
-                    Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch(),
-                    attendee => <AttendeeReview
-                        attendee={attendee}
-                        setAttendeeScore={this.setAttendeeScore}
-                        maxHoney={6}
-                        honey={this.state.attendeeScores[attendee.owner]}
-                    />,
-                )}
-              </List>
+                <List>
+                  {_.map(
+                      Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch(),
+                      attendee => <AttendeeReview
+                          attendee={attendee}
+                          setAttendeeScore={this.setAttendeeScore}
+                          maxHoney={6}
+                          honey={this.state.attendeeScores[attendee.owner]}
+                      />,
+                  )}
+                </List>
             </Modal.Content>
           </Modal>
       );
