@@ -8,6 +8,7 @@ import { Profiles } from '../../api/profile/profile';
 import { Sessions } from '../../api/session/session';
 import DistributeHoneyModal from './DistributeHoneyModal';
 import ProcessingModal from './ProcessingModal';
+import CollectModal from './CollectModal';
 
 const _ = require('underscore');
 
@@ -67,9 +68,11 @@ class SessionCard extends React.Component {
   }
 
   collectHoney() {
-    Profiles.update(this.props.currentProfileId, { $set: {
-      exp: this.props.currentProfile.exp + this.props.session.honeyDistribution[this.props.currentUserId],
-    } });
+    Profiles.update(this.props.currentProfileId, {
+      $set: {
+        exp: this.props.currentProfile.exp + this.props.session.honeyDistribution[this.props.currentUserId],
+      }
+    });
     Profiles.update(this.props.currentProfileId, { $pull: { joinedSessions: this.props.session._id } });
   }
 
@@ -179,49 +182,44 @@ class SessionCard extends React.Component {
       if (dateFns.isBefore(this.props.session.endTime, dateFns.addDays(new Date(), -1)) ||
           (this.props.session.hasResponded[this.props.currentUserId] &&
               this.props.session.respondents === this.props.session.attendees.length)
-          ) {
+      ) {
         const honey = this.props.session.honeyDistribution[this.props.currentUserId] *
             this.props.session.hasResponded[this.props.currentUserId];
         button = (
-            <Button style={headerButtonStyle} animated="fade" onClick={this.collectHoney}>
-              <Button.Content visible style={{ margin: 0 }}>Collect</Button.Content>
-              <Button.Content
-                  hidden
-                  style={{ margin: 0, paddingTop: 0, marginTop: '-12px' }}
-                  onClick={this.collectHoney}
-              >
-                <Label style={{ backgroundColor: 'white' }} image>
-                  <img src="/images/honey.png"
-                       style={{ width: '5px', marginTop: '-12px' }}/>
-                  {`x${honey}`}
-                </Label>
-              </Button.Content>
-            </Button>
-        );
-      } else if (this.props.session.hasResponded[this.props.currentUserId]) {
-        button = <ProcessingModal
-            title={this.props.session.title}
-            respondents={this.props.session.respondents}
-            attendees={this.props.session.attendees.length}
-            timeElapsed={dateFns.differenceInHours(new Date(), this.props.session.endTime)}
-        />;
-      } else {
-        button = (
-            <DistributeHoneyModal
-                session={this.props.session}
-                attendeeProfiles={Profiles.find({
-                  owner: { $in: this.props.session.attendees, $not: Meteor.user().username },
-                }).fetch()}
-                attendeeScores={this.state.attendeeScores}
-                setAttendeeScore={this.setAttendeeScore}
-                honeyRemaining={this.state.honeyRemaining}
-                distributeHoney={this.distributeHoney}
-                modalOpen={this.state.modalOpen}
-                handleOpen={this.handleOpen}
-                handleClose={this.handleClose}
+            <CollectModal
+                collectHoney={this.collectHoney}
+                hasResponded={this.props.session.hasResponded[this.props.currentUserId]}
+                honey={honey}
+                title={this.props.session.title}
             />
         );
-      }
+      } else
+        if (this.props.session.hasResponded[this.props.currentUserId]) {
+          button = (
+              <ProcessingModal
+                  title={this.props.session.title}
+                  respondents={this.props.session.respondents}
+                  attendees={this.props.session.attendees.length}
+                  timeElapsed={dateFns.differenceInHours(new Date(), this.props.session.endTime)}
+              />
+          );
+        } else {
+          button = (
+              <DistributeHoneyModal
+                  session={this.props.session}
+                  attendeeProfiles={Profiles.find({
+                    owner: { $in: this.props.session.attendees, $not: Meteor.user().username },
+                  }).fetch()}
+                  attendeeScores={this.state.attendeeScores}
+                  setAttendeeScore={this.setAttendeeScore}
+                  honeyRemaining={this.state.honeyRemaining}
+                  distributeHoney={this.distributeHoney}
+                  modalOpen={this.state.modalOpen}
+                  handleOpen={this.handleOpen}
+                  handleClose={this.handleClose}
+              />
+          );
+        }
     } else
       if (this.props.isJoined) {
         button = <Button style={headerButtonStyle} onClick={this.props.handleUpdate}>Leave</Button>;
