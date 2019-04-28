@@ -131,7 +131,7 @@ const UserHomepageContainer = withTracker(() => {
     const joinedSessionIds = Profiles.findOne({ owner: currentUser }).joinedSessions;
     completedSessions = Sessions.find({
       _id: { $in: joinedSessionIds },
-      endTime: { $lte: dateFns.addDays(new Date(), 1) },
+      endTime: { $lte: new Date() },
     }).fetch();
   }
   return {
