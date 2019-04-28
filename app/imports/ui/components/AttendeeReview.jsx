@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Image } from 'semantic-ui-react';
+import { List, Image, Header, Button, Grid } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 const _ = require('underscore');
@@ -25,19 +25,27 @@ export default class AttendeeReview extends React.Component {
     });
 
     return (
-        <List.Item>
-          <Image src={this.props.attendee.image} avatar style={{ height: '74px', width: '74px' }}/>
-          <List.Content>
-            <List.Header style={{ lineHeight: '28px' }}>
-              {`${this.props.attendee.firstName} ${this.props.attendee.lastName}`}
-            </List.Header>
-            <List.Description>
+        <Grid.Column>
+          <List>
+            <List.Item>
+              <Image src={this.props.attendee.image} avatar/>
+              <List.Content verticalAlign="bottom">
+                <Header
+                    as="h5"
+                    style={{ display: 'inline-block' }}
+                >
+                  {`${this.props.attendee.firstName} ${this.props.attendee.lastName}`}
+                </Header>
+                <Button icon="flag" style={{ backgroundColor: 'Transparent', marginLeft: '10px', opacity: 0.20 }}/>
+              </List.Content>
+            </List.Item>
+            <List.Item style={{ paddingLeft: '-10px' }}>
               <List horizontal>
                 {honeyButtons}
               </List>
-            </List.Description>
-          </List.Content>
-        </List.Item>
+            </List.Item>
+          </List>
+        </Grid.Column>
     );
   }
 }

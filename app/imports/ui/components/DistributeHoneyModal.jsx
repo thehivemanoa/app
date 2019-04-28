@@ -1,6 +1,6 @@
 import React from 'react';
 import dateFns from 'date-fns';
-import { Button, Header, Label, List, Modal } from 'semantic-ui-react';
+import { Button, Header, Label, Grid, Modal } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import AttendeeReview from './AttendeeReview';
 
@@ -26,11 +26,13 @@ export default class DistributeHoneyModal extends React.Component {
       padding: 0,
     };
     const headerStyle = {
+      backgroundColor: '#FBCE11',
     };
     const headerTextStyle = {
       display: 'inline-block',
       marginBottom: 0,
       lineHeight: '23px',
+      color: 'white',
     };
     const contentStyle = {};
     const expiredContentStyle = {
@@ -50,9 +52,10 @@ export default class DistributeHoneyModal extends React.Component {
         <Modal
             trigger={<Button style={headerButtonStyle} onClick={this.props.handleOpen}>Distribute</Button>}
             open={this.props.modalOpen}
-            size="tiny"
             closeOnDimmerClick
             onClose={this.props.handleClose}
+            size="small"
+            style={{ backgroundColor: '#FBCE11' }}
         >
           <Modal.Content style={headerStyle}>
             <Header as="h3" style={headerTextStyle}>{this.props.session.title}</Header>
@@ -62,8 +65,8 @@ export default class DistributeHoneyModal extends React.Component {
               {`x${this.props.honeyRemaining} remaining`}
             </Label>
           </Modal.Content>
-          <Modal.Content>
-            <List>
+          <Modal.Content style={{ backgroundColor: 'white' }}>
+            <Grid columns={2}>
               {_.map(
                   this.props.attendeeProfiles,
                   attendee => <AttendeeReview
@@ -74,10 +77,21 @@ export default class DistributeHoneyModal extends React.Component {
                       honey={this.props.attendeeScores[attendee.owner]}
                   />,
               )}
-            </List>
+            </Grid>
           </Modal.Content>
-          <Modal.Content>
-            <Button fluid onClick={this.props.distributeHoney}>
+          <Modal.Content style={{ backgroundColor: '#FBCE11', paddingBottom: '20px' }}>
+            <Button
+                onClick={this.props.distributeHoney}
+                style={{
+                  backgroundColor: '#FEC63B',
+                  color: 'white',
+                  borderStyle: 'solid',
+                  borderWidth: '3px',
+                  borderColor: 'white',
+                  marginBottom: '20px',
+                }}
+                floated="right"
+            >
               Distribute Honey
             </Button>
           </Modal.Content>
