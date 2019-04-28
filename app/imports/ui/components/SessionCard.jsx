@@ -175,7 +175,7 @@ class SessionCard extends React.Component {
     }
     let button;
     if (this.props.isCompleted) {
-      if (dateFns.isBefore(this.props.session.endTime, dateFns.addDays(new Date(), 0)) ||
+      if (dateFns.isBefore(this.props.session.endTime, dateFns.addDays(new Date(), -1)) ||
           (this.props.session.hasResponded[this.props.currentUserId] &&
               this.props.session.respondents === this.props.session.attendees.length)
           ) {

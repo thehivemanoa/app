@@ -15,7 +15,7 @@ const _ = require('underscore');
 class UserHomepage extends React.Component {
 
   render() {
-    const completedSessionCards = _.map(this.props.sessions, session => {
+    const completedSessionCards = _.map(this.props.completedSessions, session => {
       return <SessionCard key={session._id} session={session} isCompleted={true} isFluid={false}/>;
     });
 
@@ -45,7 +45,7 @@ class UserHomepage extends React.Component {
                   </Grid.Column>
                   <Grid.Column width={4} floated='right'>
                     <Button size="tiny" floated="right" as={NavLink} exact to="/collect">
-                      {`Collect Honey x${this.props.sessions.length}`}
+                      {`Collect Honey x${this.props.completedSessions.length}`}
                     </Button>
                   </Grid.Column>
                 </Grid>
@@ -116,12 +116,12 @@ class UserHomepage extends React.Component {
 UserHomepage.propTypes = {
   currentUser: PropTypes.string,
   profile: PropTypes.object,
-  sessions: PropTypes.array,
+  completedSessions: PropTypes.array,
   ready: PropTypes.bool.isRequired,
 };
 
 const UserHomepageContainer = withTracker(() => {
-  const subscription = Meteor.subscribe('Profile');
+  const subscription = Meteor.subscribe('Profiles');
   const subscription2 = Meteor.subscribe('Sessions');
   const subscription3 = Meteor.subscribe('AccountIds');
   let currentUser = '';
@@ -137,7 +137,7 @@ const UserHomepageContainer = withTracker(() => {
   return {
     currentUser: currentUser,
     profile: Profiles.find({}).fetch(),
-    sessions: completedSessions,
+    completedSessions: completedSessions,
     ready: (subscription.ready() && subscription2.ready() && subscription3.ready()),
   };
 })(UserHomepage);
