@@ -61,13 +61,13 @@ class CalendarPage extends React.Component {
     const profileId = Profiles.findOne({ owner: this.props.currentUsername })._id;
     Profiles.update(
         profileId,
-        { $push: { joinedSessions: sessionId } },
+        { $addToSet: { joinedSessions: sessionId } },
         error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
             Bert.alert({ type: 'success', message: 'Join succeeded' })),
     );
     Sessions.update(
         sessionId,
-        { $push: { attendees: this.props.currentUsername } },
+        { $addToSet: { attendees: this.props.currentUsername } },
         error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
             Bert.alert({ type: 'success', message: 'Join succeeded' })),
     );

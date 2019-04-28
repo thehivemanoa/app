@@ -175,11 +175,9 @@ class SessionCard extends React.Component {
     }
     let button;
     if (this.props.isCompleted) {
-      console.log(this.props.session.endTime);
-      console.log(new Date());
       if (dateFns.isBefore(this.props.session.endTime, dateFns.addDays(new Date(), 0)) ||
-          (this.props.session.hasResponded[this.currentUserId] &&
-              this.props.session.respondents === this.props.session.attendees.length - 1)
+          (this.props.session.hasResponded[this.props.currentUserId] &&
+              this.props.session.respondents === this.props.session.attendees.length)
           ) {
         const honey = this.props.session.honeyDistribution[this.props.currentUserId] *
             this.props.session.hasResponded[this.props.currentUserId];
@@ -205,7 +203,9 @@ class SessionCard extends React.Component {
         button = (
             <DistributeHoneyModal
                 session={this.props.session}
-                attendeeProfiles={this.props.attendeeProfiles}
+                attendeeProfiles={Profiles.find({
+                  owner: { $in: this.props.session.attendees, $not: Meteor.user().username },
+                }).fetch()}
                 attendeeScores={this.state.attendeeScores}
                 setAttendeeScore={this.setAttendeeScore}
                 honeyRemaining={this.state.honeyRemaining}
@@ -313,19 +313,16 @@ export default withTracker(() => {
   const subscription = Meteor.subscribe('Profiles');
   let currentUserId = '';
   let currentProfileId = '';
-  let attendeeProfiles = [];
   let currentProfile = {};
   if (subscription.ready() && Meteor.user()) {
     currentUserId = Meteor.user()._id;
     currentProfileId = Profiles.findOne({ owner: Meteor.user().username })._id;
-    attendeeProfiles = Profiles.find({ owner: { $not: Meteor.user().username } }).fetch();
     currentProfile = Profiles.findOne(currentProfileId);
   }
   return {
     currentUserId: currentUserId,
     currentProfileId: currentProfileId,
     currentProfile: currentProfile,
-    attendeeProfiles: attendeeProfiles,
     profiles: Meteor.users.find({}).fetch(),
     ready: (subscription.ready()),
   };
