@@ -50,10 +50,6 @@ class SessionCard extends React.Component {
         },
     );
     _.mapObject(this.state.attendeeScores, (honey, username) => {
-      console.log(honey);
-      console.log(username);
-      console.log(Meteor.user());
-      console.log(Meteor.users.findOne({ username: username }));
       const userId = Meteor.users.findOne({ username: username })._id;
       Sessions.update(
           this.props.session._id,

@@ -26,3 +26,14 @@ if (Meteor.users.find().count() === 0) {
   }
 }
 
+
+Meteor.publish('AccountIds', function publish() {
+  const USER_FIELDS = {
+    username: 1,
+  };
+  if (this.userId) {
+    return Meteor.users.find({}, { fields: USER_FIELDS });
+  }
+  return this.ready();
+});
+
