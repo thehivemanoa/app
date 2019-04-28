@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Card, Header, Grid, Button, Icon, Loader, List, Form, Image, Modal, Label } from 'semantic-ui-react';
+import { Card, Header, Grid, Button, Icon, Loader, List, Form, Image, Label } from 'semantic-ui-react';
 import dateFns from 'date-fns';
 import { Profiles } from '../../api/profile/profile';
 import { Sessions } from '../../api/session/session';
@@ -17,10 +17,14 @@ class SessionCard extends React.Component {
       isCollapsed: true,
       attendeeScores: _.object(this.props.session.attendees, new Array(this.props.session.attendees.length).fill(0)),
       honeyRemaining: 6,
+      modalOpen: false,
     };
     this.toggleCollapsed = this.toggleCollapsed.bind(this);
     this.setAttendeeScore = this.setAttendeeScore.bind(this);
     this.distributeHoney = this.distributeHoney.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.collectHoney = this.collectHoney.bind(this);
   }
 
   setAttendeeScore(username, score) {
@@ -55,6 +59,28 @@ class SessionCard extends React.Component {
           this.props.session._id,
           { $set: { [`honeyDistribution.${userId}`]: this.props.session.honeyDistribution[userId] + honey } },
       );
+    });
+    this.setState({
+      modalOpen: false,
+    });
+  }
+
+  collectHoney() {
+    Profiles.update(this.props.currentProfileId, { $set: {
+      exp: this.props.currentProfile.exp + this.props.session.honeyDistribution[this.props.currentUserId],
+    } });
+    Profiles.update(this.props.currentProfileId, { $pull: { joinedSessions: this.props.session._id } });
+  }
+
+  handleOpen() {
+    this.setState({
+      modalOpen: true,
+    });
+  }
+
+  handleClose() {
+    this.setState({
+      modalOpen: false,
     });
   }
 
@@ -149,16 +175,47 @@ class SessionCard extends React.Component {
     }
     let button;
     if (this.props.isCompleted) {
-      button = (
-          <DistributeHoneyModal
-              session={this.props.session}
-              attendeeProfiles={Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch()}
-              attendeeScores={this.state.attendeeScores}
-              setAttendeeScore={this.setAttendeeScore}
-              honeyRemaining={this.state.honeyRemaining}
-              distributeHoney={this.distributeHoney}
-          />
-      );
+      console.log(this.props.session.endTime);
+      console.log(new Date());
+      if (dateFns.isBefore(this.props.session.endTime, dateFns.addDays(new Date(), 0)) ||
+          (this.props.session.hasResponded[this.currentUserId] &&
+              this.props.session.respondents === this.props.session.attendees.length - 1)
+          ) {
+        const honey = this.props.session.honeyDistribution[this.props.currentUserId] *
+            this.props.session.hasResponded[this.props.currentUserId];
+        button = (
+            <Button style={headerButtonStyle} animated="fade" onClick={this.collectHoney}>
+              <Button.Content visible style={{ margin: 0 }}>Collect</Button.Content>
+              <Button.Content
+                  hidden
+                  style={{ margin: 0, paddingTop: 0, marginTop: '-12px' }}
+                  onClick={this.collectHoney}
+              >
+                <Label style={{ backgroundColor: 'white' }} image>
+                  <img src="/images/honey.png"
+                       style={{ width: '5px', marginTop: '-12px' }}/>
+                  {`x${honey}`}
+                </Label>
+              </Button.Content>
+            </Button>
+        );
+      } else if (this.props.session.hasResponded[this.props.currentUserId]) {
+        button = <Button style={headerButtonStyle}>Processing</Button>;
+      } else {
+        button = (
+            <DistributeHoneyModal
+                session={this.props.session}
+                attendeeProfiles={this.props.attendeeProfiles}
+                attendeeScores={this.state.attendeeScores}
+                setAttendeeScore={this.setAttendeeScore}
+                honeyRemaining={this.state.honeyRemaining}
+                distributeHoney={this.distributeHoney}
+                modalOpen={this.state.modalOpen}
+                handleOpen={this.handleOpen}
+                handleClose={this.handleClose}
+            />
+        );
+      }
     } else
       if (this.props.isJoined) {
         button = <Button style={headerButtonStyle} onClick={this.props.handleUpdate}>Leave</Button>;
@@ -247,6 +304,8 @@ SessionCard.propTypes = {
   ready: PropTypes.bool.isRequired,
   currentUserId: PropTypes.string.isRequired,
   currentProfileId: PropTypes.string.isRequired,
+  attendeeProfiles: PropTypes.array.isRequired,
+  currentProfile: PropTypes.object.isRequired,
 };
 
 export default withTracker(() => {
@@ -254,13 +313,19 @@ export default withTracker(() => {
   const subscription = Meteor.subscribe('Profiles');
   let currentUserId = '';
   let currentProfileId = '';
+  let attendeeProfiles = [];
+  let currentProfile = {};
   if (subscription.ready() && Meteor.user()) {
     currentUserId = Meteor.user()._id;
     currentProfileId = Profiles.findOne({ owner: Meteor.user().username })._id;
+    attendeeProfiles = Profiles.find({ owner: { $not: Meteor.user().username } }).fetch();
+    currentProfile = Profiles.findOne(currentProfileId);
   }
   return {
     currentUserId: currentUserId,
     currentProfileId: currentProfileId,
+    currentProfile: currentProfile,
+    attendeeProfiles: attendeeProfiles,
     profiles: Meteor.users.find({}).fetch(),
     ready: (subscription.ready()),
   };

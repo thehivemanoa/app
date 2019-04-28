@@ -122,14 +122,16 @@ UserHomepage.propTypes = {
 
 const UserHomepageContainer = withTracker(() => {
   const subscription = Meteor.subscribe('Profile');
-  const subscription2 = Meteor.subscribe('MySessions');
+  const subscription2 = Meteor.subscribe('Sessions');
   const subscription3 = Meteor.subscribe('AccountIds');
   let currentUser = '';
   let completedSessions = [];
   if (subscription.ready() && subscription2.ready() && subscription3.ready() && Meteor.user()) {
     currentUser = Meteor.user().username;
+    const joinedSessionIds = Profiles.findOne({ owner: currentUser }).joinedSessions;
     completedSessions = Sessions.find({
-      endTime: { $lte: dateFns.addDays(new Date(), 3) },
+      _id: { $in: joinedSessionIds },
+      endTime: { $lte: dateFns.addDays(new Date(), 1) },
     }).fetch();
   }
   return {

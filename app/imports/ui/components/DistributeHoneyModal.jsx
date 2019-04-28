@@ -26,7 +26,6 @@ export default class DistributeHoneyModal extends React.Component {
       padding: 0,
     };
     const headerStyle = {
-      backgroundColor: colors[this.props.session.course],
     };
     const headerTextStyle = {
       display: 'inline-block',
@@ -48,7 +47,13 @@ export default class DistributeHoneyModal extends React.Component {
     };
 
     return (
-        <Modal trigger={<Button style={headerButtonStyle}>Collect</Button>} size="tiny">
+        <Modal
+            trigger={<Button style={headerButtonStyle} onClick={this.props.handleOpen}>Distribute</Button>}
+            open={this.props.modalOpen}
+            size="tiny"
+            closeOnDimmerClick
+            onClose={this.props.handleClose}
+        >
           <Modal.Content style={headerStyle}>
             <Header as="h3" style={headerTextStyle}>{this.props.session.title}</Header>
             <Label style={headerHoneyStyle} image>
@@ -82,6 +87,9 @@ export default class DistributeHoneyModal extends React.Component {
 }
 
 DistributeHoneyModal.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+  handleOpen: PropTypes.func.isRequired,
+  modalOpen: PropTypes.bool.isRequired,
   distributeHoney: PropTypes.func.isRequired,
   session: PropTypes.object.isRequired,
   attendeeProfiles: PropTypes.array.isRequired,
