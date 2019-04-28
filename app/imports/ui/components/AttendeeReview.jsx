@@ -14,7 +14,7 @@ export default class AttendeeReview extends React.Component {
         style.opacity = 0.33;
       }
       return (
-          <List.Item>
+          <List.Item key={index}>
             <img
                 onClick={() => this.props.setAttendeeScore(this.props.attendee.owner, index + 1)}
                 src="/images/honey.png"

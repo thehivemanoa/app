@@ -20,6 +20,7 @@ class SessionCard extends React.Component {
     };
     this.toggleCollapsed = this.toggleCollapsed.bind(this);
     this.setAttendeeScore = this.setAttendeeScore.bind(this);
+    this.distributeHoney = this.distributeHoney.bind(this);
   }
 
   setAttendeeScore(username, score) {
@@ -49,13 +50,16 @@ class SessionCard extends React.Component {
         },
     );
     _.mapObject(this.state.attendeeScores, (honey, username) => {
+      console.log(honey);
+      console.log(username);
+      console.log(Meteor.user());
+      console.log(Meteor.users.findOne({ username: username }));
       const userId = Meteor.users.findOne({ username: username })._id;
       Sessions.update(
           this.props.session._id,
           { $set: { [`honeyDistribution.${userId}`]: this.props.session.honeyDistribution[userId] + honey } },
       );
     });
-    Profiles.update(this.props.currentProfileId, { $pull: { joinedSessions: this.props.session._id } });
   }
 
   usersToLabels(users) {
@@ -156,6 +160,7 @@ class SessionCard extends React.Component {
               attendeeScores={this.state.attendeeScores}
               setAttendeeScore={this.setAttendeeScore}
               honeyRemaining={this.state.honeyRemaining}
+              distributeHoney={this.distributeHoney}
           />
       );
     } else

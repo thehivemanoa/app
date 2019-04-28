@@ -72,7 +72,7 @@ export default class DistributeHoneyModal extends React.Component {
             </List>
           </Modal.Content>
           <Modal.Content>
-            <Button fluid>
+            <Button fluid onClick={this.props.distributeHoney}>
               Distribute Honey
             </Button>
           </Modal.Content>
@@ -82,9 +82,10 @@ export default class DistributeHoneyModal extends React.Component {
 }
 
 DistributeHoneyModal.propTypes = {
+  distributeHoney: PropTypes.func.isRequired,
   session: PropTypes.object.isRequired,
   attendeeProfiles: PropTypes.array.isRequired,
-  attendeeScores: PropTypes.array.isRequired,
+  attendeeScores: PropTypes.object.isRequired,
   setAttendeeScore: PropTypes.func.isRequired,
   honeyRemaining: PropTypes.number.isRequired,
 };

@@ -42,7 +42,6 @@ if (Sessions.find().count() === 0) {
 /** This subscription publishes only the documents associated with the logged in user */
 Meteor.publish('Sessions', function publish() {
   if (this.userId) {
-    console.log('hewwo');
     return Sessions.find({});
   }
   return this.ready();
@@ -51,8 +50,6 @@ Meteor.publish('Sessions', function publish() {
 Meteor.publish('MySessions', function publish() {
   if (this.userId) {
     const sessionIds = Profiles.findOne({ owner: Meteor.user().username }).joinedSessions;
-    console.log('hello');
-    console.log(sessionIds);
     return Sessions.find({ _id: { $in: sessionIds } });
   }
   return this.ready();
