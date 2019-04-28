@@ -7,6 +7,7 @@ import dateFns from 'date-fns';
 import { Profiles } from '../../api/profile/profile';
 import { Sessions } from '../../api/session/session';
 import DistributeHoneyModal from './DistributeHoneyModal';
+import ProcessingModal from './ProcessingModal';
 
 const _ = require('underscore');
 
@@ -198,7 +199,12 @@ class SessionCard extends React.Component {
             </Button>
         );
       } else if (this.props.session.hasResponded[this.props.currentUserId]) {
-        button = <Button style={headerButtonStyle}>Processing</Button>;
+        button = <ProcessingModal
+            title={this.props.session.title}
+            respondents={this.props.session.respondents}
+            attendees={this.props.session.attendees.length}
+            timeElapsed={dateFns.differenceInHours(new Date(), this.props.session.endTime)}
+        />;
       } else {
         button = (
             <DistributeHoneyModal
