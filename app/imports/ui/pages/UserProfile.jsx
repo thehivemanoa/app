@@ -1,12 +1,15 @@
 import React from 'react';
 import Alert from 'react-s-alert';
+import { Profiles } from '/imports/api/profile/profile';
+import { Courses } from '/imports/api/courses/courses';
 import { Meteor } from 'meteor/meteor';
 import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader }
   from 'semantic-ui-react';
-import { Profiles } from '/imports/api/profile/profile';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
+
+const _ = require('underscore');
 
 /** Renders a table containing all of the Stuff documents. Use <StuffItem> to render each row. */
 class UserProfile extends React.Component {
@@ -15,6 +18,7 @@ class UserProfile extends React.Component {
     const firstName = Profiles.findOne({ owner: this.props.currentUser }).firstName;
     const lastName = Profiles.findOne({ owner: this.props.currentUser }).lastName;
     const image = Profiles.findOne({ owner: this.props.currentUser }).image;
+    const courses = Profiles.findOne({ owner: this.props.currentUser }).courses;
     const email = this.props.currentUser;
 
     this.state = ({
@@ -27,7 +31,11 @@ class UserProfile extends React.Component {
       submittedLastName: lastName,
       submittedEmail: email,
       submittedImage: image,
+      courses: _.pairs(courses),
+      allCourses: Courses.find({}).fetch(),
     });
+
+    console.log(this.state);
     this.edit = this.edit.bind(this);
     this.save = this.save.bind(this);
     this.updateState = this.updateState.bind(this);
@@ -238,6 +246,7 @@ class UserProfile extends React.Component {
 /** Require an array of user documents in the props.profile. */
 UserProfile.propTypes = {
   profile: PropTypes.object,
+  courses: PropTypes.array,
   ready: PropTypes.bool.isRequired,
   currentUser: PropTypes.string,
   currentId: PropTypes.string,
@@ -246,10 +255,12 @@ UserProfile.propTypes = {
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
 export default withTracker(() => {
   const subscription = Meteor.subscribe('Profiles');
+  const subscription2 = Meteor.subscribe('Courses');
   return {
     profile: Profiles.find({}).fetch()[0],
+    courses: Courses.find({}).fetch(),
     currentUser: Meteor.user() ? Meteor.user().username : '',
     currentId: Meteor.user() ? Meteor.userId() : '',
-    ready: (subscription.ready()),
+    ready: (subscription.ready() && subscription2.ready()),
   };
 })(UserProfile);
