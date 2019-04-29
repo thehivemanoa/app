@@ -12,6 +12,9 @@ import CollectModal from './CollectModal';
 
 const _ = require('underscore');
 
+const responseWindow = 24;
+const responseCutOff = dateFns.addHours(new Date(), -responseWindow);
+
 class SessionCard extends React.Component {
   constructor(props) {
     super(props);
@@ -71,7 +74,7 @@ class SessionCard extends React.Component {
     Profiles.update(this.props.currentProfileId, {
       $set: {
         exp: this.props.currentProfile.exp + this.props.session.honeyDistribution[this.props.currentUserId],
-      }
+      },
     });
     Profiles.update(this.props.currentProfileId, { $pull: { joinedSessions: this.props.session._id } });
   }
@@ -179,7 +182,7 @@ class SessionCard extends React.Component {
     }
     let button;
     if (this.props.isCompleted) {
-      if (dateFns.isBefore(this.props.session.endTime, dateFns.addDays(new Date(), -1)) ||
+      if (dateFns.isBefore(this.props.session.endTime, responseCutOff) ||
           (this.props.session.hasResponded[this.props.currentUserId] &&
               this.props.session.respondents === this.props.session.attendees.length)
       ) {
@@ -200,7 +203,10 @@ class SessionCard extends React.Component {
                   title={this.props.session.title}
                   respondents={this.props.session.respondents}
                   attendees={this.props.session.attendees.length}
-                  timeElapsed={dateFns.differenceInHours(new Date(), this.props.session.endTime)}
+                  percentElapsed={
+                    Math.floor(dateFns.differenceInHours(responseCutOff, this.props.session.endTime) /
+                        responseWindow * 100)
+                  }
               />
           );
         } else {

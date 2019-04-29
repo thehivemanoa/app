@@ -11,6 +11,8 @@ import { withRouter, NavLink } from 'react-router-dom';
 
 const _ = require('underscore');
 
+const currentTime = dateFns.addDays(new Date(), 0);
+
 /** Renders a table containing all of the Session documents. Use <SessionCard> to render each row. */
 class UserHomepage extends React.Component {
 
@@ -131,7 +133,7 @@ const UserHomepageContainer = withTracker(() => {
     const joinedSessionIds = Profiles.findOne({ owner: currentUser }).joinedSessions;
     completedSessions = Sessions.find({
       _id: { $in: joinedSessionIds },
-      endTime: { $lte: new Date() },
+      endTime: { $lte: currentTime },
     }).fetch();
   }
   return {

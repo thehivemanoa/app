@@ -17,7 +17,6 @@ export default class ProcessingModal extends React.Component {
       textAlign: 'center',
       padding: 0,
     };
-    console.log(Math.round(this.props.timeElapsed / 24 * 100));
 
     return (
         <Modal
@@ -37,7 +36,7 @@ export default class ProcessingModal extends React.Component {
           <Modal.Content>
             <Header as="h5">Time Elapsed</Header>
             <Progress
-                percent={Math.round(this.props.timeElapsed / 24 * 100)}
+                percent={this.props.percentElapsed}
                 progress
                 style={{ color: '#FEC63B' }}/>
           </Modal.Content>
@@ -50,5 +49,5 @@ ProcessingModal.propTypes = {
   title: PropTypes.string.isRequired,
   respondents: PropTypes.number.isRequired,
   attendees: PropTypes.number.isRequired,
-  timeElapsed: PropTypes.number.isRequired,
+  percentElapsed: PropTypes.number.isRequired,
 };
