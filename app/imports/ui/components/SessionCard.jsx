@@ -206,7 +206,7 @@ class SessionCard extends React.Component {
                   respondents={this.props.session.respondents}
                   attendees={this.props.session.attendees.length}
                   percentElapsed={
-                    Math.floor(dateFns.differenceInHours(this.props.session.endTime, responseCutOff) /
+                    Math.floor(dateFns.differenceInHours(new Date(), this.props.session.endTime) /
                         responseWindow * 100)
                   }
               />
