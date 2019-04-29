@@ -1,14 +1,14 @@
 import React from 'react';
 import Alert from 'react-s-alert';
+import PropTypes from 'prop-types';
 import { Profiles } from '/imports/api/profile/profile';
 import { Courses } from '/imports/api/courses/courses';
 import { Meteor } from 'meteor/meteor';
 import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader }
   from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
-import PropTypes from 'prop-types';
-import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 import CourseCard from '../components/CourseCard';
+import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 const _ = require('underscore');
 
@@ -19,6 +19,7 @@ class UserProfile extends React.Component {
     this.state = {
       editing: false,
       ready: false,
+      activeIndex: 0,
       firstName: '',
       lastName: '',
       email: '',
@@ -38,10 +39,12 @@ class UserProfile extends React.Component {
     console.log(this.state);
     this.edit = this.edit.bind(this);
     this.save = this.save.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
     this.updateState = this.updateState.bind(this);
     this.submitInfo = this.submitInfo.bind(this);
     this.submitPic = this.submitPic.bind(this);
     this.initialStates = this.initialStates.bind(this);
+    this.renderCourses = this.renderCourses.bind(this);
   }
 
   edit() {
@@ -95,6 +98,8 @@ class UserProfile extends React.Component {
     return this.save();
   }
 
+  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
+
   updateState(e, { name, value }) {
     this.setState({ [name]: value });
   }
@@ -119,6 +124,33 @@ class UserProfile extends React.Component {
       courses: _.pairs(courses),
       validCourses: validCourses,
     });
+  }
+
+  renderCourses() {
+    if (this.state.activeIndex === 0) {
+      return (
+          <Grid columns={'equal'} divided textAlign={'center'}>
+            <Grid.Row>
+              <Grid.Column>
+                Worker Bee
+                <CourseCard course={'ICS 111'} admin={true}/>
+                <CourseCard course={'ICS 314'} admin={false}/>
+              </Grid.Column>
+              <Grid.Column>
+                Royal Bee
+                <CourseCard course={'ICS 211'} admin={false}/>
+                <CourseCard course={'ICS 311'} admin={false}/>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Divider/>
+              <Button basic color={'green'}>Add</Button>
+              <Button basic color={'red'}>Delete</Button>
+            </Grid.Row>
+          </Grid>
+      );
+    }
+    return '';
   }
 
   /** If the subscription(s) have been received, render the page, otherwise show a loading icon. */
@@ -270,27 +302,8 @@ class UserProfile extends React.Component {
               </Card.Content>
             </Card>
             <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
-                 panes={panes} renderActiveOnly={false}/>
-            <Grid columns={'equal'} divided textAlign={'center'}>
-              <Grid.Row>
-                <Grid.Column>
-                  Worker Bee
-                  <CourseCard course={Courses.find({ course: 'ICS 111' }).fetch()[0]} admin={true}/>
-                  <CourseCard course={Courses.find({ course: 'ICS 314' }).fetch()[0]} admin={false}/>
-                  <Divider/>
-                  <Button basic color={'green'}>Add</Button>
-                  <Button basic color={'red'}>Delete</Button>
-                </Grid.Column>
-                <Grid.Column>
-                  Royal Bee
-                  <CourseCard course={Courses.find({ course: 'ICS 211' }).fetch()[0]} admin={false}/>
-                  <CourseCard course={Courses.find({ course: 'ICS 311' }).fetch()[0]} admin={false}/>
-                  <Divider/>
-                  <Button basic color={'green'}>Add</Button>
-                  <Button basic color={'red'}>Delete</Button>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
+                 panes={panes} renderActiveOnly={false} onTabChange={this.handleTabChange} />
+            {this.renderCourses()}
           </Container>
         </div>
     );
