@@ -161,7 +161,10 @@ class UserProfile extends React.Component {
         ready: true,
       });
     }
-    return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
+    return (this.props.ready) ? this.renderPage() :
+        <Container className="page-container">
+          <Loader active>Getting data</Loader>
+        </Container>;
   }
 
   renderPage() {
