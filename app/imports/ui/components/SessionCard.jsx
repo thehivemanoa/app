@@ -198,13 +198,15 @@ class SessionCard extends React.Component {
         );
       } else
         if (this.props.session.hasResponded[this.props.currentUserId]) {
+          console.log(Math.floor(dateFns.differenceInHours(this.props.session.endTime, responseCutOff) /
+              responseWindow * 100));
           button = (
               <ProcessingModal
                   title={this.props.session.title}
                   respondents={this.props.session.respondents}
                   attendees={this.props.session.attendees.length}
                   percentElapsed={
-                    Math.floor(dateFns.differenceInHours(responseCutOff, this.props.session.endTime) /
+                    Math.floor(dateFns.differenceInHours(this.props.session.endTime, responseCutOff) /
                         responseWindow * 100)
                   }
               />

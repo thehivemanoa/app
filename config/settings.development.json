@@ -16,6 +16,42 @@
   ],
   "defaultSessions": [
     {
+      "title": "Digits 4",
+      "course": "ICS 314",
+      "description": "",
+      "startOffSetFromCurrentDay": "-36",
+      "endOffSetFromCurrentDay": "-34",
+      "isCancelled": false,
+      "owner": "john@foo.com"
+    },
+    {
+      "title": "Digits 5",
+      "course": "ICS 314",
+      "description": "",
+      "startOffSetFromCurrentDay": "-12",
+      "endOffSetFromCurrentDay": "-10",
+      "isCancelled": false,
+      "owner": "john@foo.com"
+    },
+    {
+      "title": "HW #10",
+      "course": "ICS 311",
+      "description": "",
+      "startOffSetFromCurrentDay": "-8",
+      "endOffSetFromCurrentDay": "-4",
+      "isCancelled": false,
+      "owner": "john@foo.com"
+    },
+    {
+      "title": "HW #11",
+      "course": "ICS 311",
+      "description": "",
+      "startOffSetFromCurrentDay": "8",
+      "endOffSetFromCurrentDay": "10",
+      "isCancelled": false,
+      "owner": "john@foo.com"
+    },
+    {
       "title": "Digits 6",
       "course": "ICS 314",
       "description": "",

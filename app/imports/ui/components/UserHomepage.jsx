@@ -45,11 +45,6 @@ class UserHomepage extends React.Component {
                   <Grid.Column>
                     <Divider horizontal><h2> Completed Sessions </h2></Divider>
                   </Grid.Column>
-                  <Grid.Column width={4} floated='right'>
-                    <Button size="tiny" floated="right" as={NavLink} exact to="/collect">
-                      {`Collect Honey x${this.props.completedSessions.length}`}
-                    </Button>
-                  </Grid.Column>
                 </Grid>
               </Grid.Row>
               <Grid.Row>
