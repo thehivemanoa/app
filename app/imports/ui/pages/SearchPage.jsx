@@ -1,7 +1,7 @@
 import React from 'react';
 import dateFns from 'date-fns';
 import { Meteor } from 'meteor/meteor';
-import { Loader, Grid } from 'semantic-ui-react';
+import { Loader, Grid, Container } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import { Bert } from 'meteor/themeteorchef:bert';
@@ -444,7 +444,10 @@ class SearchPage extends React.Component {
         ready: true,
       });
     }
-    return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
+    return (this.props.ready) ? this.renderPage() :
+        <Container className="page-container">
+          <Loader active>Getting data</Loader>
+        </Container>;
   }
 
   renderPage() {
