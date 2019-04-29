@@ -27,6 +27,7 @@ class UserProfile extends React.Component {
       submittedEmail: '',
       submittedImage: '',
       courses: [],
+      allCourses: [],
     };
 
     console.log(this.state);
@@ -97,8 +98,10 @@ class UserProfile extends React.Component {
     const firstName = this.props.profile.firstName;
     const lastName = this.props.profile.lastName;
     const image = this.props.profile.image;
-    const courses = this.props.profile.courses;
+    const courses = _.pairs(this.props.profile.courses);
     const email = this.props.currentUser;
+    const allCourses = _.pluck(this.props.courses, 'course');
+    const validCourses = [];
     this.setState({
       firstName: firstName,
       lastName: lastName,
@@ -108,7 +111,9 @@ class UserProfile extends React.Component {
       submittedLastName: lastName,
       submittedEmail: email,
       submittedImage: image,
-      courses: _.pairs(courses),
+      courses: courses,
+      allCourses: allCourses,
+      validCourses: validCourses,
     });
   }
 
