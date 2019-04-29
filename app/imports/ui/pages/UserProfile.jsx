@@ -15,25 +15,19 @@ const _ = require('underscore');
 class UserProfile extends React.Component {
   constructor(props) {
     super(props);
-    const firstName = Profiles.findOne({ owner: this.props.currentUser }).firstName;
-    const lastName = Profiles.findOne({ owner: this.props.currentUser }).lastName;
-    const image = Profiles.findOne({ owner: this.props.currentUser }).image;
-    const courses = Profiles.findOne({ owner: this.props.currentUser }).courses;
-    const email = this.props.currentUser;
-
-    this.state = ({
+    this.state = {
       editing: false,
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      image: image,
-      submittedFirstName: firstName,
-      submittedLastName: lastName,
-      submittedEmail: email,
-      submittedImage: image,
-      courses: _.pairs(courses),
-      allCourses: Courses.find({}).fetch(),
-    });
+      ready: false,
+      firstName: '',
+      lastName: '',
+      email: '',
+      image: '',
+      submittedFirstName: '',
+      submittedLastName: '',
+      submittedEmail: '',
+      submittedImage: '',
+      courses: [],
+    };
 
     console.log(this.state);
     this.edit = this.edit.bind(this);
@@ -41,6 +35,7 @@ class UserProfile extends React.Component {
     this.updateState = this.updateState.bind(this);
     this.submitInfo = this.submitInfo.bind(this);
     this.submitPic = this.submitPic.bind(this);
+    this.initialStates = this.initialStates.bind(this);
   }
 
   edit() {
@@ -98,12 +93,40 @@ class UserProfile extends React.Component {
     this.setState({ [name]: value });
   }
 
+  initialStates() {
+    const firstName = this.props.profile.firstName;
+    const lastName = this.props.profile.lastName;
+    const image = this.props.profile.image;
+    const courses = this.props.profile.courses;
+    const email = this.props.currentUser;
+    this.setState({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      image: image,
+      submittedFirstName: firstName,
+      submittedLastName: lastName,
+      submittedEmail: email,
+      submittedImage: image,
+      courses: _.pairs(courses),
+    });
+  }
+
   /** If the subscription(s) have been received, render the page, otherwise show a loading icon. */
   render() {
+    if (!this.state.ready && this.props.ready) {
+      this.initialStates();
+      this.setState({
+        ready: true,
+      });
+    }
     return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
   }
 
   renderPage() {
+
+    console.log(this.state);
+    console.log(this.props.courses);
 
     const center = {
       position: 'absolute',
@@ -120,8 +143,8 @@ class UserProfile extends React.Component {
       height: '0',
     };
 
-    const level = Profiles.findOne({ owner: this.props.currentUser }).level;
-    const exp = Profiles.findOne({ owner: this.props.currentUser }).exp;
+    const level = this.props.profile.level;
+    const exp = this.props.profile.exp;
     const nextLevel = Math.round(50 * (0.04 * (level ** 3) + 0.8 * (level ** 2) + 2 * level));
     const { firstName, lastName, email } = this.state;
     const panes = [
@@ -245,11 +268,11 @@ class UserProfile extends React.Component {
 
 /** Require an array of user documents in the props.profile. */
 UserProfile.propTypes = {
-  profile: PropTypes.object,
-  courses: PropTypes.array,
+  profile: PropTypes.object.isRequired,
+  courses: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
-  currentUser: PropTypes.string,
-  currentId: PropTypes.string,
+  currentUser: PropTypes.string.isRequired,
+  currentId: PropTypes.string.isRequired,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
