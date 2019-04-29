@@ -8,6 +8,7 @@ import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Gri
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
+import CourseCard from '../components/CourseCard';
 
 const _ = require('underscore');
 
@@ -22,12 +23,16 @@ class UserProfile extends React.Component {
       lastName: '',
       email: '',
       image: '',
+      addCourse: '',
+      status: false,
       submittedFirstName: '',
       submittedLastName: '',
       submittedEmail: '',
       submittedImage: '',
+      submittedAddCourse: '',
+      submittedStatus: false,
       courses: [],
-      allCourses: [],
+      validCourses: [],
     };
 
     console.log(this.state);
@@ -98,10 +103,10 @@ class UserProfile extends React.Component {
     const firstName = this.props.profile.firstName;
     const lastName = this.props.profile.lastName;
     const image = this.props.profile.image;
-    const courses = _.pairs(this.props.profile.courses);
+    const courses = this.props.profile.courses;
     const email = this.props.currentUser;
     const allCourses = _.pluck(this.props.courses, 'course');
-    const validCourses = [];
+    const validCourses = _.filter(allCourses, course => !_.contains(_.keys(courses), course));
     this.setState({
       firstName: firstName,
       lastName: lastName,
@@ -111,8 +116,7 @@ class UserProfile extends React.Component {
       submittedLastName: lastName,
       submittedEmail: email,
       submittedImage: image,
-      courses: courses,
-      allCourses: allCourses,
+      courses: _.pairs(courses),
       validCourses: validCourses,
     });
   }
@@ -129,10 +133,7 @@ class UserProfile extends React.Component {
   }
 
   renderPage() {
-
     console.log(this.state);
-    console.log(this.props.courses);
-
     const center = {
       position: 'absolute',
       left: '.8em',
@@ -141,17 +142,20 @@ class UserProfile extends React.Component {
       textAlign: 'center',
       fontSize: '1em',
     };
-
     const xpIcon = {
       fontSize: '3em',
       width: '100%',
       height: '0',
     };
-
     const level = this.props.profile.level;
     const exp = this.props.profile.exp;
     const nextLevel = Math.round(50 * (0.04 * (level ** 3) + 0.8 * (level ** 2) + 2 * level));
     const { firstName, lastName, email } = this.state;
+    // const courseOptions = [];
+    // const statusOptions = [
+    //   { key: 't', text: 'Royal Bee', value: true },
+    //   { key: 'f', text: 'Worker Bee', value: false },
+    // ];
     const panes = [
       {
         menuItem: 'Information',
@@ -164,7 +168,7 @@ class UserProfile extends React.Component {
                                   value={firstName} onChange={this.updateState}/>
                       <Form.Input label={'Last Name'} name={'lastName'} value={lastName} onChange={this.updateState}/>
                       <Form.Input label={'Email'} name={'email'} value={email} onChange={this.updateState}/>
-                      <Form.Button content={'Submit'}/>
+                      <Form.Button content={'Submit'} basic color={'green'}/>
                     </Form>
                   </div>
               ) : (
@@ -173,7 +177,7 @@ class UserProfile extends React.Component {
                     <p>Last Name: {this.state.submittedLastName}</p>
                     <p>Email: {this.state.submittedEmail}</p>
                     <Divider/>
-                    <Button onClick={this.edit}>Edit Profile</Button>
+                    <Button onClick={this.edit} basic>Edit Profile</Button>
                   </div>
               )}
             </Tab.Pane>
@@ -211,62 +215,84 @@ class UserProfile extends React.Component {
     ];
 
     return (
-        <Container className="page-container" fluid>
-          <Card style={{ float: 'left', marginRight: '3em' }}>
-            <Card.Content>
-              {this.state.editing ? (
-                  <div>
-                    <Modal id='login-modal' trigger={<Image src={this.state.submittedImage} circular disabled
-                                                            style={{ marginBottom: 5 }}/>}>
-                      <Modal.Header>Edit Profile Picture</Modal.Header>
-                      <Modal.Content>
-                        <Form onSubmit={this.submitPic}>
-                          <Form.Input label={'Image'} name={'image'}
-                                      value={this.state.image} onChange={this.updateState}/>
-                          <Divider/>
-                          <Button onClick={this.edit}>Edit Profile</Button>
-                        </Form>
-                      </Modal.Content>
-                    </Modal>
-                  </div>
-              ) : (
-                  <div>
-                    <Image src={this.state.submittedImage} circular
-                           style={{ marginBottom: 5 }}/>
-                  </div>
-              )}
-              <div className="non-semantic-protector">
-                <h1 className="ribbon">
-                  <strong className="ribbon-content">{this.state.submittedFirstName}
-                    {this.state.submittedLastName}</strong>
-                </h1>
-
-                {/** Progress Bar */}
-                <Grid columns={2} verticalAlign='middle'>
-                  <Grid.Column width={3}>
-                    {/** Change start to honey pot */}
-                    <div style={{ position: 'relative' }}>
-                      <Icon name="star outline" style={xpIcon}/>
-                      <div style={center}>
-                        <h2 style={{ fontSize: 18 }}>{level}</h2>
-                      </div>
+        <div>
+          <Container className="page-container" fluid>
+            <Card style={{ float: 'left', marginRight: '3em' }}>
+              <Card.Content>
+                {this.state.editing ? (
+                    <div>
+                      <Modal id='login-modal' trigger={<Image src={this.state.submittedImage} circular disabled
+                                                              style={{ marginBottom: 5 }}/>}>
+                        <Modal.Header>Edit Profile Picture</Modal.Header>
+                        <Modal.Content>
+                          <Form onSubmit={this.submitPic}>
+                            <Form.Input label={'Image'} name={'image'}
+                                        value={this.state.image} onChange={this.updateState}/>
+                            <Divider/>
+                            <Button onClick={this.edit}>Edit Profile</Button>
+                          </Form>
+                        </Modal.Content>
+                      </Modal>
                     </div>
-                  </Grid.Column>
-                  <Grid.Column width={13}>
-                    <Grid.Row>
-                      <p>{exp}/{nextLevel} XP</p>
-                    </Grid.Row>
-                    <Grid.Row>
-                      <Progress value={exp} total={nextLevel}/>
-                    </Grid.Row>
-                  </Grid.Column>
-                </Grid>
-              </div>
-            </Card.Content>
-          </Card>
-          <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
-               panes={panes} renderActiveOnly={false}/>
-        </Container>
+                ) : (
+                    <div>
+                      <Image src={this.state.submittedImage} circular
+                             style={{ marginBottom: 5 }}/>
+                    </div>
+                )}
+                <div className="non-semantic-protector">
+                  <h1 className="ribbon">
+                    <strong className="ribbon-content">{this.state.submittedFirstName}
+                      {this.state.submittedLastName}</strong>
+                  </h1>
+
+                  {/** Progress Bar */}
+                  <Grid columns={2} verticalAlign='middle'>
+                    <Grid.Column width={3}>
+                      {/** Change start to honey pot */}
+                      <div style={{ position: 'relative' }}>
+                        <Icon name="star outline" style={xpIcon}/>
+                        <div style={center}>
+                          <h2 style={{ fontSize: 18 }}>{level}</h2>
+                        </div>
+                      </div>
+                    </Grid.Column>
+                    <Grid.Column width={13}>
+                      <Grid.Row>
+                        <p>{exp}/{nextLevel} XP</p>
+                      </Grid.Row>
+                      <Grid.Row>
+                        <Progress value={exp} total={nextLevel}/>
+                      </Grid.Row>
+                    </Grid.Column>
+                  </Grid>
+                </div>
+              </Card.Content>
+            </Card>
+            <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
+                 panes={panes} renderActiveOnly={false}/>
+            <Grid columns={'equal'} divided textAlign={'center'}>
+              <Grid.Row>
+                <Grid.Column>
+                  Worker Bee
+                  <CourseCard course={Courses.find({ course: 'ICS 111' }).fetch()[0]} admin={true}/>
+                  <CourseCard course={Courses.find({ course: 'ICS 314' }).fetch()[0]} admin={false}/>
+                  <Divider/>
+                  <Button basic color={'green'}>Add</Button>
+                  <Button basic color={'red'}>Delete</Button>
+                </Grid.Column>
+                <Grid.Column>
+                  Royal Bee
+                  <CourseCard course={Courses.find({ course: 'ICS 211' }).fetch()[0]} admin={false}/>
+                  <CourseCard course={Courses.find({ course: 'ICS 311' }).fetch()[0]} admin={false}/>
+                  <Divider/>
+                  <Button basic color={'green'}>Add</Button>
+                  <Button basic color={'red'}>Delete</Button>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </Container>
+        </div>
     );
   }
 }
