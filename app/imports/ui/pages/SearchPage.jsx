@@ -107,7 +107,8 @@ class SearchPage extends React.Component {
         startTime: startTime,
         endTime: endTime,
       });
-    } else {i
+    } else {
+      i
       Bert.alert({ type: 'danger', message: 'Invalid time' });
     }
   }
@@ -136,18 +137,50 @@ class SearchPage extends React.Component {
         error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
             Bert.alert({ type: 'success', message: 'Leave succeeded' })),
     );
-    Sessions.update(sessionId, { $pull: { attendees: this.props.currentUsername } });
+    Sessions.update(
+        sessionId,
+        { $pull: { attendees: this.props.currentUsername } },
+        error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
+            Bert.alert({ type: 'success', message: 'Leave succeeded' })),
+    );
+    Sessions.update(
+        sessionId,
+        {
+          $unset: {
+            [`hasResponded.${this.props.currentUserId}`]: false,
+            [`honeyDistribution.${this.props.currentUserId}`]: 0,
+          },
+        },
+        error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
+            Bert.alert({ type: 'success', message: 'Leave succeeded' })),
+    );
   }
 
   handleJoin(sessionId) {
     const profileId = Profiles.findOne({ owner: this.props.currentUsername })._id;
     Profiles.update(
         profileId,
-        { $push: { joinedSessions: sessionId } },
+        { $addToSet: { joinedSessions: sessionId } },
         error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
             Bert.alert({ type: 'success', message: 'Join succeeded' })),
     );
-    Sessions.update(sessionId, { $addToSet: { attendees: this.props.currentUsername } });
+    Sessions.update(
+        sessionId,
+        { $addToSet: { attendees: this.props.currentUsername } },
+        error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
+            Bert.alert({ type: 'success', message: 'Join succeeded' })),
+    );
+    Sessions.update(
+        sessionId,
+        {
+          $set: {
+            [`hasResponded.${this.props.currentUserId}`]: false,
+            [`honeyDistribution.${this.props.currentUserId}`]: 0,
+          },
+        },
+        error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
+            Bert.alert({ type: 'success', message: 'Join succeeded' })),
+    );
   }
 
   getFilteredSessions() {

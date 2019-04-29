@@ -1,20 +1,28 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
+import dateFns from 'date-fns';
 import { Grid, Container, Divider, Button, Card, Image, Header, } from 'semantic-ui-react';
 import { Sessions } from '/imports/api/session/session';
+import { Profiles } from '/imports/api/profile/profile';
 import SessionCard from '/imports/ui/components/SessionCard';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
+import { withRouter, NavLink } from 'react-router-dom';
+
+const _ = require('underscore');
 
 /** Renders a table containing all of the Session documents. Use <SessionCard> to render each row. */
 class UserHomepage extends React.Component {
 
   render() {
+    const completedSessionCards = _.map(this.props.completedSessions, session => {
+      return <SessionCard key={session._id} session={session} isCompleted={true} isFluid={false}/>;
+    });
 
     const containerPadding = {
-      paddingTop: 20,
-      paddingBottom: 70,
-    }
+      paddingTop: '160px',
+      paddingBottom: '70px',
+    };
 
     return (
         <Container className="user-homepage" style={containerPadding}>
@@ -28,16 +36,36 @@ class UserHomepage extends React.Component {
 
           {/** 2 column grid */}
           <Grid columns={2} divided>
-            <Grid.Column width={12}>
-              { /** *** UPCOMING SESSIONS **** */}
-              <Grid columns='equal' verticalAlign='middle'>
-                <Grid.Column>
-                  <Divider horizontal><h2> Upcoming Sessions </h2></Divider>
-                </Grid.Column>
-                <Grid.Column width={4} floated='right'>
-                  <Button size="tiny" floated="right" content="Schedule New Session"/>
-                </Grid.Column>
-              </Grid>
+            <Grid.Column width={12} style={{ paddingLeft: 0 }}>
+              {/** *** COMPLETED SESSIONS **** */}
+              <Grid.Row>
+                <Grid columns='equal' verticalAlign='middle'>
+                  <Grid.Column>
+                    <Divider horizontal><h2> Completed Sessions </h2></Divider>
+                  </Grid.Column>
+                  <Grid.Column width={4} floated='right'>
+                    <Button size="tiny" floated="right" as={NavLink} exact to="/collect">
+                      {`Collect Honey x${this.props.completedSessions.length}`}
+                    </Button>
+                  </Grid.Column>
+                </Grid>
+              </Grid.Row>
+              <Grid.Row>
+                {/** Session Cards */}
+                <Card.Group centered>
+                  {completedSessionCards}
+                </Card.Group>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid columns='equal' verticalAlign='middle'>
+                  <Grid.Column>
+                    <Divider horizontal><h2> Upcoming Sessions </h2></Divider>
+                  </Grid.Column>
+                  <Grid.Column width={4} floated='right'>
+                    <Button size="tiny" floated="right" content="Schedule New Session"/>
+                  </Grid.Column>
+                </Grid>
+              </Grid.Row>
               <Grid.Row>
                 <Divider horizontal><h2> Monday, April 9 </h2></Divider>
                 {/** Session Cards */}
@@ -85,4 +113,33 @@ class UserHomepage extends React.Component {
   }
 }
 
-export default (UserHomepage);
+UserHomepage.propTypes = {
+  currentUser: PropTypes.string,
+  profile: PropTypes.object,
+  completedSessions: PropTypes.array,
+  ready: PropTypes.bool.isRequired,
+};
+
+const UserHomepageContainer = withTracker(() => {
+  const subscription = Meteor.subscribe('Profiles');
+  const subscription2 = Meteor.subscribe('Sessions');
+  const subscription3 = Meteor.subscribe('AccountIds');
+  let currentUser = '';
+  let completedSessions = [];
+  if (subscription.ready() && subscription2.ready() && subscription3.ready() && Meteor.user()) {
+    currentUser = Meteor.user().username;
+    const joinedSessionIds = Profiles.findOne({ owner: currentUser }).joinedSessions;
+    completedSessions = Sessions.find({
+      _id: { $in: joinedSessionIds },
+      endTime: { $lte: new Date() },
+    }).fetch();
+  }
+  return {
+    currentUser: currentUser,
+    profile: Profiles.find({}).fetch(),
+    completedSessions: completedSessions,
+    ready: (subscription.ready() && subscription2.ready() && subscription3.ready()),
+  };
+})(UserHomepage);
+
+export default withRouter(UserHomepageContainer);

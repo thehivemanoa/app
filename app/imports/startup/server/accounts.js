@@ -25,3 +25,15 @@ if (Meteor.users.find().count() === 0) {
     console.log('Cannot initialize the database!  Please invoke meteor with a settings file.');
   }
 }
+
+
+Meteor.publish('AccountIds', function publish() {
+  const USER_FIELDS = {
+    username: 1,
+  };
+  if (this.userId) {
+    return Meteor.users.find({}, { fields: USER_FIELDS });
+  }
+  return this.ready();
+});
+

@@ -89,7 +89,7 @@ class SessionCardFlat extends React.Component {
     const attendees = Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch();
     const royals = _.filter(attendees, attendee => attendee.courses[this.props.session.course]);
     const workers = _.filter(attendees, attendee => !attendee.courses[this.props.session.course]);
-    const creator = Profiles.find({ username: this.props.session.owner }).fetch();
+    const creator = Profiles.find({ owner: this.props.session.owner }).fetch();
     const royalLabels = this.usersToLabels(royals);
     const workerLabels = this.usersToLabels(workers);
     const creatorLabel = this.usersToLabels(creator);

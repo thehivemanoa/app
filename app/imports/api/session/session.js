@@ -15,6 +15,9 @@ const SessionSchema = new SimpleSchema({
   endTime: Date,
   attendees: Array,
   'attendees.$': String,
+  honeyDistribution: { type: Object, blackbox: true, required: false },
+  hasResponded: { type: Object, blackbox: true, required: false },
+  respondents: { type: Number, required: false },
   owner: String,
 }, { tracker: Tracker });
 

@@ -6,6 +6,7 @@ import 'semantic-ui-css/semantic.css';
 import { Roles } from 'meteor/alanning:roles';
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import CalendarPage from '../pages/CalendarPage';
+import CollectHoneyPage from '../pages/CollectHoneyPage';
 import CreateSession from '../pages/CreateSession';
 import UserProfile from '../pages/UserProfile';
 import Landing from '../pages/Landing';
@@ -34,6 +35,7 @@ class App extends React.Component {
                 <ProtectedRoute path="/Calendar" component={CalendarPage}/>
                 <ProtectedRoute path="/addsession" component={CreateSession}/>
                 <ProtectedRoute path="/profile" component={UserProfile}/>
+                <ProtectedRoute path="/collect" component={CollectHoneyPage}/>
                 <ProtectedRoute path="/Search" component={SearchPage}/>
                 <AdminProtectedRoute path="/admin" component={Admin}/>
                 <ProtectedRoute path="/signout" component={Signout}/>

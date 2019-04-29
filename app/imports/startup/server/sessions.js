@@ -12,6 +12,9 @@ function addData(data) {
   const startTime = dateFns.addHours(currentDay, Number(startOffSetFromCurrentDay));
   const endTime = dateFns.addHours(currentDay, Number(endOffSetFromCurrentDay));
   const date = dateFns.startOfDay(startTime);
+  const userId = Meteor.users.findOne({ username: data.owner })._id;
+  const honeyDistribution = { [userId]: 0 };
+  const hasResponded = { [userId]: false };
   const session = {
     title: data.title,
     course: data.course,
@@ -20,6 +23,9 @@ function addData(data) {
     startTime: startTime,
     endTime: endTime,
     attendees: [data.owner],
+    honeyDistribution: honeyDistribution,
+    hasResponded: hasResponded,
+    respondents: 0,
     owner: data.owner,
   };
   Sessions.insert(session);
