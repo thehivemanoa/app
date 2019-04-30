@@ -304,19 +304,20 @@ class UserProfile extends React.Component {
                                   position: 'relative',
                                   background: '#14171a',
                                   borderRadius: '50%',
-                                  marginBottom: 5 }}>
-                            <Image src={this.state.submittedImage} circular disabled style={{ }}/>
-                            <Container style={{ position: 'absolute', top: '37%', left: '0%' }}>
-                              <Container
-                                  textAlign='center'
-                                  style={{ color: 'whitesmoke', fontSize: '1.5em' }}>
-                                <Icon size='big' name='image outline'/>
-                                <br/>Change<br/>Profile Photo
+                                  marginBottom: 5,
+                                }}>
+                              <Image src={this.state.submittedImage} circular disabled style={{}}/>
+                              <Container style={{ position: 'absolute', top: '37%', left: '0%' }}>
+                                <Container
+                                    textAlign='center'
+                                    style={{ color: 'whitesmoke', fontSize: '1.5em' }}>
+                                  <Icon size='big' name='image outline'/>
+                                  <br/>Change<br/>Profile Photo
+                                </Container>
                               </Container>
-                            </Container>
 
                             </Container>
-                      }
+                          }
                       >
                         <Modal.Header>Edit Profile Picture</Modal.Header>
                         <Modal.Content>
@@ -365,7 +366,7 @@ class UserProfile extends React.Component {
               </Card.Content>
             </Card>
             <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
-                 panes={panes} renderActiveOnly={false} onTabChange={this.handleTabChange} />
+                 panes={panes} renderActiveOnly={false} onTabChange={this.handleTabChange}/>
             {this.renderCourses()}
           </Container>
         </div>
