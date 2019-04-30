@@ -33,6 +33,8 @@ class UserProfile extends React.Component {
       submittedAddCourse: '',
       submittedStatus: false,
       courses: [],
+      royal: [],
+      worker: [],
       validCourses: [],
     };
 
@@ -109,6 +111,7 @@ class UserProfile extends React.Component {
     const lastName = this.props.profile.lastName;
     const image = this.props.profile.image;
     const courses = this.props.profile.courses;
+    const pairCourses = _.pairs(courses);
     const email = this.props.currentUser;
     const allCourses = _.pluck(this.props.courses, 'course');
     const validCourses = _.filter(allCourses, course => !_.contains(_.keys(courses), course));
@@ -121,8 +124,14 @@ class UserProfile extends React.Component {
       submittedLastName: lastName,
       submittedEmail: email,
       submittedImage: image,
-      courses: _.pairs(courses),
+      courses: pairCourses,
       validCourses: validCourses,
+    });
+    const royal = _.map(_.filter(pairCourses, pair => pair[1]), pair => pair[0]);
+    const worker = _.map(_.filter(pairCourses, pair => !pair[1]), pair => pair[0]);
+    this.setState({
+      royal: royal,
+      worker: worker,
     });
   }
 
@@ -133,19 +142,16 @@ class UserProfile extends React.Component {
             <Grid.Row>
               <Grid.Column>
                 Worker Bee
-                <CourseCard course={'ICS 111'} admin={true}/>
-                <CourseCard course={'ICS 314'} admin={false}/>
+                {_.map(this.state.worker, course => <CourseCard course={course} admin={true} />)}
               </Grid.Column>
               <Grid.Column>
                 Royal Bee
-                <CourseCard course={'ICS 211'} admin={false}/>
-                <CourseCard course={'ICS 311'} admin={false}/>
+                {_.map(this.state.royal, course => <CourseCard course={course} admin={true} />)}
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Divider/>
               <Button basic color={'green'}>Add</Button>
-              <Button basic color={'red'}>Delete</Button>
             </Grid.Row>
           </Grid>
       );
@@ -165,7 +171,6 @@ class UserProfile extends React.Component {
   }
 
   renderPage() {
-    console.log(this.state);
     const center = {
       position: 'absolute',
       left: '.8em',
@@ -246,6 +251,8 @@ class UserProfile extends React.Component {
       },
     ];
 
+    console.log(this.state);
+
     return (
         <div>
           <Container className="page-container" fluid>
@@ -312,7 +319,7 @@ class UserProfile extends React.Component {
 
 /** Require an array of user documents in the props.profile. */
 UserProfile.propTypes = {
-  profile: PropTypes.object.isRequired,
+  profile: PropTypes.object,
   courses: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
   currentUser: PropTypes.string.isRequired,
@@ -321,7 +328,7 @@ UserProfile.propTypes = {
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
 export default withTracker(() => {
-  const subscription = Meteor.subscribe('Profiles');
+  const subscription = Meteor.subscribe('Profile');
   const subscription2 = Meteor.subscribe('Courses');
   return {
     profile: Profiles.find({}).fetch()[0],
