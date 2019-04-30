@@ -52,11 +52,8 @@ class NavBar extends React.Component {
   }
 
   render() {
-    if (!this.state.ready && this.props.ready) {
+    if (this.state.ready && this.props.ready) {
       this.initialStates();
-      this.setState({
-        ready: true,
-      });
     }
     return this.renderNavbar()
   }
@@ -188,14 +185,14 @@ class NavBar extends React.Component {
                          trigger={
                            <Label className="collapsable"
                                   as='a' style={{ background: 'transparent', position: 'relative' }}>
-                             <Image avatar spaced='right' src={image}/>
+                             <Image avatar spaced='right' src={this.state.image}/>
                              <Icon inverted name='caret down'/>
                            </Label>
                          }
                   >
                     <Menu className="collapsable" vertical borderless secondary>
                       <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)', marginBottom: 0 }}>
-                        {firstName} {lastName}
+                        {this.state.firstName} {this.state.lastName}
                         <br/>
                         <Divider style={{ marginBottom: 0 }}/>
                       </Menu.Item>
@@ -227,7 +224,7 @@ class NavBar extends React.Component {
                     >
                       <Menu vertical borderless secondary>
                         <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)', marginBottom: 0 }}>
-                          {firstName} {lastName}
+                          {this.state.firstName} {this.state.lastName}
                           <br/>
                           <Divider style={{ marginBottom: 0 }}/>
                         </Menu.Item>
