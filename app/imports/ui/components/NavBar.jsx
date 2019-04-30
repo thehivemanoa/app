@@ -3,7 +3,19 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
-import { Menu, Header, Popup, Label, Divider, Icon, Modal, Form, Image, Button, Container } from 'semantic-ui-react';
+import {
+  Menu,
+  Header,
+  Popup,
+  Label,
+  Divider,
+  Icon,
+  Modal,
+  Form,
+  Image,
+  Container,
+  Loader,
+} from 'semantic-ui-react';
 import { Profiles } from '/imports/api/profile/profile';
 import { Roles } from 'meteor/alanning:roles';
 
@@ -40,6 +52,21 @@ class NavBar extends React.Component {
   }
 
   render() {
+    return (this.props.ready) ? this.renderNavBar() :
+        <Container className="page-container">
+          <Loader active>Getting data</Loader>
+        </Container>;
+  }
+
+  renderNavBar() {
+    /**
+     * This wasn't working because the profiles subscription returns an array.
+     * Had to grab the info like this since findOne didnt want to play nicely in the profiles collection.
+     */
+    const firstName = this.props.profile[0].firstName;
+    const lastName = this.props.profile[0].lastName;
+    const image = this.props.profile[0].image;
+
     const menuStyle = {
       borderRadius: '0',
       padding: '5px 25px 5px 25px',
@@ -149,14 +176,14 @@ class NavBar extends React.Component {
                          trigger={
                            <Label className="collapsable"
                                   as='a' style={{ background: 'transparent', position: 'relative' }}>
-                             <Image avatar spaced='right' src={this.props.profile.image}/>
+                             <Image avatar spaced='right' src={image}/>
                              <Icon inverted name='caret down'/>
                            </Label>
                          }
                   >
                     <Menu className="collapsable" vertical borderless secondary>
                       <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                        {this.props.profile.firstName} {this.props.profile.lastName}
+                        {firstName} {lastName}
                         <br/>
                         <Divider/>
                       </Menu.Item>
@@ -171,7 +198,7 @@ class NavBar extends React.Component {
                       </Menu.Item>
                     </Menu>
                   </Popup>
-
+                  {/** Why is this here?
                   <Popup basic
                          className='collapsed'
                          on={'click'}
@@ -213,13 +240,15 @@ class NavBar extends React.Component {
 
                       {Roles.userIsInRole(Meteor.userId(), 'admin') ? (
                           <Menu.Item as={NavLink} exact to="/admin" content={'Admin'}
-                                     style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>) : ''}
+                                     style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>) : ''
+                      }
+
                       <Menu.Item as={NavLink} onClick={Meteor.logout}
                                  exact to="/#/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
                         Log Out
                       </Menu.Item>
                     </Menu>
-                  </Popup>
+                  </Popup> */}
 
                 </Menu.Menu>
 
