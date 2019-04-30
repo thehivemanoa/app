@@ -5,7 +5,9 @@ import { Grid, Container, Divider, Button, Card, Image, Header, } from 'semantic
 import { Sessions } from '/imports/api/session/session';
 import { Profiles } from '/imports/api/profile/profile';
 import SessionCard from '/imports/ui/components/SessionCard';
+import UpcomingSessionList from '/imports/ui/components/UpcomingSessionList';
 import { withTracker } from 'meteor/react-meteor-data';
+import { Bert } from 'meteor/themeteorchef:bert';
 import PropTypes from 'prop-types';
 import { withRouter, NavLink } from 'react-router-dom';
 
@@ -15,6 +17,74 @@ const currentTime = dateFns.addDays(new Date(), 0);
 
 /** Renders a table containing all of the Session documents. Use <SessionCard> to render each row. */
 class UserHomepage extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.currentDate = new Date();
+    this.handleLeave = this.handleLeave.bind(this);
+    this.handleJoin = this.handleJoin.bind(this);
+    this.isJoined = this.isJoined.bind(this);
+  }
+
+  handleLeave(sessionId) {
+    const profileId = Profiles.findOne({ owner: this.props.currentUsername })._id;
+    Profiles.update(
+        profileId,
+        { $pull: { joinedSessions: sessionId } },
+        error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
+            Bert.alert({ type: 'success', message: 'Leave succeeded' })),
+    );
+    Sessions.update(
+        sessionId,
+        { $pull: { attendees: this.props.currentUsername } },
+        error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
+            Bert.alert({ type: 'success', message: 'Leave succeeded' })),
+    );
+    Sessions.update(
+        sessionId,
+        {
+          $unset: {
+            [`hasResponded.${this.props.currentUserId}`]: false,
+            [`honeyDistribution.${this.props.currentUserId}`]: 0,
+          },
+        },
+        error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
+            Bert.alert({ type: 'success', message: 'Leave succeeded' })),
+    );
+  }
+
+  handleJoin(sessionId) {
+    const profileId = Profiles.findOne({ owner: this.props.currentUsername })._id;
+    Profiles.update(
+        profileId,
+        { $addToSet: { joinedSessions: sessionId } },
+        error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
+            Bert.alert({ type: 'success', message: 'Join succeeded' })),
+    );
+    Sessions.update(
+        sessionId,
+        { $addToSet: { attendees: this.props.currentUsername } },
+        error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
+            Bert.alert({ type: 'success', message: 'Join succeeded' })),
+    );
+    Sessions.update(
+        sessionId,
+        {
+          $set: {
+            [`hasResponded.${this.props.currentUserId}`]: false,
+            [`honeyDistribution.${this.props.currentUserId}`]: 0,
+          },
+        },
+        error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
+            Bert.alert({ type: 'success', message: 'Join succeeded' })),
+    );
+  }
+
+
+  isJoined(sessionId) {
+    const joinedSessions = Profiles.findOne({ owner: this.props.currentUsername }).joinedSessions;
+    return _.some(joinedSessions, session => session === sessionId);
+  }
 
   render() {
     const completedSessionCards = _.map(this.props.completedSessions, session => {
@@ -53,33 +123,23 @@ class UserHomepage extends React.Component {
                   {completedSessionCards}
                 </Card.Group>
               </Grid.Row>
+              {/** *** UPCOMING SESSIONS **** */}
               <Grid.Row>
                 <Grid columns='equal' verticalAlign='middle'>
                   <Grid.Column>
                     <Divider horizontal><h2> Upcoming Sessions </h2></Divider>
                   </Grid.Column>
-                  <Grid.Column width={4} floated='right'>
-                    <Button size="tiny" floated="right" content="Schedule New Session"/>
-                  </Grid.Column>
                 </Grid>
               </Grid.Row>
               <Grid.Row>
-                <Divider horizontal><h2> Monday, April 9 </h2></Divider>
                 {/** Session Cards */}
-                <Card.Group>
-                  <Card>
-                    <Card.Content>
-                      <Card.Header>ICS 314</Card.Header>
-                      <Card.Meta>Worker Bee</Card.Meta>
-                    </Card.Content>
-                  </Card>
-                  <Card>
-                    <Card.Content>
-                      <Card.Header>ICS 311</Card.Header>
-                      <Card.Meta>Royal Bee</Card.Meta>
-                    </Card.Content>
-                  </Card>
-                </Card.Group>
+                <UpcomingSessionList
+                    sessions={this.props.profile.joinedSessions}
+                    selectedDate={this.currentDate}
+                    handleLeave={this.handleLeave}
+                    handleJoin={this.handleJoin}
+                    isJoined={this.isJoined}
+                />
               </Grid.Row>
             </Grid.Column>
             <Grid.Column width={4}>
@@ -112,6 +172,9 @@ class UserHomepage extends React.Component {
 
 UserHomepage.propTypes = {
   currentUser: PropTypes.string,
+  currentUsername: PropTypes.string.isRequired,
+  currentUserId: PropTypes.string.isRequired,
+  sessions: PropTypes.array.isRequired,
   profile: PropTypes.object,
   completedSessions: PropTypes.array,
   ready: PropTypes.bool.isRequired,
@@ -133,6 +196,9 @@ const UserHomepageContainer = withTracker(() => {
   }
   return {
     currentUser: currentUser,
+    currentUserId: Meteor.user() ? Meteor.user()._id : '',
+    currentUsername: Meteor.user() ? Meteor.user().username : '',
+    sessions: Sessions.find({}).fetch(),
     profile: Profiles.find({}).fetch(),
     completedSessions: completedSessions,
     ready: (subscription.ready() && subscription2.ready() && subscription3.ready()),
