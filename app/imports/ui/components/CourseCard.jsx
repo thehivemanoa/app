@@ -30,20 +30,19 @@ class CourseCard extends React.Component {
       submittedDescription: '',
       workerBee: undefined,
       royalBee: undefined,
-      initialWorker: undefined,
-      initialRoyal: undefined,
       initialStatus: undefined,
-      changed: false,
       modalOpen: false,
       ready: false,
     };
   }
 
   refreshPage() {
-    if (this.state.initialRoyal === undefined && this.state.initialWorker === undefined) {
-      if (this.state.initialRoyal !== this.state.royalBee && this.state.initialWorker !== this.state.workerBee) {
+    if (this.state.royalBee === false && this.state.workerBee === false) {
+      if (this.state.initialStatus === undefined) {
+        // do nothing
+      } else {
         const user = Profiles.find({}).fetch()[0];
-        Profiles.update(user._id, { $set: { [`courses.${this.props.course}`]: this.state.royalBee } },
+        Profiles.update(user._id, { $unset: { [`courses.${this.props.course}`]: '' } },
             (error) => (error ?
                 Alert.error(`Update failed: ${error.message}`, {
                   effect: 'slide',
@@ -54,31 +53,17 @@ class CourseCard extends React.Component {
         document.location.reload(true);
       }
     } else
-      if (this.state.royalBee !== undefined || this.state.workerBee !== undefined) {
-        if (!this.state.royalBee && !this.state.workerBee) {
-          const user = Profiles.find({}).fetch()[0];
-          Profiles.update(user._id, { $unset: { [`courses.${this.props.course}`]: '' } },
-              (error) => (error ?
-                  Alert.error(`Update failed: ${error.message}`, {
-                    effect: 'slide',
-                  }) :
-                  Alert.success('Update succeeded', {
-                    effect: 'slide',
-                  })));
-          document.location.reload(true);
-        }
-        if (this.state.initialRoyal !== this.state.royalBee && this.state.initialWorker !== this.state.workerBee) {
-          const user = Profiles.find({}).fetch()[0];
-          Profiles.update(user._id, { $set: { [`courses.${this.props.course}`]: this.state.royalBee } },
-              (error) => (error ?
-                  Alert.error(`Update failed: ${error.message}`, {
-                    effect: 'slide',
-                  }) :
-                  Alert.success('Update succeeded', {
-                    effect: 'slide',
-                  })));
-          document.location.reload(true);
-        }
+      if (this.state.initialStatus !== this.state.royalBee) {
+        const user = Profiles.find({}).fetch()[0];
+        Profiles.update(user._id, { $set: { [`courses.${this.props.course}`]: this.state.royalBee } },
+            (error) => (error ?
+                Alert.error(`Update failed: ${error.message}`, {
+                  effect: 'slide',
+                }) :
+                Alert.success('Update succeeded', {
+                  effect: 'slide',
+                })));
+        document.location.reload(true);
       }
   }
 
@@ -98,23 +83,20 @@ class CourseCard extends React.Component {
       this.setState({
         workerBee: false,
         royalBee: false,
-        initialRoyal: undefined,
-        initialWorker: undefined,
+        initialStatus: undefined,
       });
     } else
       if (value) {
         this.setState({
           royalBee: true,
-          initialRoyal: true,
           workerBee: false,
-          initialWorker: false,
+          initialStatus: true,
         });
       } else {
         this.setState({
           workerBee: true,
-          initialWorker: true,
           royalBee: false,
-          initialRoyal: false,
+          initialStatus: false,
         });
       }
   }
@@ -174,22 +156,25 @@ class CourseCard extends React.Component {
   handleOpen = () => this.setState({ modalOpen: true });
 
   handleWorker() {
-    this.setState({ workerBee: !this.state.workerBee, royalBee: false });
-    if (this.state.initialWorker === undefined && this.state.workerBee) {
+    if (this.state.initialStatus === undefined && this.state.workerBee) {
       this.setState({ workerBee: undefined });
+    } else {
+      this.setState({ workerBee: !this.state.workerBee, royalBee: false });
     }
   }
 
   handleRoyal() {
-    this.setState({ royalBee: !this.state.royalBee, workerBee: false });
-    if (this.state.initialRoyal === undefined && this.state.royalBee) {
+    if (this.state.initialStatus === undefined && this.state.royalBee) {
       this.setState({ royalBee: undefined });
+    } else {
+      this.setState({ royalBee: !this.state.royalBee, workerBee: false });
     }
   }
 
   renderCard() {
     const isUndefined = this.state.data === undefined;
     const { description } = this.state;
+    const status = this.state.initialStatus;
     if (isUndefined) {
       console.log(`Course ${this.props.course} is undefined`);
       return '';
@@ -225,9 +210,10 @@ class CourseCard extends React.Component {
                 </Modal.Content>
             ) : (
                 <Modal.Content>
-                  <Button basic color={'red'} onClick={this.removeCard}>
-                    Delete
-                  </Button>
+                  {status !== undefined ?
+                      (<Button basic color={'red'} onClick={this.removeCard}>
+                        Delete
+                      </Button>) : ('')}
                   <Button.Group floated={'right'} size={'small'}>
                     <Button toggle basic active={this.state.workerBee} onClick={this.handleWorker}>
                       Worker
@@ -250,6 +236,7 @@ class CourseCard extends React.Component {
         ready: true,
       });
     }
+    console.log(this.state);
     return (
         this.renderCard()
     );
