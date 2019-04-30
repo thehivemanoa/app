@@ -262,7 +262,7 @@ class NavBar extends React.Component {
 /** Declare the types of all properties. */
 NavBar.propTypes = {
   currentUser: PropTypes.string,
-  profile: PropTypes.array,
+  profile: PropTypes.object.isRequired,
   ready: PropTypes.bool.isRequired,
 };
 
