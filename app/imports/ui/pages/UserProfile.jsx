@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Profiles } from '/imports/api/profile/profile';
 import { Courses } from '/imports/api/courses/courses';
 import { Meteor } from 'meteor/meteor';
-import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader }
+import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader, Input }
   from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import CourseCard from '../components/CourseCard';
@@ -198,21 +198,61 @@ class UserProfile extends React.Component {
             <Tab.Pane attached={false} key={'Information'}>
               {this.state.editing ? (
                   <div>
-                    <Form onSubmit={this.submitInfo}>
-                      <Form.Input label={'First Name'} name={'firstName'}
-                                  value={firstName} onChange={this.updateState}/>
-                      <Form.Input label={'Last Name'} name={'lastName'} value={lastName} onChange={this.updateState}/>
-                      <Form.Input label={'Email'} name={'email'} value={email} onChange={this.updateState}/>
-                      <Form.Button content={'Submit'} basic color={'green'}/>
+                    <Form id='edit-account' onSubmit={this.submitInfo}>
+                      <Form.Field>
+                        <label style={{ float: 'left', fontSize: '1em' }}>First Name:</label>
+                        <span style={{ display: 'block', overflow: 'hidden', padding: '0 4px 0 6px' }}>
+                        <Input fluid transparent
+                               name={'firstName'}
+                               value={firstName}
+                               onChange={this.updateState}
+                        />
+                        </span>
+                      </Form.Field>
+                      <Form.Field>
+                        <label style={{ float: 'left', fontSize: '1em' }}>Last Name:</label>
+                        <span style={{ display: 'block', overflow: 'hidden', padding: '0 4px 0 6px' }}>
+                        <Input fluid transparent
+                               name={'lastName'}
+                               value={lastName}
+                               onChange={this.updateState}
+                        />
+                        </span>
+                      </Form.Field>
+                      <Form.Field>
+                        <label style={{ float: 'left', fontSize: '1em' }}>Email:</label>
+                        <span style={{ display: 'block', overflow: 'hidden', padding: '0 4px 0 6px' }}>
+                        <Input fluid transparent
+                               name={'email'}
+                               value={email}
+                               onChange={this.updateState}
+                        />
+                        </span>
+                      </Form.Field>
+                      <Divider/>
+                      <Form.Button floated='right' content={'Submit'} basic color={'green'}/>
                     </Form>
                   </div>
               ) : (
                   <div>
-                    <p>First Name: {this.state.submittedFirstName}</p>
-                    <p>Last Name: {this.state.submittedLastName}</p>
-                    <p>Email: {this.state.submittedEmail}</p>
+                    <p>
+                      <span style={{ fontWeight: 'bold' }}>
+                        First Name: </span>
+                      {this.state.submittedFirstName}
+                    </p>
+                    <p>
+                      <span style={{ fontWeight: 'bold' }}>
+                        Last Name: </span>
+                      {this.state.submittedLastName}</p>
+                    <p>
+                      <span style={{ fontWeight: 'bold' }}>
+                        Email: </span>
+                      {this.state.submittedEmail}
+                    </p>
                     <Divider/>
-                    <Button onClick={this.edit} basic>Edit Profile</Button>
+                    <Button floated='right' onClick={this.edit} basic>
+                      <Icon name="pencil alternate"/> Edit Profile
+                    </Button>
                   </div>
               )}
             </Tab.Pane>
