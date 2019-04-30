@@ -28,11 +28,37 @@ class NavBar extends React.Component {
   /** Initialize component state with properties for login and redirection. */
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '', error: '', redirectToReferer: false };
+    this.state = {
+      email: '',
+      password: '',
+      error: '',
+      redirectToReferer: false
+    };
     // Ensure that 'this' is bound to this component in these two functions.
     // https://medium.freecodecamp.org/react-binding-patterns-5-approaches-for-handling-this-92c651b5af56
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  initialStates() {
+    const firstName = this.props.profile.firstName;
+    const lastName = this.props.profile.lastName;
+    const image = this.props.profile.image;
+    this.setState({
+      firstName: firstName,
+      lastName: lastName,
+      image: image,
+    });
+  }
+
+  render() {
+    if (!this.state.ready && this.props.ready) {
+      this.initialStates();
+      this.setState({
+        ready: true,
+      });
+    }
+    return this.renderNavbar()
   }
 
   /** Update the form controls each time the user interacts with them. */
@@ -52,22 +78,7 @@ class NavBar extends React.Component {
     });
   }
 
-  render() {
-    return (this.props.ready) ? this.renderNavBar() :
-        <Container className="page-container">
-          <Loader active>Getting data</Loader>
-        </Container>;
-  }
-
-  renderNavBar() {
-    /**
-     * This wasn't working because the profiles subscription returns an array.
-     * Had to grab the info like this since findOne didnt want to play nicely in the profiles collection.
-     */
-    const firstName = this.props.profile[0].firstName;
-    const lastName = this.props.profile[0].lastName;
-    const image = this.props.profile[0].image;
-
+  renderNavbar() {
     const menuStyle = {
       borderRadius: '0',
       padding: '5px 25px 5px 25px',
@@ -200,56 +211,56 @@ class NavBar extends React.Component {
                     </Menu>
                   </Popup>
                   {
-                  <Popup basic
-                         className='collapsed'
-                         on={'click'}
-                         horizontalOffset={15}
-                         verticalOffset={-4}
-                         style={popupStyle}
-                         hideOnScroll
-                         trigger={
-                           <Button className='collapsed' inverted icon size='medium'
-                                   style={{ position: 'relative', bottom: '.65em' }}>
-                             <Icon name={'bars'}/>
-                           </Button>
-                         }
-                  >
-                    <Menu vertical borderless secondary>
-                      <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)', marginBottom: 0 }}>
-                        {firstName} {lastName}
-                        <br/>
-                        <Divider style={{ marginBottom: 0 }}/>
-                      </Menu.Item>
+                    <Popup basic
+                           className='collapsed'
+                           on={'click'}
+                           horizontalOffset={15}
+                           verticalOffset={-4}
+                           style={popupStyle}
+                           hideOnScroll
+                           trigger={
+                             <Button className='collapsed' inverted icon size='medium'
+                                     style={{ position: 'relative', bottom: '.65em' }}>
+                               <Icon name={'bars'}/>
+                             </Button>
+                           }
+                    >
+                      <Menu vertical borderless secondary>
+                        <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)', marginBottom: 0 }}>
+                          {firstName} {lastName}
+                          <br/>
+                          <Divider style={{ marginBottom: 0 }}/>
+                        </Menu.Item>
 
-                      <Menu.Item as={NavLink}
-                                 exact to='/profile'
-                                 style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                        View Profile
-                      </Menu.Item>
+                        <Menu.Item as={NavLink}
+                                   exact to='/profile'
+                                   style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                          View Profile
+                        </Menu.Item>
 
-                      <Menu.Item as={NavLink} exact to='/addsession' content={'Create a Session'}
-                                 style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+                        <Menu.Item as={NavLink} exact to='/addsession' content={'Create a Session'}
+                                   style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
 
-                      <Menu.Item as={NavLink} exact to='/Calendar' content={'Calendar'}
-                                 style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+                        <Menu.Item as={NavLink} exact to='/Calendar' content={'Calendar'}
+                                   style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
 
-                      <Menu.Item as={NavLink} exact to='/Search' content={'Search'}
-                                 style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+                        <Menu.Item as={NavLink} exact to='/Search' content={'Search'}
+                                   style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
 
-                      <Menu.Item as={NavLink} exact to='' content={'Leaderboard'}
-                                 style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
+                        <Menu.Item as={NavLink} exact to='' content={'Leaderboard'}
+                                   style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
 
-                      {Roles.userIsInRole(Meteor.userId(), 'admin') ? (
-                          <Menu.Item as={NavLink} exact to="/admin" content={'Admin'}
-                                     style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>) : ''
-                      }
+                        {Roles.userIsInRole(Meteor.userId(), 'admin') ? (
+                            <Menu.Item as={NavLink} exact to="/admin" content={'Admin'}
+                                       style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>) : ''
+                        }
 
-                      <Menu.Item as={NavLink} onClick={Meteor.logout}
-                                 exact to="/#/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                        Log Out
-                      </Menu.Item>
-                    </Menu>
-                  </Popup> }
+                        <Menu.Item as={NavLink} onClick={Meteor.logout}
+                                   exact to="/#/" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                          Log Out
+                        </Menu.Item>
+                      </Menu>
+                    </Popup>}
 
                 </Menu.Menu>
 
