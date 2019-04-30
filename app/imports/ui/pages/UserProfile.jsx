@@ -114,7 +114,12 @@ class UserProfile extends React.Component {
     const pairCourses = _.pairs(courses);
     const email = this.props.currentUser;
     const allCourses = _.pluck(this.props.courses, 'course');
-    const validCourses = _.filter(allCourses, course => !_.contains(_.keys(courses), course));
+    const validCourses = _.clone(_.filter(allCourses,
+            course => !_.contains(_.keys(courses), course))).sort(function (a, b) {
+      if (a < b) return -1;
+      if (b < a) return 1;
+      return 0;
+    });
     this.setState({
       firstName: firstName,
       lastName: lastName,
@@ -127,8 +132,18 @@ class UserProfile extends React.Component {
       courses: pairCourses,
       validCourses: validCourses,
     });
-    const royal = _.map(_.filter(pairCourses, pair => pair[1]), pair => pair[0]);
-    const worker = _.map(_.filter(pairCourses, pair => !pair[1]), pair => pair[0]);
+    const royal = _.clone(_.map(_.filter(pairCourses,
+            pair => pair[1]), pair => pair[0])).sort(function (a, b) {
+      if (a < b) return -1;
+      if (b < a) return 1;
+      return 0;
+    });
+    const worker = _.clone(_.map(_.filter(pairCourses,
+            pair => !pair[1]), pair => pair[0])).sort(function (a, b) {
+      if (a < b) return -1;
+      if (b < a) return 1;
+      return 0;
+    });
     this.setState({
       royal: royal,
       worker: worker,
@@ -138,20 +153,20 @@ class UserProfile extends React.Component {
   renderCourses() {
     if (this.state.activeIndex === 0) {
       return (
-          <Grid columns={'equal'} divided textAlign={'center'}>
+          <Grid columns={'equal'} divided textAlign={'center'} relaxed>
             <Grid.Row>
               <Grid.Column>
                 Worker Bee
-                {_.map(this.state.worker, course => <CourseCard course={course} admin={true} />)}
+                {_.map(this.state.worker, course => <CourseCard course={course} admin={false}/>)}
               </Grid.Column>
               <Grid.Column>
                 Royal Bee
-                {_.map(this.state.royal, course => <CourseCard course={course} admin={true} />)}
+                {_.map(this.state.royal, course => <CourseCard course={course} admin={false}/>)}
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Divider/>
-              <Button basic color={'green'}>Add</Button>
+              {_.map(this.state.validCourses, course => <CourseCard course={course} admin={false}/>)}
             </Grid.Row>
           </Grid>
       );
@@ -309,7 +324,7 @@ class UserProfile extends React.Component {
               </Card.Content>
             </Card>
             <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
-                 panes={panes} renderActiveOnly={false} onTabChange={this.handleTabChange} />
+                 panes={panes} renderActiveOnly={false} onTabChange={this.handleTabChange}/>
             {this.renderCourses()}
           </Container>
         </div>
