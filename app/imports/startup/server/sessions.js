@@ -39,14 +39,18 @@ if (Sessions.find().count() === 0) {
   }
 }
 
-/** This subscription publishes only the documents associated with the logged in user */
+/** Publishes all sessions if a user is logged in.
+ * Should this be admin only? Leaving it as is in case someone is using it
+ */
+
 Meteor.publish('Sessions', function publish() {
   if (this.userId) {
-    return Sessions.find({});
+    return Sessions.find();
   }
   return this.ready();
 });
 
+/** This subscription publishes only the documents associated with the logged in user */
 Meteor.publish('MySessions', function publish() {
   if (this.userId) {
     const sessionIds = Profiles.findOne({ owner: Meteor.user().username }).joinedSessions;
