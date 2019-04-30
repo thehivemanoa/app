@@ -133,7 +133,7 @@ const UserHomepageContainer = withTracker(() => {
   }
   return {
     currentUser: currentUser,
-    profile: Profiles.find({}).fetch(),
+    profile: Profiles.find({}).fetch()[0],
     completedSessions: completedSessions,
     ready: (subscription.ready() && subscription2.ready() && subscription3.ready()),
   };

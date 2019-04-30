@@ -14,8 +14,7 @@ import {
   Form,
   Image,
   Container,
-  Loader,
-  Button,
+  Button, Loader,
 } from 'semantic-ui-react';
 import { Profiles } from '/imports/api/profile/profile';
 import { Roles } from 'meteor/alanning:roles';
@@ -29,6 +28,8 @@ class NavBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
       error: '',
@@ -41,9 +42,9 @@ class NavBar extends React.Component {
   }
 
   initialStates() {
-    const firstName = this.props.profile.firstName;
-    const lastName = this.props.profile.lastName;
-    const image = this.props.profile.image;
+    const firstName = Profiles.find({}).fetch()[0].firstName;
+    const lastName = Profiles.find({}).fetch()[0].lastName;
+    const image = Profiles.find({}).fetch()[0].image;
     this.setState({
       firstName: firstName,
       lastName: lastName,
@@ -51,11 +52,20 @@ class NavBar extends React.Component {
     });
   }
 
-  render() {
-    if (this.state.ready && this.props.ready) {
+  setLoggedUser() {
+    if (!this.state.ready && this.props.ready && this.props.currentUser) {
       this.initialStates();
+      this.setState({
+        ready: true,
+      });
     }
-    return this.renderNavbar()
+  }
+
+  render() {
+    if (!this.props.ready) {
+      this.setLoggedUser();
+    }
+    return this.renderNavbar();
   }
 
   /** Update the form controls each time the user interacts with them. */
@@ -271,7 +281,7 @@ class NavBar extends React.Component {
 /** Declare the types of all properties. */
 NavBar.propTypes = {
   currentUser: PropTypes.string,
-  profile: PropTypes.object.isRequired,
+  profiles: PropTypes.object,
   ready: PropTypes.bool.isRequired,
 };
 
@@ -280,7 +290,7 @@ const NavBarContainer = withTracker(() => {
   const subscription = Meteor.subscribe('Profile');
   return {
     currentUser: Meteor.user() ? Meteor.user().username : '',
-    profile: Profiles.find({}).fetch(),
+    profiles: Profiles.find({}).fetch()[0],
     ready: (subscription.ready()),
   };
 })(NavBar);
