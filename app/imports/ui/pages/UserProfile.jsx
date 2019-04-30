@@ -277,8 +277,8 @@ class UserProfile extends React.Component {
                 )}
                 <div className="non-semantic-protector">
                   <h1 className="ribbon">
-                    <strong className="ribbon-content">{this.state.submittedFirstName}
-                      {this.state.submittedLastName}</strong>
+                    <strong className="ribbon-content">
+                      {this.state.submittedFirstName} {this.state.submittedLastName}</strong>
                   </h1>
 
                   {/** Progress Bar */}
