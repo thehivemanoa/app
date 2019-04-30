@@ -15,6 +15,7 @@ import {
   Image,
   Container,
   Loader,
+  Button,
 } from 'semantic-ui-react';
 import { Profiles } from '/imports/api/profile/profile';
 import { Roles } from 'meteor/alanning:roles';
@@ -182,10 +183,10 @@ class NavBar extends React.Component {
                          }
                   >
                     <Menu className="collapsable" vertical borderless secondary>
-                      <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+                      <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)', marginBottom: 0 }}>
                         {firstName} {lastName}
                         <br/>
-                        <Divider/>
+                        <Divider style={{ marginBottom: 0 }}/>
                       </Menu.Item>
                       <Menu.Item as={NavLink}
                                  exact to='/profile'
@@ -198,7 +199,7 @@ class NavBar extends React.Component {
                       </Menu.Item>
                     </Menu>
                   </Popup>
-                  {/** Why is this here?
+                  {
                   <Popup basic
                          className='collapsed'
                          on={'click'}
@@ -208,16 +209,16 @@ class NavBar extends React.Component {
                          hideOnScroll
                          trigger={
                            <Button className='collapsed' inverted icon size='medium'
-                                   style={{ position: 'relative', bottom: '.65em', backgroundColor: 'white' }}>
+                                   style={{ position: 'relative', bottom: '.65em' }}>
                              <Icon name={'bars'}/>
                            </Button>
                          }
                   >
                     <Menu vertical borderless secondary>
-                      <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
-                        {this.props.profile.firstName} {this.props.profile.lastName}
+                      <Menu.Item style={{ color: 'rgba(255, 255, 255, 0.9)', marginBottom: 0 }}>
+                        {firstName} {lastName}
                         <br/>
-                        <Divider/>
+                        <Divider style={{ marginBottom: 0 }}/>
                       </Menu.Item>
 
                       <Menu.Item as={NavLink}
@@ -248,7 +249,7 @@ class NavBar extends React.Component {
                         Log Out
                       </Menu.Item>
                     </Menu>
-                  </Popup> */}
+                  </Popup> }
 
                 </Menu.Menu>
 
