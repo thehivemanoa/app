@@ -296,8 +296,28 @@ class UserProfile extends React.Component {
               <Card.Content>
                 {this.state.editing ? (
                     <div>
-                      <Modal id='login-modal' trigger={<Image src={this.state.submittedImage} circular disabled
-                                                              style={{ marginBottom: 5 }}/>}>
+                      <Modal
+                          id='login-modal'
+                          trigger={
+                            <Container
+                                style={{
+                                  position: 'relative',
+                                  background: '#14171a',
+                                  borderRadius: '50%',
+                                  marginBottom: 5 }}>
+                            <Image src={this.state.submittedImage} circular disabled style={{ }}/>
+                            <Container style={{ position: 'absolute', top: '37%', left: '0%' }}>
+                              <Container
+                                  textAlign='center'
+                                  style={{ color: 'whitesmoke', fontSize: '1.5em' }}>
+                                <Icon size='big' name='image outline'/>
+                                <br/>Change<br/>Profile Photo
+                              </Container>
+                            </Container>
+
+                            </Container>
+                      }
+                      >
                         <Modal.Header>Edit Profile Picture</Modal.Header>
                         <Modal.Content>
                           <Form onSubmit={this.submitPic}>
