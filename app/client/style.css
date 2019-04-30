@@ -148,7 +148,16 @@ h2 {
 }
 
 #edit-account input:focus, #edit-account input[value] {
+  color: lightgrey;
+}
+
+#profile-tabs a.item {
+  font-weight: normal !important;
   color: grey;
+}
+#profile-tabs a.active.item {
+  color: black;
+  font-size: 1.05em
 }
 
 .navbarBackground {
