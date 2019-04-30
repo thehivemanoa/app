@@ -365,8 +365,14 @@ class UserProfile extends React.Component {
                 </div>
               </Card.Content>
             </Card>
-            <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
-                 panes={panes} renderActiveOnly={false} onTabChange={this.handleTabChange}/>
+            <Tab
+                id="profile-tabs"
+                menu={{ secondary: true, pointing: true, fluid: true, vertical: true }}
+                menuPosition={'left'}
+                panes={panes}
+                grid={{ paneWidth: 12, tabWidth: 4 }}
+                renderActiveOnly={false}
+                onTabChange={this.handleTabChange}/>
             {this.renderCourses()}
           </Container>
         </div>
