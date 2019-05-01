@@ -77,21 +77,24 @@ class NavBar extends React.Component {
     const menuStyle = {
       borderRadius: '0',
       padding: '5px 25px 5px 25px',
-      backgroundColor: '#081B34',
+      backgroundColor: '#000a16',
       alignItems: 'baseline',
+      webkitBoxShadow: '0 8px 8px -8px #000a16',
+      mozBoxShadow: '0 8px 8px -8px #000a16',
+      boxShadow: '0 8px 8px -8px #000a16',
     };
 
     const popupStyle = {
       padding: '0',
       borderRadius: '0',
       width: '175px',
-      backgroundColor: '#081B34',
+      backgroundColor: '#000a16',
       border: 'none',
       textAlign: 'right',
     };
 
     const titleStyle = {
-      fontSize: '50px',
+      fontSize: '55px',
       fontWeight: 300,
       fontFamily: 'Montserrat',
     };
@@ -101,14 +104,14 @@ class NavBar extends React.Component {
       paddingTop: 0,
       paddingLeft: 0,
       bottom: 'auto',
-      top: 10,
+      top: 15,
     };
 
     return (
         <Container>
           <Menu className="ui borderless top fixed menu" style={menuStyle}>
             <Menu.Item style={topLogo}>
-              <Image size="tiny" src="images/white-inverted-logo.png"/>
+              <Image size="tiny" src="images/waggle-logo.png"/>
             </Menu.Item>
             <Menu.Item>
               <Header style={titleStyle} inverted as={'a'} href={'/'}>WAGGLE</Header>
