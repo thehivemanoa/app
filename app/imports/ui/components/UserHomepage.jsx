@@ -94,6 +94,10 @@ class UserHomepage extends React.Component {
       paddingTop: '160px',
       paddingBottom: '70px',
     };
+    const noCompletedSessionsStyle = {};
+    if (completedSessionCards.length !== 0) {
+      noCompletedSessionsStyle.display = 'none';
+    }
 
     return (
         <Container className="user-homepage" style={containerPadding}>
@@ -118,6 +122,7 @@ class UserHomepage extends React.Component {
               </Grid.Row>
               <Grid.Row>
                 {/** Session Cards */}
+                <Header as="h3" style={noCompletedSessionsStyle}>You have no completed sessions</Header>
                 <Card.Group centered>
                   {completedSessionCards}
                 </Card.Group>
