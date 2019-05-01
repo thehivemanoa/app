@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import dateFns from 'date-fns';
-import { Grid, Container, Divider, Icon, Card, Image, Header, } from 'semantic-ui-react';
+import { Grid, Container, Divider, Icon, Card, Image, Header, Loader, } from 'semantic-ui-react';
 import { Sessions } from '/imports/api/session/session';
 import { Profiles } from '/imports/api/profile/profile';
 import SessionCard from '/imports/ui/components/SessionCard';
@@ -86,6 +86,18 @@ class UserHomepage extends React.Component {
   }
 
   render() {
+    return (this.props.ready) ? this.renderPage() :
+        <Container className="page-container">
+          <Loader active>Getting data</Loader>
+        </Container>;
+  }
+
+  renderPage() {
+    const firstName = this.props.profile.firstName;
+    const lastName = this.props.profile.lastName;
+    const image = this.props.profile.image;
+    const level = this.props.profile.level;
+    const exp = this.props.profile.exp;
     const completedSessionCards = _.map(this.props.completedSessions, session => {
       return <SessionCard key={session._id} session={session} isCompleted={true} isFluid={false}/>;
     });
@@ -102,10 +114,9 @@ class UserHomepage extends React.Component {
     return (
         <Container className="user-homepage" style={containerPadding}>
 
-          <Container textAlign='center' style={{ marginBottom: 50, padding: 20, backgroundColor: 'lightGrey' }}>
+          <Container textAlign='center' style={{ marginBottom: 50, padding: 20, backgroundColor: 'lightyellow' }}>
             <Header as='h2'>
-              <Image circular src='https://react.semantic-ui.com/images/avatar/large/patrick.png'/> Welcome Back, John
-              Smith!
+              <Image circular src={image}/> Welcome Back, {firstName} {lastName}!
             </Header>
           </Container>
 
