@@ -5,7 +5,23 @@ import { Profiles } from '/imports/api/profile/profile';
 import { Courses } from '/imports/api/courses/courses';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader, Input, Header }
+import {
+  Container,
+  Tab,
+  Divider,
+  Button,
+  Form,
+  Card,
+  Image,
+  Icon,
+  Progress,
+  Grid,
+  Modal,
+  Loader,
+  Input,
+  Header,
+  Dropdown
+}
   from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import CourseCard from '../components/CourseCard';
@@ -217,38 +233,48 @@ class UserProfile extends React.Component {
 
     if (this.state.activeIndex === 0) {
       return (
-          <div>
-            <Container fluid>
-              {_.map(this.state.royal, course => <CourseCard course={course} admin={false}/>)}
-              {_.map(this.state.worker, course => <CourseCard course={course} admin={false}/>)}
-            </Container>
-            <Container fluid style={{ overflow: 'hidden' }}>
-              <Divider/>
-              {/** ADD COURSE FORM */}
-              <Form id='edit-account' onSubmit={this.submitCourse}>
-                <Form.Group>
-                  <Form.Dropdown
-                      fluid
-                      label={'Course: '}
-                      options={validCourses}
-                      name={'addCourse'}
-                      value={addCourse}
-                      onChange={this.updateState}
-                      placeholder={'Select Course'}
-                  />
-                  <Form.Dropdown
-                      fluid label={'Status: '}
-                      options={status}
-                      name={'addStatus'}
-                      value={addStatus}
-                      onChange={this.updateState}
-                      placeholder={'Select Status'}
-                  />
-                  <Form.Button floated='right' content={'Submit'} basic color={'green'}/>
-                </Form.Group>
-              </Form>
-            </Container>
-          </div>
+          <Container textAlign='center'>
+            <Grid>
+              <Grid.Row>
+                <Container fluid>
+                  {_.map(this.state.royal, course => <CourseCard course={course} admin={false}/>)}
+                  {_.map(this.state.worker, course => <CourseCard course={course} admin={false}/>)}
+                </Container>
+              </Grid.Row>
+              <Grid.Row>
+                <Container fluid textAlign='left' style={{ padding: 14 }}>
+                  <Divider/>
+                  {/** ADD COURSE FORM */}
+                  <h2 style={{ fontSize: 14 }}>Would you like to add a course?</h2>
+                  <Container style={{ paddingLeft: 20 }}>
+                  <Form id='add-course' onSubmit={this.submitCourse}>
+                    <Form.Group inline>
+                      <Form.Dropdown
+                          fluid search selection
+                          options={validCourses}
+                          name={'addCourse'}
+                          value={addCourse}
+                          onChange={this.updateState}
+                          placeholder={'Select Course'}
+                          style={{ minWidth: 150 }}
+                      />
+                      <Form.Dropdown
+                          fluid search selection
+                          options={status}
+                          name={'addStatus'}
+                          value={addStatus}
+                          onChange={this.updateState}
+                          placeholder={'Select Status'}
+                          style={{ minWidth: 150 }}
+                      />
+                      <Form.Button floated='right' color='green' circular icon='inverted plus'/>
+                    </Form.Group>
+                  </Form>
+                  </Container>
+                </Container>
+              </Grid.Row>
+            </Grid>
+          </Container>
       );
     }
     return '';
@@ -311,7 +337,7 @@ class UserProfile extends React.Component {
         ),
       },
       {
-        menuItem: 'Account Settings',
+        menuItem: 'Account',
         pane: (
             <Tab.Pane attached={false} key={'Account'}>
               <Header as='h2'>
@@ -375,7 +401,7 @@ class UserProfile extends React.Component {
                         </span>
                       </Form.Field>
                       <Divider/>
-                      <Form.Button floated='right' content={'Submit'} basic color={'green'}/>
+                      <Form.Button floated='right' content={'Save Changes'} basic color={'green'}/>
                     </Form>
                   </div>
               ) : (
@@ -484,7 +510,7 @@ class UserProfile extends React.Component {
             <Tab
                 id="profile-tabs"
                 menu={{ secondary: true, pointing: true, fluid: true, vertical: true }}
-                menuPosition={'left'}
+                menuPosition={'right'}
                 panes={panes}
                 grid={{ paneWidth: 12, tabWidth: 4 }}
                 renderActiveOnly={false}

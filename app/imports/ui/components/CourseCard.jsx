@@ -185,7 +185,7 @@ class CourseCard extends React.Component {
           <Modal trigger={
             <Item fitted key={1} style={{
               float: 'left',
-              width: '120px',
+              width: '150px',
               position: 'relative',
               margin: '14px' }}>
               <Card centered>
@@ -204,7 +204,17 @@ class CourseCard extends React.Component {
               </Card>
             </Item>
           } onUnmount={this.refreshPage}>
-            <Modal.Header>{this.state.course}</Modal.Header>
+            <Modal.Header>'
+              {this.state.course}
+              <Button.Group id='royalToggles' floated={'right'} size={'small'}>
+                <Button toggle basic active={this.state.workerBee} onClick={this.handleWorker}>
+                  Worker
+                </Button>
+                <Button toggle basic active={this.state.royalBee} onClick={this.handleRoyal}>
+                  Royal
+                </Button>
+              </Button.Group>
+            </Modal.Header>
             <Modal.Content>{this.state.submittedDescription}</Modal.Content>
             {this.props.admin ? (
                 <Modal.Content>
@@ -230,14 +240,6 @@ class CourseCard extends React.Component {
                       (<Button basic color={'red'} onClick={this.removeCard}>
                         Delete
                       </Button>) : ('')}
-                  <Button.Group floated={'right'} size={'small'}>
-                    <Button toggle basic active={this.state.workerBee} onClick={this.handleWorker}>
-                      Worker
-                    </Button>
-                    <Button toggle basic active={this.state.royalBee} onClick={this.handleRoyal}>
-                      Royal
-                    </Button>
-                  </Button.Group>
                 </Modal.Content>
             )}
           </Modal>
