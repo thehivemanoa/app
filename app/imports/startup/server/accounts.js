@@ -26,7 +26,6 @@ if (Meteor.users.find().count() === 0) {
   }
 }
 
-
 Meteor.publish('AccountIds', function publish() {
   const USER_FIELDS = {
     username: 1,
