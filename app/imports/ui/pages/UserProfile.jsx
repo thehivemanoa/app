@@ -83,6 +83,9 @@ class UserProfile extends React.Component {
   submitInfo() {
     const { firstName, lastName, email, password, oldPassword } = this.state;
     const id = this.props.profile._id;
+    const changed = this.state.submittedFirstName !== firstName ||
+        this.state.submittedLastName !== lastName ||
+        this.state.submittedEmail !== email;
     this.setState({
       submittedFirstName: firstName,
       submittedLastName: lastName,
@@ -106,15 +109,19 @@ class UserProfile extends React.Component {
       },
     });
     if (password === '' && oldPassword === '') {
-      Alert.success('Update Successful', {
-        effect: 'slide',
-      });
+      if (changed) {
+        Alert.success('Update Successful', {
+          effect: 'slide',
+        });
+        document.location.reload(true);
+      }
     } else {
       Accounts.changePassword(oldPassword, password, function (error) {
         if (!error) {
           Alert.success('Update Successful', {
             effect: 'slide',
           });
+          document.location.reload(true);
         } else {
           Alert.error(`Update failed: ${error.message}`, {
             effect: 'slide',
@@ -210,8 +217,6 @@ class UserProfile extends React.Component {
       i++;
       return { key: i, text: val, value: val };
     });
-
-    console.log(validCourses);
 
     const { addCourse, addStatus } = this.state;
 
