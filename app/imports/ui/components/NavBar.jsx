@@ -71,6 +71,9 @@ class NavBar extends React.Component {
         this.setState({ error: '', redirectToReferer: true });
       }
     });
+    this.setState({
+      ready: false,
+    });
   }
 
   renderNavbar() {
