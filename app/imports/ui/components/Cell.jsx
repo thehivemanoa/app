@@ -26,6 +26,8 @@ export default class Cell extends React.Component {
     const listStyle = {
       padding: 0,
       width: '100%',
+      height: '100%',
+      marginTop: '5px',
     };
     const dateStyle = {
       position: 'absolute',
