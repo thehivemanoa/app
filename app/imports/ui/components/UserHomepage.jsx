@@ -110,8 +110,7 @@ class UserHomepage extends React.Component {
           </Container>
 
           {/** 2 column grid */}
-          <Grid columns={2} divided>
-            <Grid.Column width={12} style={{ paddingLeft: 0 }}>
+          <Grid>
               {/** *** COMPLETED SESSIONS **** */}
               <Grid.Row>
                 <Grid columns='equal' verticalAlign='middle'>
@@ -145,29 +144,6 @@ class UserHomepage extends React.Component {
                     isJoined={this.isJoined}
                 />
               </Grid.Row>
-            </Grid.Column>
-            <Grid.Column width={4}>
-              {/** *** MY COURSES **** */}
-              <Divider horizontal><h2> My Courses </h2></Divider>
-
-              {/** Course Cards */}
-              <Card.Group>
-                <Card>
-                  <Card.Content>
-                    <Card.Header>ICS 314</Card.Header>
-                    <Card.Meta>Worker Bee</Card.Meta>
-                  </Card.Content>
-                </Card>
-                <Card>
-                  <Card.Content>
-                    <Card.Header>ICS 311</Card.Header>
-                    <Card.Meta>Royal Bee</Card.Meta>
-                  </Card.Content>
-                </Card>
-              </Card.Group>
-              <br/>
-              <Button content='Add Course'/>
-            </Grid.Column>
           </Grid>
         </Container>
     );
