@@ -168,7 +168,7 @@ class NavBar extends React.Component {
                              className='collapsable'
                              style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
 
-                  <Menu.Item as={NavLink} exact to='' content={'Leaderboard'}
+                  <Menu.Item as={NavLink} exact to='/leaderboard' content={'Leaderboard'}
                              className='collapsable'
                              style={{ color: 'rgba(255, 255, 255, 0.9)' }}/>
 
