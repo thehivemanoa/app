@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Profiles } from '/imports/api/profile/profile';
 import { Courses } from '/imports/api/courses/courses';
 import { Meteor } from 'meteor/meteor';
-import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader, Input }
+import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader, Input, Header }
   from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import CourseCard from '../components/CourseCard';
@@ -215,9 +215,34 @@ class UserProfile extends React.Component {
     // ];
     const panes = [
       {
-        menuItem: 'Information',
+        menuItem: 'Courses',
         pane: (
-            <Tab.Pane attached={false} key={'Information'}>
+            <Tab.Pane attached={false} key={'Courses'}>
+              <Header as='h2'>
+                <Icon name='graduation cap' />
+                <Header.Content>
+                  Courses
+                  <Header.Subheader>View, add, and edit courses</Header.Subheader>
+                </Header.Content>
+              </Header>
+              <Divider/>
+              <div>
+                {_.each(this.state.courses, course => <CourseCard course={course} admin={false}/>)}
+              </div>
+            </Tab.Pane>
+        ),
+      },
+      {
+        menuItem: 'Account Settings',
+        pane: (
+            <Tab.Pane attached={false} key={'Account'}>
+              <Header as='h2'>
+                <Icon name='settings' />
+                <Header.Content>
+                  Account Settings
+                  <Header.Subheader>Manage your account information</Header.Subheader>
+                </Header.Content>
+              </Header>
               {this.state.editing ? (
                   <div>
                     <Form id='edit-account' onSubmit={this.submitInfo}>
@@ -279,35 +304,6 @@ class UserProfile extends React.Component {
               )}
             </Tab.Pane>
         ),
-      },
-      {
-        menuItem: 'Accounts',
-        pane: (
-            <Tab.Pane attached={false} key={'Accounts'}>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur cumque dolore dolores, eveniet
-                facilis in itaque maxime, nihil optio, quia quo recusandae reprehenderit totam. Aperiam excepturi illo
-                inventore nemo nobis perspiciatis repellat vitae. At corporis iure magnam natus qui tempora, veritatis
-                vitae voluptate. Beatae explicabo fugit similique suscipit voluptatem! A asperiores commodi consectetur
-                cupiditate delectus dicta dolor ea eius eligendi facilis fugiat illo impedit labore libero magni minus
-                non numquam obcaecati officia omnis possimus quisquam rem repellendus soluta suscipit, tenetur totam
-                ullam unde ut vitae! A, assumenda, deleniti dicta eligendi maxime nesciunt nihil odio officia omnis quam
-                repellat, rerum soluta.</p>
-            </Tab.Pane>
-        ),
-      },
-      {
-        menuItem: 'ReportLog',
-        pane: (
-            <Tab.Pane attached={false} key={'ReportLog'}>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad asperiores, laudantium libero minima
-                soluta tempora! Accusamus adipisci, blanditiis commodi culpa cum cupiditate dolor ea error esse
-                explicabo fuga ipsum labore minima minus obcaecati officia praesentium, quae quos ratione reiciendis
-                saepe sit tempora ullam unde voluptatum? Accusamus animi asperiores at cupiditate eius fugiat harum
-                ipsa, laborum minima neque nisi officia perferendis perspiciatis, quaerat ratione repellendus, suscipit.
-                A est iusto magnam perspiciatis placeat quas quasi quod reiciendis rerum saepe. A alias aliquam
-                aspernatur atque corporis dignissimos enim et explicabo laboriosam maiores molestias natus nemo nisi,
-                officiis quia ratione rerum vel voluptatibus? Ea!</p>
-            </Tab.Pane>),
       },
     ];
 
