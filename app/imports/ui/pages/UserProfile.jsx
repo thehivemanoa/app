@@ -3,12 +3,29 @@ import Alert from 'react-s-alert';
 import PropTypes from 'prop-types';
 import { Profiles } from '/imports/api/profile/profile';
 import { Courses } from '/imports/api/courses/courses';
+import { ReportLog } from '/imports/api/reportLog/reportLog';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader, Input }
-  from 'semantic-ui-react';
+import {
+  Container,
+  Tab,
+  Divider,
+  Button,
+  Form,
+  Card,
+  Image,
+  Icon,
+  Progress,
+  Grid,
+  Modal,
+  Loader,
+  Input,
+  Header,
+  Feed,
+} from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import CourseCard from '../components/CourseCard';
+import ReportItem from '../components/ReportItem';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 const _ = require('underscore');
@@ -222,25 +239,48 @@ class UserProfile extends React.Component {
 
     if (this.state.activeIndex === 0) {
       return (
-          <Grid divided={'vertically'}>
-            <Grid.Row>
-              <Grid.Column>
-                {_.map(this.state.royal, course => <CourseCard course={course} admin={false}/>)}
-                {_.map(this.state.worker, course => <CourseCard course={course} admin={false}/>)}
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-              <Form id='edit-account' onSubmit={this.submitCourse}>
-                <Form.Group>
-                    <Form.Dropdown fluid label={'Course: '} options={validCourses} name={'addCourse'}
-                                   value={addCourse} onChange={this.updateState} placeholder={'Select Course'}/>
-                    <Form.Dropdown fluid label={'Status: '} options={status} name={'addStatus'}
-                                   value={addStatus} onChange={this.updateState} placeholder={'Select Status'}/>
-                <Form.Button floated='right' content={'Submit'} basic color={'green'}/>
-                </Form.Group>
-              </Form>
-            </Grid.Row>
-          </Grid>
+          <Container textAlign='center'>
+            <Grid>
+              <Grid.Row>
+                <Container fluid>
+                  {_.map(this.state.royal, course => <CourseCard course={course} admin={false}/>)}
+                  {_.map(this.state.worker, course => <CourseCard course={course} admin={false}/>)}
+                </Container>
+              </Grid.Row>
+              <Grid.Row>
+                <Container fluid textAlign='left' style={{ padding: 14 }}>
+                  <Divider/>
+                  {/** ADD COURSE FORM */}
+                  <h2 style={{ fontSize: 14 }}>Would you like to add a course?</h2>
+                  <Container style={{ paddingLeft: 20 }}>
+                    <Form id='add-course' onSubmit={this.submitCourse}>
+                      <Form.Group inline>
+                        <Form.Dropdown
+                            fluid search selection
+                            options={validCourses}
+                            name={'addCourse'}
+                            value={addCourse}
+                            onChange={this.updateState}
+                            placeholder={'Select Course'}
+                            style={{ minWidth: 150 }}
+                        />
+                        <Form.Dropdown
+                            fluid search selection
+                            options={status}
+                            name={'addStatus'}
+                            value={addStatus}
+                            onChange={this.updateState}
+                            placeholder={'Select Status'}
+                            style={{ minWidth: 150 }}
+                        />
+                        <Form.Button floated='right' color='green' circular icon='inverted plus'/>
+                      </Form.Group>
+                    </Form>
+                  </Container>
+                </Container>
+              </Grid.Row>
+            </Grid>
+          </Container>
       );
     }
     return '';
@@ -278,16 +318,37 @@ class UserProfile extends React.Component {
     const exp = this.props.profile.exp;
     const nextLevel = Math.round(50 * (0.04 * (level ** 3) + 0.8 * (level ** 2) + 2 * level));
     const { firstName, lastName, email, password, oldPassword } = this.state;
-    // const courseOptions = [];
-    // const statusOptions = [
-    //   { key: 't', text: 'Royal Bee', value: true },
-    //   { key: 'f', text: 'Worker Bee', value: false },
-    // ];
+    const reports = ReportLog.find({ owner: this.props.currentUser }).fetch();
     const panes = [
       {
-        menuItem: 'Information',
+        menuItem: 'Courses',
         pane: (
-            <Tab.Pane attached={false} key={'Information'}>
+            <Tab.Pane attached={false} key={'Courses'}>
+              <Header as='h2'>
+                <Icon name='graduation cap'/>
+                <Header.Content>
+                  My Courses
+                  <Header.Subheader>View, add, and edit courses</Header.Subheader>
+                </Header.Content>
+              </Header>
+              <Divider/>
+              <div>
+                {this.renderCourses()}
+              </div>
+            </Tab.Pane>
+        ),
+      },
+      {
+        menuItem: 'Account',
+        pane: (
+            <Tab.Pane attached={false} key={'Account'}>
+              <Header as='h2'>
+                <Icon name='settings'/>
+                <Header.Content>
+                  Account Settings
+                  <Header.Subheader>Manage your account information</Header.Subheader>
+                </Header.Content>
+              </Header>
               {this.state.editing ? (
                   <div>
                     <Form id='edit-account' onSubmit={this.submitInfo}>
@@ -342,7 +403,7 @@ class UserProfile extends React.Component {
                         </span>
                       </Form.Field>
                       <Divider/>
-                      <Form.Button floated='right' content={'Submit'} basic color={'green'}/>
+                      <Form.Button floated='right' content={'Save Changes'} basic color={'green'}/>
                     </Form>
                   </div>
               ) : (
@@ -371,32 +432,16 @@ class UserProfile extends React.Component {
         ),
       },
       {
-        menuItem: 'Accounts',
+        menuItem: 'Report Log',
         pane: (
-            <Tab.Pane attached={false} key={'Accounts'}>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur cumque dolore dolores, eveniet
-                facilis in itaque maxime, nihil optio, quia quo recusandae reprehenderit totam. Aperiam excepturi illo
-                inventore nemo nobis perspiciatis repellat vitae. At corporis iure magnam natus qui tempora, veritatis
-                vitae voluptate. Beatae explicabo fugit similique suscipit voluptatem! A asperiores commodi consectetur
-                cupiditate delectus dicta dolor ea eius eligendi facilis fugiat illo impedit labore libero magni minus
-                non numquam obcaecati officia omnis possimus quisquam rem repellendus soluta suscipit, tenetur totam
-                ullam unde ut vitae! A, assumenda, deleniti dicta eligendi maxime nesciunt nihil odio officia omnis quam
-                repellat, rerum soluta.</p>
-            </Tab.Pane>
-        ),
-      },
-      {
-        menuItem: 'ReportLog',
-        pane: (
-            <Tab.Pane attached={false} key={'ReportLog'}>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad asperiores, laudantium libero minima
-                soluta tempora! Accusamus adipisci, blanditiis commodi culpa cum cupiditate dolor ea error esse
-                explicabo fuga ipsum labore minima minus obcaecati officia praesentium, quae quos ratione reiciendis
-                saepe sit tempora ullam unde voluptatum? Accusamus animi asperiores at cupiditate eius fugiat harum
-                ipsa, laborum minima neque nisi officia perferendis perspiciatis, quaerat ratione repellendus, suscipit.
-                A est iusto magnam perspiciatis placeat quas quasi quod reiciendis rerum saepe. A alias aliquam
-                aspernatur atque corporis dignissimos enim et explicabo laboriosam maiores molestias natus nemo nisi,
-                officiis quia ratione rerum vel voluptatibus? Ea!</p>
+            <Tab.Pane attached={false} key={'Report Log'}>
+              {reports.length === 0 ? (
+                  <p>Report Log is empty</p>
+              ) : (
+                  <Feed>
+                    {reports.map((data, index) => <ReportItem key={index} reportItem={data}/>)}
+                  </Feed>
+              )}
             </Tab.Pane>),
       },
     ];
@@ -485,7 +530,6 @@ class UserProfile extends React.Component {
                 grid={{ paneWidth: 12, tabWidth: 4 }}
                 renderActiveOnly={false}
                 onTabChange={this.handleTabChange}/>
-            {this.renderCourses()}
           </Container>
         </div>
     );
@@ -503,13 +547,14 @@ UserProfile.propTypes = {
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
 export default withTracker(() => {
-  const subscription = Meteor.subscribe('Profile');
-  const subscription2 = Meteor.subscribe('Courses');
+  const profileSub = Meteor.subscribe('Profile');
+  const courseSub = Meteor.subscribe('Courses');
+  const reportLogSub = Meteor.subscribe('ReportLog');
   return {
     profile: Profiles.find({}).fetch()[0],
     courses: Courses.find({}).fetch(),
     currentUser: Meteor.user() ? Meteor.user().username : '',
     currentId: Meteor.user() ? Meteor.userId() : '',
-    ready: (subscription.ready() && subscription2.ready()),
+    ready: (profileSub.ready() && courseSub.ready() && reportLogSub.ready()),
   };
 })(UserProfile);

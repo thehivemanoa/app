@@ -2,7 +2,14 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Grid, Feed, Card, Container, Loader } from 'semantic-ui-react';
+import { Grid, Feed, Card, Container, Loader, Segment, Header } from 'semantic-ui-react';
+
+import AutoForm from 'uniforms-semantic/AutoForm';
+import TextField from 'uniforms-semantic/TextField';
+import SubmitField from 'uniforms-semantic/SubmitField';
+import ErrorsField from 'uniforms-semantic/ErrorsField';
+import HiddenField from 'uniforms-semantic/HiddenField';
+import { Bert } from 'meteor/themeteorchef:bert';
 import DataCard from '../components/DataCard';
 import ReportItem from '../components/ReportItem';
 import ActivityItem from '../components/ActivityItem';
@@ -12,6 +19,8 @@ import { Sessions } from '../../api/session/session';
 import { ReportLog } from '../../api/reportLog/reportLog';
 import { ActivityLog } from '../../api/activityLog/activityLog';
 import { TaskList } from '../../api/taskList/taskList';
+import { Notifications, NotificationSchema } from '../../api/notifications/notifications';
+
 
 // import AddCourse from '../components/AddCourse';
 
@@ -22,6 +31,47 @@ import { TaskList } from '../../api/taskList/taskList';
  */
 
 class Admin extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.submit = this.submit.bind(this);
+    this.insertCallback = this.insertCallback.bind(this);
+    this.formRef = null;
+  }
+
+  /** On submit, insert the data. */
+  submit(data) {
+    const { createdBy, content, createdAt, isNew } = data;
+    Notifications.insert({
+      createdBy: createdBy,
+      content: content,
+      createdAt: createdAt,
+      isNew: isNew,
+    }, this.insertCallback);
+  }
+
+  insertCallback(error) {
+    if (error) {
+      Bert.alert({
+        type: 'danger',
+        message: `Add failed: ${error.message}`,
+      });
+    } else {
+      Bert.alert({
+        type: 'success',
+        message: 'Add succeeded',
+        icon: 'fas fa-check',
+      });
+      this.formRef.reset();
+    }
+  }
+
+  testNotification() {
+    const message = this.state;
+    this.setState({ message: message });
+    console.log(message);
+  }
+
   render() {
     return (this.props.ready) ? this.renderPage() :
         <Container className="page-container">
@@ -30,10 +80,11 @@ class Admin extends React.Component {
   }
 
   renderPage() {
+    // console.log(`createdBy: ${Meteor.user().username}, content: content, createdAt: ${new Date()}, isNew: ${true}`);
     return (
         <div className="page-container">
           <Grid container>
-            {/** --------------------------------- ROW 1---------------------------------*/}
+            {/** --------------------------------- ROW 1 ---------------------------------*/}
             <Grid.Row centered columns={4}>
               <Grid.Column>
                 <Card fluid style={{ padding: '10px' }}>
@@ -60,7 +111,25 @@ class Admin extends React.Component {
               </Grid.Column>
             </Grid.Row>
 
-            {/** --------------------------------- ROW 2---------------------------------*/}
+            {/** --------------------------------- ROW 2 ---------------------------------*/}
+            <Grid.Row centered style={{ marginBottom: '14px' }}>
+              <Grid.Column>
+                <div id={'global-message'}><AutoForm ref={(ref) => {
+                  this.formRef = ref;
+                }} schema={NotificationSchema} onSubmit={this.submit}>
+                  <Segment>
+                    <TextField label={<Header content={'Global Alert'}/>} name={'content'}/>
+                    <SubmitField value='Submit'/>
+                    <ErrorsField/>
+                    <HiddenField name={'createdBy'} value={Meteor.user().username}/>
+                    <HiddenField name={'createdAt'} value={new Date()}/>
+                    <HiddenField name={'isNew'} value={true}/>
+                  </Segment>
+                </AutoForm></div>
+              </Grid.Column>
+            </Grid.Row>
+
+            {/** --------------------------------- ROW 3 ---------------------------------*/}
             <Grid.Row centered columns={2}>
               {/** Might need to add overflow: scroll to css for this component to allow list to be scrolled */}
               <Grid.Column>
@@ -92,8 +161,8 @@ class Admin extends React.Component {
               </Grid.Column>
             </Grid.Row>
 
-            {/** --------------------------------- ROW 3---------------------------------*/}
-            <Grid.Row centered style={{ marginBottom: '14px' }}>
+            {/** --------------------------------- ROW 4 ---------------------------------*/}
+            <Grid.Row centered>
               <Grid.Column>
                 <Card fluid>
                   <Card.Content>
@@ -108,6 +177,7 @@ class Admin extends React.Component {
                 </Card>
               </Grid.Column>
             </Grid.Row>
+
           </Grid>
         </div>
     );
@@ -131,18 +201,21 @@ export default withTracker(() => {
   const activitySub = Meteor.subscribe('ActivityLog');
   const reportLogSub = Meteor.subscribe('ReportLog');
   const taskSub = Meteor.subscribe('TaskList');
+  const notifSub = Meteor.subscribe('Notifications');
   return {
     profiles: Profiles.find({}).fetch(),
     sessions: Sessions.find({}).fetch(),
     reports: ReportLog.find({}).fetch(),
     activityLog: ActivityLog.find({}).fetch(),
     taskList: TaskList.find({}).fetch(),
+    notifications: Notifications.find({}).fetch(),
     ready: (
         profileSub.ready() &&
         sessionsSub.ready() &&
         reportLogSub.ready() &&
         activitySub.ready() &&
-        taskSub.ready()
+        taskSub.ready() &&
+        notifSub.ready()
     ),
   };
 })(Admin);

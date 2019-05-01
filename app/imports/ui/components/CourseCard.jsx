@@ -179,10 +179,15 @@ class CourseCard extends React.Component {
       console.log(`Course ${this.props.course} is undefined`);
       return '';
     }
+
+    const cardStyle = {
+      margin: 14,
+    }
+
     return (
         <div>
           <Modal trigger={
-            <Card centered>
+            <Card centered style={{ cardStyle }}>
               <Card.Content>
                 <Card.Header>{this.state.course}</Card.Header>
                 {this.state.initialStatus !== undefined ? (

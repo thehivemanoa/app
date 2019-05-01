@@ -35,6 +35,7 @@ class AddSession extends React.Component {
       Bert.alert({
         type: 'success',
         message: 'Add succeeded',
+        icon: 'fas fa-check',
       });
       this.formRef.reset();
     }
