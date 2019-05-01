@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Profiles } from '/imports/api/profile/profile';
 import { Courses } from '/imports/api/courses/courses';
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader, Input }
   from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -23,6 +24,8 @@ class UserProfile extends React.Component {
       firstName: '',
       lastName: '',
       email: '',
+      password: '',
+      oldPassword: '',
       image: '',
       addCourse: '',
       status: false,
@@ -37,8 +40,6 @@ class UserProfile extends React.Component {
       worker: [],
       validCourses: [],
     };
-
-    console.log(this.state);
     this.edit = this.edit.bind(this);
     this.save = this.save.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
@@ -62,22 +63,51 @@ class UserProfile extends React.Component {
   }
 
   submitInfo() {
-    const { firstName, lastName } = this.state;
+    const { firstName, lastName, email, password, oldPassword } = this.state;
+    const id = this.props.profile._id;
     this.setState({
       submittedFirstName: firstName,
       submittedLastName: lastName,
+      submittedEmail: email,
     });
 
-    const id = this.props.profile._id;
-
-    Profiles.update(id, { $set: { firstName, lastName } },
+    Profiles.update(id, {
+          $set: {
+            firstName: firstName,
+            lastName: lastName,
+          },
+        },
         (error) => (error ?
             Alert.error(`Update failed: ${error.message}`, {
               effect: 'slide',
             }) :
-            Alert.success('Update succeeded', {
-              effect: 'slide',
-            })));
+            ''));
+    Meteor.users.update(this.props.currentId, {
+      $set: {
+        'emails.0.address': email,
+      },
+    });
+    if (password === '' && oldPassword === '') {
+      Alert.success('Update Successful', {
+        effect: 'slide',
+      });
+    } else {
+      Accounts.changePassword(oldPassword, password, function (error) {
+        if (!error) {
+          Alert.success('Update Successful', {
+            effect: 'slide',
+          });
+        } else {
+          Alert.error(`Update failed: ${error.message}`, {
+            effect: 'slide',
+          });
+        }
+      });
+    }
+    this.setState({
+      password: '',
+      oldPassword: '',
+    });
     return this.save();
   }
 
@@ -112,10 +142,10 @@ class UserProfile extends React.Component {
     const image = this.props.profile.image;
     const courses = this.props.profile.courses;
     const pairCourses = _.pairs(courses);
-    const email = this.props.currentUser;
+    const email = Meteor.user().emails[0].address;
     const allCourses = _.pluck(this.props.courses, 'course');
     const validCourses = _.clone(_.filter(allCourses,
-            course => !_.contains(_.keys(courses), course))).sort(function (a, b) {
+        course => !_.contains(_.keys(courses), course))).sort(function (a, b) {
       if (a < b) return -1;
       if (b < a) return 1;
       return 0;
@@ -133,13 +163,13 @@ class UserProfile extends React.Component {
       validCourses: validCourses,
     });
     const royal = _.clone(_.map(_.filter(pairCourses,
-            pair => pair[1]), pair => pair[0])).sort(function (a, b) {
+        pair => pair[1]), pair => pair[0])).sort(function (a, b) {
       if (a < b) return -1;
       if (b < a) return 1;
       return 0;
     });
     const worker = _.clone(_.map(_.filter(pairCourses,
-            pair => !pair[1]), pair => pair[0])).sort(function (a, b) {
+        pair => !pair[1]), pair => pair[0])).sort(function (a, b) {
       if (a < b) return -1;
       if (b < a) return 1;
       return 0;
@@ -205,7 +235,7 @@ class UserProfile extends React.Component {
     const level = this.props.profile.level;
     const exp = this.props.profile.exp;
     const nextLevel = Math.round(50 * (0.04 * (level ** 3) + 0.8 * (level ** 2) + 2 * level));
-    const { firstName, lastName, email } = this.state;
+    const { firstName, lastName, email, password, oldPassword } = this.state;
     // const courseOptions = [];
     // const statusOptions = [
     //   { key: 't', text: 'Royal Bee', value: true },
@@ -245,6 +275,26 @@ class UserProfile extends React.Component {
                         <Input fluid transparent
                                name={'email'}
                                value={email}
+                               onChange={this.updateState}
+                        />
+                        </span>
+                      </Form.Field>
+                      <Form.Field>
+                        <label style={{ float: 'left', fontSize: '1em' }}>Old Password:</label>
+                        <span style={{ display: 'block', overflow: 'hidden', padding: '0 4px 0 6px' }}>
+                        <Input fluid transparent
+                               name={'oldPassword'}
+                               value={oldPassword}
+                               onChange={this.updateState}
+                        />
+                        </span>
+                      </Form.Field>
+                      <Form.Field>
+                        <label style={{ float: 'left', fontSize: '1em' }}>New Password:</label>
+                        <span style={{ display: 'block', overflow: 'hidden', padding: '0 4px 0 6px' }}>
+                        <Input fluid transparent
+                               name={'password'}
+                               value={password}
                                onChange={this.updateState}
                         />
                         </span>
@@ -308,8 +358,6 @@ class UserProfile extends React.Component {
             </Tab.Pane>),
       },
     ];
-
-    console.log(this.state);
 
     return (
         <div>

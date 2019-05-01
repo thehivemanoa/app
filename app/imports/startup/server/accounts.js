@@ -37,3 +37,4 @@ Meteor.publish('AccountIds', function publish() {
   return this.ready();
 });
 
+Meteor.users.allow({ update: () => true });
