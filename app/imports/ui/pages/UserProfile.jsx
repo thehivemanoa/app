@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Profiles } from '/imports/api/profile/profile';
 import { Courses } from '/imports/api/courses/courses';
 import { Meteor } from 'meteor/meteor';
-import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader }
+import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader, Input }
   from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import CourseCard from '../components/CourseCard';
@@ -182,7 +182,10 @@ class UserProfile extends React.Component {
         ready: true,
       });
     }
-    return (this.props.ready) ? this.renderPage() : <Loader active>Getting data</Loader>;
+    return (this.props.ready) ? this.renderPage() :
+        <Container className="page-container">
+          <Loader active>Getting data</Loader>
+        </Container>;
   }
 
   renderPage() {
@@ -215,21 +218,61 @@ class UserProfile extends React.Component {
             <Tab.Pane attached={false} key={'Information'}>
               {this.state.editing ? (
                   <div>
-                    <Form onSubmit={this.submitInfo}>
-                      <Form.Input label={'First Name'} name={'firstName'}
-                                  value={firstName} onChange={this.updateState}/>
-                      <Form.Input label={'Last Name'} name={'lastName'} value={lastName} onChange={this.updateState}/>
-                      <Form.Input label={'Email'} name={'email'} value={email} onChange={this.updateState}/>
-                      <Form.Button content={'Submit'} basic color={'green'}/>
+                    <Form id='edit-account' onSubmit={this.submitInfo}>
+                      <Form.Field>
+                        <label style={{ float: 'left', fontSize: '1em' }}>First Name:</label>
+                        <span style={{ display: 'block', overflow: 'hidden', padding: '0 4px 0 6px' }}>
+                        <Input fluid transparent
+                               name={'firstName'}
+                               value={firstName}
+                               onChange={this.updateState}
+                        />
+                        </span>
+                      </Form.Field>
+                      <Form.Field>
+                        <label style={{ float: 'left', fontSize: '1em' }}>Last Name:</label>
+                        <span style={{ display: 'block', overflow: 'hidden', padding: '0 4px 0 6px' }}>
+                        <Input fluid transparent
+                               name={'lastName'}
+                               value={lastName}
+                               onChange={this.updateState}
+                        />
+                        </span>
+                      </Form.Field>
+                      <Form.Field>
+                        <label style={{ float: 'left', fontSize: '1em' }}>Email:</label>
+                        <span style={{ display: 'block', overflow: 'hidden', padding: '0 4px 0 6px' }}>
+                        <Input fluid transparent
+                               name={'email'}
+                               value={email}
+                               onChange={this.updateState}
+                        />
+                        </span>
+                      </Form.Field>
+                      <Divider/>
+                      <Form.Button floated='right' content={'Submit'} basic color={'green'}/>
                     </Form>
                   </div>
               ) : (
                   <div>
-                    <p>First Name: {this.state.submittedFirstName}</p>
-                    <p>Last Name: {this.state.submittedLastName}</p>
-                    <p>Email: {this.state.submittedEmail}</p>
+                    <p>
+                      <span style={{ fontWeight: 'bold' }}>
+                        First Name: </span>
+                      {this.state.submittedFirstName}
+                    </p>
+                    <p>
+                      <span style={{ fontWeight: 'bold' }}>
+                        Last Name: </span>
+                      {this.state.submittedLastName}</p>
+                    <p>
+                      <span style={{ fontWeight: 'bold' }}>
+                        Email: </span>
+                      {this.state.submittedEmail}
+                    </p>
                     <Divider/>
-                    <Button onClick={this.edit} basic>Edit Profile</Button>
+                    <Button floated='right' onClick={this.edit} basic>
+                      <Icon name="pencil alternate"/> Edit Profile
+                    </Button>
                   </div>
               )}
             </Tab.Pane>
@@ -275,8 +318,29 @@ class UserProfile extends React.Component {
               <Card.Content>
                 {this.state.editing ? (
                     <div>
-                      <Modal id='login-modal' trigger={<Image src={this.state.submittedImage} circular disabled
-                                                              style={{ marginBottom: 5 }}/>}>
+                      <Modal
+                          id='login-modal'
+                          trigger={
+                            <Container
+                                style={{
+                                  position: 'relative',
+                                  background: '#14171a',
+                                  borderRadius: '50%',
+                                  marginBottom: 5,
+                                }}>
+                              <Image src={this.state.submittedImage} circular disabled style={{}}/>
+                              <Container style={{ position: 'absolute', top: '37%', left: '0%' }}>
+                                <Container
+                                    textAlign='center'
+                                    style={{ color: 'whitesmoke', fontSize: '1.5em' }}>
+                                  <Icon size='big' name='image outline'/>
+                                  <br/>Change<br/>Profile Photo
+                                </Container>
+                              </Container>
+
+                            </Container>
+                          }
+                      >
                         <Modal.Header>Edit Profile Picture</Modal.Header>
                         <Modal.Content>
                           <Form onSubmit={this.submitPic}>
@@ -296,8 +360,8 @@ class UserProfile extends React.Component {
                 )}
                 <div className="non-semantic-protector">
                   <h1 className="ribbon">
-                    <strong className="ribbon-content">{this.state.submittedFirstName}
-                      {this.state.submittedLastName}</strong>
+                    <strong className="ribbon-content">
+                      {this.state.submittedFirstName} {this.state.submittedLastName}</strong>
                   </h1>
 
                   {/** Progress Bar */}
@@ -323,8 +387,14 @@ class UserProfile extends React.Component {
                 </div>
               </Card.Content>
             </Card>
-            <Tab menu={{ secondary: true, pointing: true, fluid: true, vertical: true }} menuPosition={'right'}
-                 panes={panes} renderActiveOnly={false} onTabChange={this.handleTabChange}/>
+            <Tab
+                id="profile-tabs"
+                menu={{ secondary: true, pointing: true, fluid: true, vertical: true }}
+                menuPosition={'left'}
+                panes={panes}
+                grid={{ paneWidth: 12, tabWidth: 4 }}
+                renderActiveOnly={false}
+                onTabChange={this.handleTabChange}/>
             {this.renderCourses()}
           </Container>
         </div>
@@ -334,7 +404,7 @@ class UserProfile extends React.Component {
 
 /** Require an array of user documents in the props.profile. */
 UserProfile.propTypes = {
-  profile: PropTypes.object,
+  profile: PropTypes.object.isRequired,
   courses: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
   currentUser: PropTypes.string.isRequired,
