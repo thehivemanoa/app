@@ -51,7 +51,7 @@ export default class CollectModal extends React.Component {
             <Header as="h1" style={honeyNumberStyle}>{`${this.props.honey}`}</Header>
           </Modal.Content>
           <Modal.Content style={hasRespondedMessageStyle}>
-            <p style={{ display: 'inline-block' }}>The hive society is built on generosity. To receive, honey please press the distribute button within 24 hrs of the end of the session.</p>
+            <p style={{ display: 'inline-block' }}>The hive is built on generosity. To receive, honey please press the distribute button within 24 hrs of the end of the session.</p>
           </Modal.Content>
           <Modal.Content style={{ backgroundColor: '#FBCE11', paddingBottom: '20px' }}>
             <Button
