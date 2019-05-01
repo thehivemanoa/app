@@ -3,12 +3,14 @@ import Alert from 'react-s-alert';
 import PropTypes from 'prop-types';
 import { Profiles } from '/imports/api/profile/profile';
 import { Courses } from '/imports/api/courses/courses';
+import { ReportLog } from 'imports/api/reportLog/reportLog';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader, Input }
+import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader, Input, Feed }
   from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import CourseCard from '../components/CourseCard';
+import ReportItem from '../components/ReportItem';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 const _ = require('underscore');
@@ -233,7 +235,7 @@ class UserProfile extends React.Component {
               <Form id='edit-account' onSubmit={this.submitCourse}>
                 <Form.Group>
                     <Form.Dropdown fluid label={'Course: '} options={validCourses} name={'addCourse'}
-                                   value={addCourse} onChange={this.updateState} placeholder={'Select Course'}/>
+                                   value={addCourse} onChange={this.updateState} search placeholder={'Select Course'}/>
                     <Form.Dropdown fluid label={'Status: '} options={status} name={'addStatus'}
                                    value={addStatus} onChange={this.updateState} placeholder={'Select Status'}/>
                 <Form.Button floated='right' content={'Submit'} basic color={'green'}/>
@@ -278,6 +280,7 @@ class UserProfile extends React.Component {
     const exp = this.props.profile.exp;
     const nextLevel = Math.round(50 * (0.04 * (level ** 3) + 0.8 * (level ** 2) + 2 * level));
     const { firstName, lastName, email, password, oldPassword } = this.state;
+    const reports = ReportLog.find({ owner: this.props.currentUser }).fetch();
     // const courseOptions = [];
     // const statusOptions = [
     //   { key: 't', text: 'Royal Bee', value: true },
@@ -371,32 +374,16 @@ class UserProfile extends React.Component {
         ),
       },
       {
-        menuItem: 'Accounts',
+        menuItem: 'Report Log',
         pane: (
-            <Tab.Pane attached={false} key={'Accounts'}>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur cumque dolore dolores, eveniet
-                facilis in itaque maxime, nihil optio, quia quo recusandae reprehenderit totam. Aperiam excepturi illo
-                inventore nemo nobis perspiciatis repellat vitae. At corporis iure magnam natus qui tempora, veritatis
-                vitae voluptate. Beatae explicabo fugit similique suscipit voluptatem! A asperiores commodi consectetur
-                cupiditate delectus dicta dolor ea eius eligendi facilis fugiat illo impedit labore libero magni minus
-                non numquam obcaecati officia omnis possimus quisquam rem repellendus soluta suscipit, tenetur totam
-                ullam unde ut vitae! A, assumenda, deleniti dicta eligendi maxime nesciunt nihil odio officia omnis quam
-                repellat, rerum soluta.</p>
-            </Tab.Pane>
-        ),
-      },
-      {
-        menuItem: 'ReportLog',
-        pane: (
-            <Tab.Pane attached={false} key={'ReportLog'}>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad asperiores, laudantium libero minima
-                soluta tempora! Accusamus adipisci, blanditiis commodi culpa cum cupiditate dolor ea error esse
-                explicabo fuga ipsum labore minima minus obcaecati officia praesentium, quae quos ratione reiciendis
-                saepe sit tempora ullam unde voluptatum? Accusamus animi asperiores at cupiditate eius fugiat harum
-                ipsa, laborum minima neque nisi officia perferendis perspiciatis, quaerat ratione repellendus, suscipit.
-                A est iusto magnam perspiciatis placeat quas quasi quod reiciendis rerum saepe. A alias aliquam
-                aspernatur atque corporis dignissimos enim et explicabo laboriosam maiores molestias natus nemo nisi,
-                officiis quia ratione rerum vel voluptatibus? Ea!</p>
+            <Tab.Pane attached={false} key={'Report Log'}>
+              {reports.length === 0 ? (
+                  <p>Report Log is empty</p>
+              ) : (
+                  <Feed>
+                    {reports.map((data, index) => <ReportItem key={index} reportItem={data}/>)}
+                  </Feed>
+              )}
             </Tab.Pane>),
       },
     ];
@@ -503,13 +490,14 @@ UserProfile.propTypes = {
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
 export default withTracker(() => {
-  const subscription = Meteor.subscribe('Profile');
-  const subscription2 = Meteor.subscribe('Courses');
+  const profileSub = Meteor.subscribe('Profile');
+  const courseSub = Meteor.subscribe('Courses');
+  const reportLogSub = Meteor.subscribe('ReportLog');
   return {
     profile: Profiles.find({}).fetch()[0],
     courses: Courses.find({}).fetch(),
     currentUser: Meteor.user() ? Meteor.user().username : '',
     currentId: Meteor.user() ? Meteor.userId() : '',
-    ready: (subscription.ready() && subscription2.ready()),
+    ready: (profileSub.ready() && courseSub.ready() && reportLogSub.ready()),
   };
 })(UserProfile);
