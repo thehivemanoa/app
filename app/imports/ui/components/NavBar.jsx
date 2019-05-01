@@ -77,18 +77,18 @@ class NavBar extends React.Component {
     const menuStyle = {
       borderRadius: '0',
       padding: '5px 25px 5px 25px',
-      backgroundColor: '#000',
+      backgroundColor: '#000a16',
       alignItems: 'baseline',
-      webkitBoxShadow: '0 8px 8px -8px #000',
-      mozBoxShadow: '0 8px 8px -8px #000',
-      boxShadow: '0 8px 8px -8px #000',
+      webkitBoxShadow: '0 8px 8px -8px #000a16',
+      mozBoxShadow: '0 8px 8px -8px #000a16',
+      boxShadow: '0 8px 8px -8px #000a16',
     };
 
     const popupStyle = {
       padding: '0',
       borderRadius: '0',
       width: '175px',
-      backgroundColor: '#000',
+      backgroundColor: '#000a16',
       border: 'none',
       textAlign: 'right',
     };
