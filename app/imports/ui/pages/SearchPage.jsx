@@ -452,7 +452,7 @@ class SearchPage extends React.Component {
 
   renderPage() {
     return (
-        <Grid container style={{ marginTop: '120px', marginBottom: '15px' }}>
+        <Grid container style={{ marginTop: '145px', marginBottom: '15px' }}>
           <Grid.Column width={5}>
             <SearchBox
                 toggleJoined={this.toggleJoined}

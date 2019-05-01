@@ -138,7 +138,7 @@ class CalendarPage extends React.Component {
   renderPage() {
     const middleGridStyle = {
       minWidth: '1200px',
-      marginTop: '120px',
+      marginTop: '145px',
     };
     console.log(_.map(this.props.sessions, session => session._id));
 
