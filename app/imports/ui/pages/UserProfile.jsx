@@ -217,14 +217,13 @@ class UserProfile extends React.Component {
 
     if (this.state.activeIndex === 0) {
       return (
-          <Grid divided={'vertically'}>
+          <Grid container divided={'vertically'}>
             <Grid.Row>
-              <Grid.Column>
                 {_.map(this.state.royal, course => <CourseCard course={course} admin={false}/>)}
                 {_.map(this.state.worker, course => <CourseCard course={course} admin={false}/>)}
-              </Grid.Column>
             </Grid.Row>
             <Grid.Row>
+              {/** ADD COURSE FORM */}
               <Form id='edit-account' onSubmit={this.submitCourse}>
                 <Form.Group>
                   <Form.Dropdown fluid label={'Course: '} options={validCourses} name={'addCourse'}
@@ -240,6 +239,7 @@ class UserProfile extends React.Component {
     }
     return '';
   }
+
   /** If the subscription(s) have been received, render the page, otherwise show a loading icon. */
   render() {
     if (!this.state.ready && this.props.ready) {
@@ -285,7 +285,7 @@ class UserProfile extends React.Component {
               <Header as='h2'>
                 <Icon name='graduation cap' />
                 <Header.Content>
-                  Courses
+                  My Courses
                   <Header.Subheader>View, add, and edit courses</Header.Subheader>
                 </Header.Content>
               </Header>
