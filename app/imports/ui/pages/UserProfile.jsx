@@ -3,7 +3,7 @@ import Alert from 'react-s-alert';
 import PropTypes from 'prop-types';
 import { Profiles } from '/imports/api/profile/profile';
 import { Courses } from '/imports/api/courses/courses';
-import { ReportLog } from 'imports/api/reportLog/reportLog';
+import { ReportLog } from '/imports/api/reportLog/reportLog';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader, Input, Feed }
