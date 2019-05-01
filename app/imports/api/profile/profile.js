@@ -13,6 +13,7 @@ const ProfileSchema = new SimpleSchema({
   level: Number,
   exp: Number,
   rank: { type: Number, required: false },
+  role: { type: String, required: false },
   courses: { type: Object, blackbox: true },
   joinedSessions: { type: Array, required: false },
   'joinedSessions.$': String,

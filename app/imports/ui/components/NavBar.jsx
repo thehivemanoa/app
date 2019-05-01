@@ -6,7 +6,9 @@ import { withRouter, NavLink } from 'react-router-dom';
 import { Menu, Header, Popup, Label, Divider, Icon, Modal, Form, Image, Container, Button }
   from 'semantic-ui-react';
 import { Profiles } from '/imports/api/profile/profile';
+import { Notifications } from '/imports/api/notifications/notifications';
 import { Roles } from 'meteor/alanning:roles';
+import { Bert } from 'meteor/themeteorchef:bert';
 
 /** The NavBar appears at the top of every page. Rendered by the App Layout component. */
 class NavBar extends React.Component {
@@ -77,6 +79,23 @@ class NavBar extends React.Component {
   }
 
   renderNavbar() {
+
+    const cursor = Notifications.find({ isNew: true });
+
+    cursor.observeChanges({
+      added(id, notification) {
+        Bert.alert({
+          type: 'info',
+          title: 'Admin Alert',
+          message: notification.content,
+          hideDelay: 7000,
+        });
+        Notifications.update(id, {
+          $set: { isNew: false },
+        });
+      },
+    });
+
     const menuStyle = {
       borderRadius: '0',
       padding: '5px 25px 5px 25px',
