@@ -6,10 +6,16 @@ import { Meteor } from 'meteor/meteor';
 import { Profiles } from '../../api/profile/profile';
 import LeaderboardItem from '../components/LeaderboardItem';
 
-const _ = require('underscore');
-
 /** Renders the Page for adding a document. */
 class Leaderboard extends React.Component {
+
+  setRank() {
+    for (let i = 0; i < this.props.profiles.length; i++) {
+      Profiles.update(this.props.profiles[i]._id, {
+        $set: { rank: i + 1 },
+      });
+    }
+  }
 
   render() {
     return (this.props.ready) ? this.renderComponent() :
@@ -19,7 +25,7 @@ class Leaderboard extends React.Component {
   }
 
   renderComponent() {
-    console.log(this.props.profiles);
+    this.setRank();
     return (
         <Table striped>
           <Table.Header>
@@ -33,8 +39,7 @@ class Leaderboard extends React.Component {
 
           <Table.Body>
             {this.props.profiles.map((data, index) => <LeaderboardItem key={index}
-                                                                       profile={data}
-                                                                       rank={index}/>)}
+                                                                       profile={data}/>)}
           </Table.Body>
         </Table>
     );
