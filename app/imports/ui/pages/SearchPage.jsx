@@ -1,15 +1,16 @@
 import React from 'react';
+import Alert from 'react-s-alert';
 import dateFns from 'date-fns';
 import { Meteor } from 'meteor/meteor';
 import { Loader, Grid, Container } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
-import { Bert } from 'meteor/themeteorchef:bert';
 import SearchResults from '../components/SearchResults';
 import SearchBox from '../components/SearchBox';
 import { Sessions } from '../../api/session/session';
 import { Profiles } from '../../api/profile/profile';
 import SessionCardFlat from '../components/SessionCardFlat';
+import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 const _ = require('underscore');
 
@@ -108,8 +109,9 @@ class SearchPage extends React.Component {
         endTime: endTime,
       });
     } else {
-      i
-      Bert.alert({ type: 'danger', message: 'Invalid time' });
+      Alert.error('Invalid time', {
+        effect: 'slide',
+      });
     }
   }
 
@@ -134,14 +136,12 @@ class SearchPage extends React.Component {
     Profiles.update(
         profileId,
         { $pull: { joinedSessions: sessionId } },
-        error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
-            Bert.alert({ type: 'success', message: 'Leave succeeded' })),
+        error => (error ? Alert.error(`Leave failed: ${error.message}`, { effect: 'slide' }) : ''),
     );
     Sessions.update(
         sessionId,
         { $pull: { attendees: this.props.currentUsername } },
-        error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
-            Bert.alert({ type: 'success', message: 'Leave succeeded' })),
+        error => (error ? Alert.error(`Leave failed: ${error.message}`, { effect: 'slide' }) : ''),
     );
     Sessions.update(
         sessionId,
@@ -151,9 +151,9 @@ class SearchPage extends React.Component {
             [`honeyDistribution.${this.props.currentUserId}`]: 0,
           },
         },
-        error => (error ? Bert.alert({ type: 'danger', message: `Leave failed: ${error.message}` }) :
-            Bert.alert({ type: 'success', message: 'Leave succeeded' })),
+        error => (error ? Alert.error(`Leave failed: ${error.message}`, { effect: 'slide' }) : ''),
     );
+    Alert.success('Leave succeeded', { effect: 'slide' });
   }
 
   handleJoin(sessionId) {
@@ -161,14 +161,12 @@ class SearchPage extends React.Component {
     Profiles.update(
         profileId,
         { $addToSet: { joinedSessions: sessionId } },
-        error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
-            Bert.alert({ type: 'success', message: 'Join succeeded' })),
+        error => (error ? Alert.error(`Join failed: ${error.message}`, { effect: 'slide' }) : ''),
     );
     Sessions.update(
         sessionId,
         { $addToSet: { attendees: this.props.currentUsername } },
-        error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
-            Bert.alert({ type: 'success', message: 'Join succeeded' })),
+        error => (error ? Alert.error(`Join failed: ${error.message}`, { effect: 'slide' }) : ''),
     );
     Sessions.update(
         sessionId,
@@ -178,9 +176,9 @@ class SearchPage extends React.Component {
             [`honeyDistribution.${this.props.currentUserId}`]: 0,
           },
         },
-        error => (error ? Bert.alert({ type: 'danger', message: `Join failed: ${error.message}` }) :
-            Bert.alert({ type: 'success', message: 'Join succeeded' })),
+        error => (error ? Alert.error(`Join failed: ${error.message}`, { effect: 'slide' }) : ''),
     );
+    Alert.success('Join succeeded', { effect: 'slide' });
   }
 
   getFilteredSessions() {
@@ -344,7 +342,7 @@ class SearchPage extends React.Component {
         course: '',
       });
     } else {
-      Bert.alert({ type: 'danger', message: `The course ${course} is not one of your courses.` });
+      Alert.error(`The course ${course} is not one of your courses.`, { effect: 'slide' });
     }
   }
 
@@ -433,7 +431,7 @@ class SearchPage extends React.Component {
         endDate: endDate,
       });
     } else {
-      Bert.alert({ type: 'danger', message: 'Invalid date' });
+      Alert.error('Invalid date', { effect: 'slide' });
     }
   }
 
