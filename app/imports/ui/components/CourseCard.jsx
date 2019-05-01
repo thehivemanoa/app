@@ -72,7 +72,6 @@ class CourseCard extends React.Component {
     const courses = this.props.user.courses;
     const course = _.pick(courses, this.props.course);
     const value = _.values(course)[0];
-    console.log(value);
     this.setState({
       data: data,
       course: data.course,
@@ -253,7 +252,6 @@ class CourseCard extends React.Component {
         ready: true,
       });
     }
-    console.log(this.state);
     return (
         this.renderCard()
     );
@@ -270,12 +268,8 @@ CourseCard.propTypes = {
 export default withTracker(() => {
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe('Profile');
-  let user = {};
-  if (subscription.ready() && Meteor.user()) {
-    user = Profiles.findOne({ owner: Meteor.user().username });
-  }
   return {
-    user: user,
+    user: Profiles.findOne({ owner: Meteor.user().username }),
     ready: (subscription.ready()),
   };
 })(CourseCard);

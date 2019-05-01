@@ -5,23 +5,7 @@ import { Profiles } from '/imports/api/profile/profile';
 import { Courses } from '/imports/api/courses/courses';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import {
-  Container,
-  Tab,
-  Divider,
-  Button,
-  Form,
-  Card,
-  Image,
-  Icon,
-  Progress,
-  Grid,
-  Modal,
-  Loader,
-  Input,
-  Header,
-  Dropdown
-}
+import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader, Input, Header }
   from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import CourseCard from '../components/CourseCard';
@@ -164,7 +148,7 @@ class UserProfile extends React.Component {
     return this.save();
   }
 
-  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
+  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex, editing: false });
 
   updateState(e, { name, value }) {
     this.setState({ [name]: value });
@@ -227,9 +211,7 @@ class UserProfile extends React.Component {
       return { key: i, text: val, value: val };
     });
 
-    console.log(validCourses);
-
-    const { addCourse, addStatus } = this.state;
+    const { addCourse, addStatus, royal, worker } = this.state;
 
     if (this.state.activeIndex === 0) {
       return (
@@ -237,8 +219,8 @@ class UserProfile extends React.Component {
             <Grid>
               <Grid.Row>
                 <Container fluid>
-                  {_.map(this.state.royal, course => <CourseCard course={course} admin={false} key={course}/>)}
-                  {_.map(this.state.worker, course => <CourseCard course={course} admin={false} key={course}/>)}
+                  {_.map(royal, (course, index) => <CourseCard key={index} course={course} admin={false}/>)}
+                  {_.map(worker, (course, index) => <CourseCard key={index} course={course} admin={false}/>)}
                 </Container>
               </Grid.Row>
               <Grid.Row>
@@ -267,7 +249,7 @@ class UserProfile extends React.Component {
                             placeholder={'Select Status'}
                             style={{ minWidth: 150 }}
                         />
-                        <Form.Button floated='right' color='green' circular icon='plus'/>
+                        <Form.Button floated='right' color='green' inverted circular icon='plus'/>
                       </Form.Group>
                     </Form>
                   </Container>
@@ -523,7 +505,7 @@ class UserProfile extends React.Component {
 
 /** Require an array of user documents in the props.profile. */
 UserProfile.propTypes = {
-  profile: PropTypes.object.isRequired,
+  profile: PropTypes.object,
   courses: PropTypes.array.isRequired,
   ready: PropTypes.bool.isRequired,
   currentUser: PropTypes.string.isRequired,
