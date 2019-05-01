@@ -141,6 +141,7 @@ h2 {
 
 #login-modal textarea:focus, #login-modal input:focus {
    font-family: 'Montserrat', sans-serif !important;
+
  }
 
 #edit-account textarea:focus, #edit-account input:focus, #edit-account input[value]  {

@@ -94,7 +94,7 @@ class NavBar extends React.Component {
     };
 
     const titleStyle = {
-      fontSize: '50px',
+      fontSize: '55px',
       fontWeight: 300,
       fontFamily: 'Montserrat',
     };
