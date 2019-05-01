@@ -217,24 +217,38 @@ class UserProfile extends React.Component {
 
     if (this.state.activeIndex === 0) {
       return (
-          <Grid container divided={'vertically'}>
-            <Grid.Row>
-                {_.map(this.state.royal, course => <CourseCard course={course} admin={false}/>)}
-                {_.map(this.state.worker, course => <CourseCard course={course} admin={false}/>)}
-            </Grid.Row>
-            <Grid.Row>
+          <div>
+            <Container fluid>
+              {_.map(this.state.royal, course => <CourseCard course={course} admin={false}/>)}
+              {_.map(this.state.worker, course => <CourseCard course={course} admin={false}/>)}
+            </Container>
+            <Container fluid style={{ overflow: 'hidden' }}>
+              <Divider/>
               {/** ADD COURSE FORM */}
               <Form id='edit-account' onSubmit={this.submitCourse}>
                 <Form.Group>
-                  <Form.Dropdown fluid label={'Course: '} options={validCourses} name={'addCourse'}
-                                 value={addCourse} onChange={this.updateState} placeholder={'Select Course'}/>
-                  <Form.Dropdown fluid label={'Status: '} options={status} name={'addStatus'}
-                                 value={addStatus} onChange={this.updateState} placeholder={'Select Status'}/>
+                  <Form.Dropdown
+                      fluid
+                      label={'Course: '}
+                      options={validCourses}
+                      name={'addCourse'}
+                      value={addCourse}
+                      onChange={this.updateState}
+                      placeholder={'Select Course'}
+                  />
+                  <Form.Dropdown
+                      fluid label={'Status: '}
+                      options={status}
+                      name={'addStatus'}
+                      value={addStatus}
+                      onChange={this.updateState}
+                      placeholder={'Select Status'}
+                  />
                   <Form.Button floated='right' content={'Submit'} basic color={'green'}/>
                 </Form.Group>
               </Form>
-            </Grid.Row>
-          </Grid>
+            </Container>
+          </div>
       );
     }
     return '';
@@ -283,7 +297,7 @@ class UserProfile extends React.Component {
         pane: (
             <Tab.Pane attached={false} key={'Courses'}>
               <Header as='h2'>
-                <Icon name='graduation cap' />
+                <Icon name='graduation cap'/>
                 <Header.Content>
                   My Courses
                   <Header.Subheader>View, add, and edit courses</Header.Subheader>
@@ -301,7 +315,7 @@ class UserProfile extends React.Component {
         pane: (
             <Tab.Pane attached={false} key={'Account'}>
               <Header as='h2'>
-                <Icon name='settings' />
+                <Icon name='settings'/>
                 <Header.Content>
                   Account Settings
                   <Header.Subheader>Manage your account information</Header.Subheader>

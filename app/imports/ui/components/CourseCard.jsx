@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Alert from 'react-s-alert';
 import { Meteor } from 'meteor/meteor';
-import { Card, Button, Modal, Form, Container } from 'semantic-ui-react';
+import { Card, Button, Modal, Form, Container, Item } from 'semantic-ui-react';
 import { Courses } from '/imports/api/courses/courses';
 import { Profiles } from '/imports/api/profile/profile';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -180,27 +180,29 @@ class CourseCard extends React.Component {
       return '';
     }
 
-    const cardStyle = {
-      margin: 14,
-    }
-
     return (
         <div>
           <Modal trigger={
-            <Card centered style={{ cardStyle }}>
-              <Card.Content>
-                <Card.Header>{this.state.course}</Card.Header>
-                {this.state.initialStatus !== undefined ? (
-                    <div>
-                      {this.state.royalBee ? (
-                          <Card.Meta>Royal Bee</Card.Meta>
-                      ) : (
-                          <Card.Meta>Worker Bee</Card.Meta>
-                      )}
-                    </div>
-                ) : ''}
-              </Card.Content>
-            </Card>
+            <Item fitted key={1} style={{
+              float: 'left',
+              width: '120px',
+              position: 'relative',
+              margin: '14px' }}>
+              <Card centered>
+                <Card.Content>
+                  <Card.Header>{this.state.course}</Card.Header>
+                  {this.state.initialStatus !== undefined ? (
+                      <Container fluid>
+                        {this.state.royalBee ? (
+                            <Card.Meta>Royal Bee</Card.Meta>
+                        ) : (
+                            <Card.Meta>Worker Bee</Card.Meta>
+                        )}
+                      </Container>
+                  ) : ''}
+                </Card.Content>
+              </Card>
+            </Item>
           } onUnmount={this.refreshPage}>
             <Modal.Header>{this.state.course}</Modal.Header>
             <Modal.Content>{this.state.submittedDescription}</Modal.Content>
