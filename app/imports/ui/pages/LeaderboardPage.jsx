@@ -7,7 +7,7 @@ export default class LeaderboardPage extends React.Component {
     return (
         <div className={'page-container'}>
           <Container>
-            <Header content={'Hi I\'m the leaderboard page'}/>
+            <Header as='h1' content={'Leaderboard'}/>
             <Leaderboard/>
           </Container>
         </div>
