@@ -29,7 +29,6 @@ class LeaderboardItem extends React.Component {
 
 LeaderboardItem.propTypes = {
   profile: PropTypes.object.isRequired,
-  rank: PropTypes.number,
 };
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */

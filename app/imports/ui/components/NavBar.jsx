@@ -79,8 +79,8 @@ class NavBar extends React.Component {
       padding: '5px 25px 5px 25px',
       backgroundColor: '#000a16',
       alignItems: 'baseline',
-      webkitBoxShadow: '0 8px 8px -8px #000a16',
-      mozBoxShadow: '0 8px 8px -8px #000a16',
+      WebkitBoxShadow: '0 8px 8px -8px #000a16',
+      MozBoxShadow: '0 8px 8px -8px #000a16',
       boxShadow: '0 8px 8px -8px #000a16',
     };
 

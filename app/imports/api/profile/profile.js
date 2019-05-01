@@ -12,6 +12,7 @@ const ProfileSchema = new SimpleSchema({
   image: String,
   level: Number,
   exp: Number,
+  rank: { type: Number, required: false },
   courses: { type: Object, blackbox: true },
   joinedSessions: { type: Array, required: false },
   'joinedSessions.$': String,
