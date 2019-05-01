@@ -131,7 +131,7 @@ class UserHomepage extends React.Component {
             <Grid.Row>
               {/** Session Cards */}
               <Header as="h3" style={noCompletedSessionsStyle}>You have no completed sessions</Header>
-              <Card.Group centered>
+              <Card.Group style={{ marginLeft: '3em' }}>
                 {completedSessionCards}
               </Card.Group>
             </Grid.Row>
