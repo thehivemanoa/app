@@ -28,13 +28,13 @@ class UserProfile extends React.Component {
       oldPassword: '',
       image: '',
       addCourse: '',
+      addStatus: '',
       status: false,
       submittedFirstName: '',
       submittedLastName: '',
       submittedEmail: '',
       submittedImage: '',
-      submittedAddCourse: '',
-      submittedStatus: false,
+      submittedAddStatus: '',
       courses: [],
       royal: [],
       worker: [],
@@ -42,6 +42,7 @@ class UserProfile extends React.Component {
     };
     this.edit = this.edit.bind(this);
     this.save = this.save.bind(this);
+    this.submitCourse = this.submitCourse.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.updateState = this.updateState.bind(this);
     this.submitInfo = this.submitInfo.bind(this);
@@ -60,6 +61,23 @@ class UserProfile extends React.Component {
     this.setState({
       editing: false,
     });
+  }
+
+  submitCourse() {
+    const user = Profiles.find({}).fetch()[0];
+    let status = false;
+    if (this.state.addStatus === 'royal') {
+      status = true;
+    }
+    Profiles.update(user._id, { $set: { [`courses.${this.state.addCourse}`]: status } },
+        (error) => (error ?
+            Alert.error(`Update failed: ${error.message}`, {
+              effect: 'slide',
+            }) :
+            Alert.success('Update succeeded', {
+              effect: 'slide',
+            })));
+    document.location.reload(true);
   }
 
   submitInfo() {
@@ -181,22 +199,41 @@ class UserProfile extends React.Component {
   }
 
   renderCourses() {
+    const status = [
+      { key: 'r', text: 'Royal Bee', value: 'royal' },
+      { key: 'w', text: 'Worker Bee', value: 'worker' },
+    ];
+
+    let i = -1;
+
+    const validCourses = _.map(this.state.validCourses, function (val) {
+      i++;
+      return { key: i, text: val, value: val };
+    });
+
+    console.log(validCourses);
+
+    const { addCourse, addStatus } = this.state;
+
     if (this.state.activeIndex === 0) {
       return (
-          <Grid columns={'equal'} divided textAlign={'center'} relaxed>
+          <Grid divided={'vertically'}>
             <Grid.Row>
               <Grid.Column>
-                Worker Bee
-                {_.map(this.state.worker, course => <CourseCard course={course} admin={false}/>)}
-              </Grid.Column>
-              <Grid.Column>
-                Royal Bee
                 {_.map(this.state.royal, course => <CourseCard course={course} admin={false}/>)}
+                {_.map(this.state.worker, course => <CourseCard course={course} admin={false}/>)}
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
-              <Divider/>
-              {_.map(this.state.validCourses, course => <CourseCard course={course} admin={false}/>)}
+              <Form id='edit-account' onSubmit={this.submitCourse}>
+                <Form.Group>
+                    <Form.Dropdown fluid label={'Course: '} options={validCourses} name={'addCourse'}
+                                   value={addCourse} onChange={this.updateState} placeholder={'Select Course'}/>
+                    <Form.Dropdown fluid label={'Status: '} options={status} name={'addStatus'}
+                                   value={addStatus} onChange={this.updateState} placeholder={'Select Status'}/>
+                <Form.Button floated='right' content={'Submit'} basic color={'green'}/>
+                </Form.Group>
+              </Form>
             </Grid.Row>
           </Grid>
       );
