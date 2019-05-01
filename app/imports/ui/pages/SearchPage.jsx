@@ -336,12 +336,16 @@ class SearchPage extends React.Component {
   }
 
   addCourse(course) {
-    const newCourses = { ...this.state.courses };
-    newCourses[course] = null;
-    this.setState({
-      courses: newCourses,
-      course: '',
-    });
+    if (this.props.courses[course] !== undefined) {
+      const newCourses = { ...this.state.courses };
+      newCourses[course] = null;
+      this.setState({
+        courses: newCourses,
+        course: '',
+      });
+    } else {
+      Bert.alert({ type: 'danger', message: `The course ${course} is not one of your courses.` });
+    }
   }
 
   deleteCourse(course) {
@@ -504,6 +508,7 @@ class SearchPage extends React.Component {
 }
 
 SearchPage.propTypes = {
+  courses: PropTypes.object.isRequired,
   currentUserId: PropTypes.string.isRequired,
   currentUsername: PropTypes.string.isRequired,
   profiles: PropTypes.array.isRequired,
@@ -516,7 +521,12 @@ export default withTracker(() => {
 
   const subscription = Meteor.subscribe('Sessions');
   const subscription2 = Meteor.subscribe('Profiles');
+  let courses = {};
+  if (subscription.ready() && subscription2.ready() && Meteor.user()) {
+    courses = Profiles.findOne({ owner: Meteor.user().username }).courses;
+  }
   return {
+    courses: courses,
     currentUserId: Meteor.user() ? Meteor.user()._id : '',
     currentUsername: Meteor.user() ? Meteor.user().username : '',
     profiles: Profiles.find({}).fetch(),
