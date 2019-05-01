@@ -1,7 +1,7 @@
 import React from 'react';
 import dateFns from 'date-fns';
 import PropTypes from 'prop-types';
-import { Card, Header, Divider, List, Icon } from 'semantic-ui-react';
+import { Card, Header, List, Icon } from 'semantic-ui-react';
 import isAfter from 'date-fns/is_after';
 import startOfWeek from 'date-fns/start_of_week';
 import endOfWeek from 'date-fns/end_of_week';
@@ -38,11 +38,9 @@ export default class UpcomingSessionList extends React.Component {
           ${startMonth} ${startDayOfTheMonth} - ${endDayOfTheWeek}, 
           ${endMonth} ${endDayOfTheMonth}`);
     });
-    console.log(formattedDates);
     /** formattedDates array returns new array of keys as formatted start to end dates:
      * ['start-end', 'start-end', 'start-end'] */
 
-    console.log(_.values(groupedSessions));
     const sessionCards =
         _.map(_.values(groupedSessions), (sessionsArray) => _.map(sessionsArray, (session) => {
             console.log(session);
@@ -60,7 +58,6 @@ export default class UpcomingSessionList extends React.Component {
             );
           }));
 
-    console.log(sessionCards);
     /** sessionCards array returns new array of grouped session cards arrays of keys as formatted start to end dates:
      * [ [{sessionCard1}, {sessionCard2}], [{sessionCard3}] ] */
 
@@ -68,7 +65,6 @@ export default class UpcomingSessionList extends React.Component {
     /** groupedCards returns new abject where keys are formatted dates and values are arrays of session cards:
      * {'start-end': [{sessionCard1}, {sessionCard2}], 'start-end': {sessionCard3}]} */
 
-    console.log(groupedCards);
     /** if there are no upcoming sessions, return "no upcoming sessions" message */
     if (_.isEmpty(groupedCards)) {
       return (
@@ -78,7 +74,6 @@ export default class UpcomingSessionList extends React.Component {
       );
     }
 
-    console.log('how are you');
     const containers = [];
     /** return group of cards for each week */
     _.each(formattedDates, (formattedDate, index) => {
@@ -93,7 +88,6 @@ export default class UpcomingSessionList extends React.Component {
             </Card.Group>
           </List.Item>
       );
-      console.log(listItem);
       containers.push(listItem);
     });
 

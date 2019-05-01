@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Card, Header, Grid, Button, Icon, Loader, List, Form, Image, Label } from 'semantic-ui-react';
+import { Card, Header, Grid, Button, Icon, Loader, List, Form, Image } from 'semantic-ui-react';
 import dateFns from 'date-fns';
 import { Profiles } from '../../api/profile/profile';
 import { Sessions } from '../../api/session/session';
@@ -92,8 +92,7 @@ class SessionCard extends React.Component {
   }
 
   usersToLabels(users) {
-    return _.map(users, user => {
-      return (
+    return _.map(users, user => (
           <List.Item key={user._id} style={{ display: 'inline-block', marginRight: '20px' }}>
             <Image src={user.image} avatar/>
             <List.Content>
@@ -102,8 +101,7 @@ class SessionCard extends React.Component {
               </List.Header>
             </List.Content>
           </List.Item>
-      );
-    });
+      ));
   }
 
   toggleCollapsed() {
@@ -113,7 +111,10 @@ class SessionCard extends React.Component {
   }
 
   render() {
-    return (this.props.ready) ? this.renderComponent() : <Loader active>Getting data</Loader>;
+    if (this.props.session !== undefined) {
+      return (this.props.ready) ? this.renderComponent() : <Loader active>Getting data</Loader>;
+    }
+    return '';
   }
 
   renderComponent() {
@@ -234,12 +235,12 @@ class SessionCard extends React.Component {
       } else {
         button = <Button style={headerButtonStyle} onClick={this.props.handleUpdate}>Join</Button>;
       }
-      let timeInformation = '';
-      if (this.props.isCompleted) {
-        timeInformation = `Ended ${dateFns.differenceInHours(new Date(), this.props.session.endTime)} hrs ago`;
-      } else {
-        timeInformation = `${formattedStartTime} - ${formattedEndTime}`;
-      }
+    let timeInformation = '';
+    if (this.props.isCompleted) {
+      timeInformation = `Ended ${dateFns.differenceInHours(new Date(), this.props.session.endTime)} hrs ago`;
+    } else {
+      timeInformation = `${formattedStartTime} - ${formattedEndTime}`;
+    }
 
     return (
         <Card
