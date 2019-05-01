@@ -14,6 +14,7 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Admin from '../pages/Admin';
 import SearchPage from '../pages/SearchPage';
+import LeaderboardPage from '../pages/LeaderboardPage';
 import NotFound from '../pages/NotFound';
 import Signin from '../pages/Signin';
 import Signup from '../pages/Signup';
@@ -37,6 +38,7 @@ class App extends React.Component {
                 <ProtectedRoute path="/profile" component={UserProfile}/>
                 <ProtectedRoute path="/collect" component={CollectHoneyPage}/>
                 <ProtectedRoute path="/Search" component={SearchPage}/>
+                <ProtectedRoute path="/leaderboard" component={LeaderboardPage}/>
                 <AdminProtectedRoute path="/admin" component={Admin}/>
                 <ProtectedRoute path="/signout" component={Signout}/>
                 <Route component={NotFound}/>

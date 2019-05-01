@@ -182,9 +182,18 @@ class CourseCard extends React.Component {
     return (
         <div>
           <Modal trigger={
-            <Card fluid>
+            <Card centered>
               <Card.Content>
                 <Card.Header>{this.state.course}</Card.Header>
+                {this.state.initialStatus !== undefined ? (
+                    <div>
+                      {this.state.royalBee ? (
+                          <Card.Meta>Royal Bee</Card.Meta>
+                      ) : (
+                          <Card.Meta>Worker Bee</Card.Meta>
+                      )}
+                    </div>
+                ) : ''}
               </Card.Content>
             </Card>
           } onUnmount={this.refreshPage}>

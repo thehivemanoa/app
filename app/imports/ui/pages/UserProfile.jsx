@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Profiles } from '/imports/api/profile/profile';
 import { Courses } from '/imports/api/courses/courses';
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import { Container, Tab, Divider, Button, Form, Card, Image, Icon, Progress, Grid, Modal, Loader, Input, Header }
   from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
@@ -23,15 +24,17 @@ class UserProfile extends React.Component {
       firstName: '',
       lastName: '',
       email: '',
+      password: '',
+      oldPassword: '',
       image: '',
       addCourse: '',
+      addStatus: '',
       status: false,
       submittedFirstName: '',
       submittedLastName: '',
       submittedEmail: '',
       submittedImage: '',
-      submittedAddCourse: '',
-      submittedStatus: false,
+      submittedAddStatus: '',
       courses: [],
       royal: [],
       worker: [],
@@ -39,6 +42,7 @@ class UserProfile extends React.Component {
     };
     this.edit = this.edit.bind(this);
     this.save = this.save.bind(this);
+    this.submitCourse = this.submitCourse.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
     this.updateState = this.updateState.bind(this);
     this.submitInfo = this.submitInfo.bind(this);
@@ -59,8 +63,25 @@ class UserProfile extends React.Component {
     });
   }
 
+  submitCourse() {
+    const user = Profiles.find({}).fetch()[0];
+    let status = false;
+    if (this.state.addStatus === 'royal') {
+      status = true;
+    }
+    Profiles.update(user._id, { $set: { [`courses.${this.state.addCourse}`]: status } },
+        (error) => (error ?
+            Alert.error(`Update failed: ${error.message}`, {
+              effect: 'slide',
+            }) :
+            Alert.success('Update succeeded', {
+              effect: 'slide',
+            })));
+    document.location.reload(true);
+  }
+
   submitInfo() {
-    const { firstName, lastName, email } = this.state;
+    const { firstName, lastName, email, password, oldPassword } = this.state;
     const id = this.props.profile._id;
     this.setState({
       submittedFirstName: firstName,
@@ -72,14 +93,39 @@ class UserProfile extends React.Component {
           $set: {
             firstName: firstName,
             lastName: lastName,
-          } },
+          },
+        },
         (error) => (error ?
             Alert.error(`Update failed: ${error.message}`, {
               effect: 'slide',
             }) :
-            Alert.success('Update succeeded', {
-              effect: 'slide',
-            })));
+            ''));
+    Meteor.users.update(this.props.currentId, {
+      $set: {
+        'emails.0.address': email,
+      },
+    });
+    if (password === '' && oldPassword === '') {
+      Alert.success('Update Successful', {
+        effect: 'slide',
+      });
+    } else {
+      Accounts.changePassword(oldPassword, password, function (error) {
+        if (!error) {
+          Alert.success('Update Successful', {
+            effect: 'slide',
+          });
+        } else {
+          Alert.error(`Update failed: ${error.message}`, {
+            effect: 'slide',
+          });
+        }
+      });
+    }
+    this.setState({
+      password: '',
+      oldPassword: '',
+    });
     return this.save();
   }
 
@@ -114,7 +160,7 @@ class UserProfile extends React.Component {
     const image = this.props.profile.image;
     const courses = this.props.profile.courses;
     const pairCourses = _.pairs(courses);
-    const email = this.props.currentUser;
+    const email = Meteor.user().emails[0].address;
     const allCourses = _.pluck(this.props.courses, 'course');
     const validCourses = _.clone(_.filter(allCourses,
         course => !_.contains(_.keys(courses), course))).sort(function (a, b) {
@@ -153,29 +199,47 @@ class UserProfile extends React.Component {
   }
 
   renderCourses() {
+    const status = [
+      { key: 'r', text: 'Royal Bee', value: 'royal' },
+      { key: 'w', text: 'Worker Bee', value: 'worker' },
+    ];
+
+    let i = -1;
+
+    const validCourses = _.map(this.state.validCourses, function (val) {
+      i++;
+      return { key: i, text: val, value: val };
+    });
+
+    console.log(validCourses);
+
+    const { addCourse, addStatus } = this.state;
+
     if (this.state.activeIndex === 0) {
       return (
-          <Grid columns={'equal'} divided textAlign={'center'} relaxed>
+          <Grid divided={'vertically'}>
             <Grid.Row>
               <Grid.Column>
-                Worker Bee
-                {_.map(this.state.worker, course => <CourseCard course={course} admin={false}/>)}
-              </Grid.Column>
-              <Grid.Column>
-                Royal Bee
                 {_.map(this.state.royal, course => <CourseCard course={course} admin={false}/>)}
+                {_.map(this.state.worker, course => <CourseCard course={course} admin={false}/>)}
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
-              <Divider/>
-              {_.map(this.state.validCourses, course => <CourseCard course={course} admin={false}/>)}
+              <Form id='edit-account' onSubmit={this.submitCourse}>
+                <Form.Group>
+                  <Form.Dropdown fluid label={'Course: '} options={validCourses} name={'addCourse'}
+                                 value={addCourse} onChange={this.updateState} placeholder={'Select Course'}/>
+                  <Form.Dropdown fluid label={'Status: '} options={status} name={'addStatus'}
+                                 value={addStatus} onChange={this.updateState} placeholder={'Select Status'}/>
+                  <Form.Button floated='right' content={'Submit'} basic color={'green'}/>
+                </Form.Group>
+              </Form>
             </Grid.Row>
           </Grid>
       );
     }
     return '';
   }
-
   /** If the subscription(s) have been received, render the page, otherwise show a loading icon. */
   render() {
     if (!this.state.ready && this.props.ready) {
@@ -207,7 +271,7 @@ class UserProfile extends React.Component {
     const level = this.props.profile.level;
     const exp = this.props.profile.exp;
     const nextLevel = Math.round(50 * (0.04 * (level ** 3) + 0.8 * (level ** 2) + 2 * level));
-    const { firstName, lastName, email } = this.state;
+    const { firstName, lastName, email, password, oldPassword } = this.state;
     // const courseOptions = [];
     // const statusOptions = [
     //   { key: 't', text: 'Royal Bee', value: true },
@@ -227,7 +291,7 @@ class UserProfile extends React.Component {
               </Header>
               <Divider/>
               <div>
-                {_.each(this.state.courses, course => <CourseCard course={course} admin={false}/>)}
+                {this.renderCourses()}
               </div>
             </Tab.Pane>
         ),
@@ -272,6 +336,26 @@ class UserProfile extends React.Component {
                         <Input fluid transparent
                                name={'email'}
                                value={email}
+                               onChange={this.updateState}
+                        />
+                        </span>
+                      </Form.Field>
+                      <Form.Field>
+                        <label style={{ float: 'left', fontSize: '1em' }}>Old Password:</label>
+                        <span style={{ display: 'block', overflow: 'hidden', padding: '0 4px 0 6px' }}>
+                        <Input fluid transparent
+                               name={'oldPassword'}
+                               value={oldPassword}
+                               onChange={this.updateState}
+                        />
+                        </span>
+                      </Form.Field>
+                      <Form.Field>
+                        <label style={{ float: 'left', fontSize: '1em' }}>New Password:</label>
+                        <span style={{ display: 'block', overflow: 'hidden', padding: '0 4px 0 6px' }}>
+                        <Input fluid transparent
+                               name={'password'}
+                               value={password}
                                onChange={this.updateState}
                         />
                         </span>
@@ -391,7 +475,6 @@ class UserProfile extends React.Component {
                 grid={{ paneWidth: 12, tabWidth: 4 }}
                 renderActiveOnly={false}
                 onTabChange={this.handleTabChange}/>
-            {this.renderCourses()}
           </Container>
         </div>
     );
