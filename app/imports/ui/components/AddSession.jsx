@@ -2,7 +2,7 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { Bert } from 'meteor/themeteorchef:bert';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Grid } from 'semantic-ui-react';
 import AutoForm from 'uniforms-semantic/AutoForm';
 import TextField from 'uniforms-semantic/TextField';
 import SelectField from 'uniforms-semantic/SelectField';
@@ -74,17 +74,30 @@ class AddSession extends React.Component {
           this.formRef = ref;
         }} schema={SessionSchema} onSubmit={this.submit}>
           <Segment>
-            <TextField label={'Title'} name={'title'}/>
-            <SelectField label={'Course'} name={'course'}
-                         allowedValues={this.props.courses.map((object) => object.course)}/>
-            <LongTextField label={'Description'} name={'description'}/>
-            <DateField label={'Date'} name={'date'}/>
-            <DateField label={'Start Time'} name={'startTime'}/>
-            <DateField label={'End Time'} name={'endTime'}/>
-            <SubmitField value='Submit'/>
-            <ErrorsField/>
-            <HiddenField name={'attendees'} value={'fakeuser@foo.com'}/>
-            <HiddenField name='owner' value={'fakeuser@foo.com'}/>
+            <Grid>
+              <Grid.Row columns={2}>
+                <Grid.Column><TextField label={'Title'} name={'title'}/></Grid.Column>
+                <Grid.Column><SelectField label={'Course'} name={'course'}
+                                allowedValues={this.props.courses.map((object) => object.course)}/></Grid.Column>
+              </Grid.Row>
+
+              <Grid.Row columns={3}>
+                <Grid.Column><DateField label={'Date'} name={'date'}/></Grid.Column>
+                <Grid.Column><DateField label={'Start Time'} name={'startTime'}/></Grid.Column>
+                <Grid.Column><DateField label={'End Time'} name={'endTime'}/></Grid.Column>
+              </Grid.Row>
+
+              <Grid.Row columns={1}>
+                <Grid.Column><LongTextField label={'Description'} name={'description'}/></Grid.Column>
+              </Grid.Row>
+
+              <Grid.Row columns={1} textAlign={'right'}>
+                <Grid.Column><SubmitField value='Submit'/></Grid.Column>
+              </Grid.Row>
+              <ErrorsField/>
+              <HiddenField name={'attendees'} value={'fakeuser@foo.com'}/>
+              <HiddenField name='owner' value={'fakeuser@foo.com'}/>
+            </Grid>
           </Segment>
         </AutoForm>
     );
