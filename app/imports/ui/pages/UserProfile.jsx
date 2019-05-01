@@ -3,7 +3,6 @@ import Alert from 'react-s-alert';
 import PropTypes from 'prop-types';
 import { Profiles } from '/imports/api/profile/profile';
 import { Courses } from '/imports/api/courses/courses';
-import { ReportLog } from '/imports/api/reportLog/reportLog';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import {
@@ -21,11 +20,11 @@ import {
   Loader,
   Input,
   Header,
-  Feed,
-} from 'semantic-ui-react';
+  Dropdown
+}
+  from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import CourseCard from '../components/CourseCard';
-import ReportItem from '../components/ReportItem';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 const _ = require('underscore');
@@ -100,9 +99,6 @@ class UserProfile extends React.Component {
   submitInfo() {
     const { firstName, lastName, email, password, oldPassword } = this.state;
     const id = this.props.profile._id;
-    const changed = this.state.submittedFirstName !== firstName ||
-        this.state.submittedLastName !== lastName ||
-        this.state.submittedEmail !== email;
     this.setState({
       submittedFirstName: firstName,
       submittedLastName: lastName,
@@ -126,19 +122,15 @@ class UserProfile extends React.Component {
       },
     });
     if (password === '' && oldPassword === '') {
-      if (changed) {
-        Alert.success('Update Successful', {
-          effect: 'slide',
-        });
-        document.location.reload(true);
-      }
+      Alert.success('Update Successful', {
+        effect: 'slide',
+      });
     } else {
       Accounts.changePassword(oldPassword, password, function (error) {
         if (!error) {
           Alert.success('Update Successful', {
             effect: 'slide',
           });
-          document.location.reload(true);
         } else {
           Alert.error(`Update failed: ${error.message}`, {
             effect: 'slide',
@@ -235,6 +227,8 @@ class UserProfile extends React.Component {
       return { key: i, text: val, value: val };
     });
 
+    console.log(validCourses);
+
     const { addCourse, addStatus } = this.state;
 
     if (this.state.activeIndex === 0) {
@@ -318,22 +312,12 @@ class UserProfile extends React.Component {
     const exp = this.props.profile.exp;
     const nextLevel = Math.round(50 * (0.04 * (level ** 3) + 0.8 * (level ** 2) + 2 * level));
     const { firstName, lastName, email, password, oldPassword } = this.state;
-    const reports = ReportLog.find({ owner: this.props.currentUser }).fetch();
+    // const courseOptions = [];
+    // const statusOptions = [
+    //   { key: 't', text: 'Royal Bee', value: true },
+    //   { key: 'f', text: 'Worker Bee', value: false },
+    // ];
     const panes = [
-      {
-        menuItem: 'Notifications',
-        pane: (
-            <Tab.Pane attached={false} key={'Notifications'}>
-              <Header as='h2'>
-                <Icon name='bell'/>
-                <Header.Content>
-                  Notifications
-                  <Header.Subheader>Here are the latest updates</Header.Subheader>
-                </Header.Content>
-              </Header>
-              <Divider/>
-            </Tab.Pane>),
-      },
       {
         menuItem: 'Courses',
         pane: (
@@ -548,14 +532,13 @@ UserProfile.propTypes = {
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
 export default withTracker(() => {
-  const profileSub = Meteor.subscribe('Profile');
-  const courseSub = Meteor.subscribe('Courses');
-  const reportLogSub = Meteor.subscribe('ReportLog');
+  const subscription = Meteor.subscribe('Profile');
+  const subscription2 = Meteor.subscribe('Courses');
   return {
     profile: Profiles.find({}).fetch()[0],
     courses: Courses.find({}).fetch(),
     currentUser: Meteor.user() ? Meteor.user().username : '',
     currentId: Meteor.user() ? Meteor.userId() : '',
-    ready: (profileSub.ready() && courseSub.ready() && reportLogSub.ready()),
+    ready: (subscription.ready() && subscription2.ready()),
   };
 })(UserProfile);

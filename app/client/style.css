@@ -10,17 +10,22 @@ body {
 }
 
 @media (min-width: 61.25rem) {
-  .collapsed{
+  .collapsed {
     display: none !important;
   }
 }
 
 @media (max-width: 61.25rem) {
-  .collapsable{
+  .collapsable {
     display: none !important;
   }
-  .collapsed{
+
+  .collapsed {
     display: block;
+  }
+
+  .page-container {
+    display: inline-grid !important;
   }
 }
 
@@ -30,7 +35,8 @@ body {
 
 .page-container {
   margin-top: 150px;
-  padding: 20px 50px 50px 50px;
+  margin-bottom: 50px;
+  padding: 20px 50px 20px 50px;
   min-height: 70vh;
 }
 
@@ -140,22 +146,31 @@ h2 {
 }
 
 #login-modal textarea:focus, #login-modal input:focus {
-   font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Montserrat', sans-serif !important;
 
- }
+}
 
-#edit-account textarea:focus, #edit-account input:focus, #edit-account input[value]  {
+#edit-account textarea:focus, #edit-account input:focus, #edit-account input[value] {
   font-family: 'Montserrat', sans-serif !important;
 }
 
 #edit-account input:focus, #edit-account input[value] {
-  color: lightgrey;
+  color: grey;
+}
+
+#edit-course input.search {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+#edit-account input:focus, #edit-account input[value] {
+  color: grey;
 }
 
 #profile-tabs a.item {
   font-weight: normal !important;
   color: grey;
 }
+
 #profile-tabs a.active.item {
   color: black;
   font-size: 1.05em
@@ -177,12 +192,6 @@ h2 {
   color: #faa952;
 }
 
-.ui.form .required.fields:not(.grouped) > .field > label:after, .ui.form .required.fields.grouped >
-label:after, .ui.form .required.field > label:after, .ui.form .required.fields:not(.grouped) > .field >
-.checkbox:after, .ui.form .required.field > .checkbox:after {
-  content: '' !important;
-}
-
 .footerButton {
   background-color: #faa952 !important;
   margin: 21px 7px !important;
@@ -197,6 +206,10 @@ Progress Bar
 
 .ui.progress .bar {
   border-radius: 10em !important;
+  background: #ffc300 !important;
+}
+
+#royalToggles .ui.active.basic.toggle.button {
   background: #ffc300 !important;
 }
 
@@ -216,6 +229,7 @@ Modification of ribbon css from:
   padding: .2em;
   margin: 2em auto 3em;
 }
+
 .ribbon:before, .ribbon:after {
   content: "";
   position: absolute;
@@ -224,16 +238,19 @@ Modification of ribbon css from:
   border: .7em solid #986794;
   z-index: -1;
 }
+
 .ribbon:before {
   left: -1.25em;
   border-right-width: 1.5em;
   border-left-color: transparent;
 }
+
 .ribbon:after {
   right: -1.25em;
   border-left-width: 1.5em;
   border-right-color: transparent;
 }
+
 .ribbon .ribbon-content:before, .ribbon .ribbon-content:after {
   content: "";
   position: absolute;
@@ -242,13 +259,18 @@ Modification of ribbon css from:
   border-color: #804f7c transparent transparent transparent;
   bottom: -1em;
 }
+
 .ribbon .ribbon-content:before {
   left: 0;
   border-width: 1em 0 0 1em;
 }
+
 .ribbon .ribbon-content:after {
   right: 0;
   border-width: 1em 1em 0 0;
 }
 
-.non-semantic-protector { position: relative; z-index: 1; }
+.non-semantic-protector {
+  position: relative;
+  z-index: 1;
+}
