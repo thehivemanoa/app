@@ -182,7 +182,7 @@ class SessionCard extends React.Component {
       showMoreButtonStyle.display = 'none';
     }
     let button;
-    if (this.props.isCompleted) {
+    if (this.props.isCompleted && false) {
       if (dateFns.isBefore(this.props.session.endTime, responseCutOff) ||
           (this.props.session.hasResponded[this.props.currentUserId] &&
               this.props.session.respondents === this.props.session.attendees.length)
