@@ -9,7 +9,7 @@ import UpcomingSessionList from '/imports/ui/components/UpcomingSessionList';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Bert } from 'meteor/themeteorchef:bert';
 import PropTypes from 'prop-types';
-import { withRouter, NavLink } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 const _ = require('underscore');
 
@@ -80,7 +80,6 @@ class UserHomepage extends React.Component {
     );
   }
 
-
   isJoined(sessionId) {
     const joinedSessions = Profiles.findOne({ owner: this.props.currentUsername }).joinedSessions;
     return _.some(joinedSessions, session => session === sessionId);
@@ -134,7 +133,7 @@ class UserHomepage extends React.Component {
               <Grid.Row>
                 {/** Session Cards */}
                 <UpcomingSessionList
-                    sessions={this.props.profile.joinedSessions}
+                    sessions={this.props.joinedSessions}
                     selectedDate={this.currentDate}
                     handleLeave={this.handleLeave}
                     handleJoin={this.handleJoin}
@@ -175,8 +174,9 @@ UserHomepage.propTypes = {
   currentUsername: PropTypes.string.isRequired,
   currentUserId: PropTypes.string.isRequired,
   sessions: PropTypes.array.isRequired,
-  profile: PropTypes.object,
+  profile: PropTypes.object.isRequired,
   completedSessions: PropTypes.array,
+  joinedSessions: PropTypes.array,
   ready: PropTypes.bool.isRequired,
 };
 
@@ -186,23 +186,32 @@ const UserHomepageContainer = withTracker(() => {
   const subscription3 = Meteor.subscribe('AccountIds');
   let currentUser = '';
   let completedSessions = [];
+  let joinedSessions = [];
   if (subscription.ready() && subscription2.ready() && subscription3.ready() && Meteor.user()) {
     currentUser = Meteor.user().username;
+
     const joinedSessionIds = Profiles.findOne({ owner: currentUser }).joinedSessions;
+
     completedSessions = Sessions.find({
       _id: { $in: joinedSessionIds },
       endTime: { $lte: currentTime },
     }).fetch();
+
+    joinedSessions = Sessions.find({
+      _id: { $in: joinedSessionIds },
+    }).fetch();
   }
-  return {
-    currentUser: currentUser,
-    currentUserId: Meteor.user() ? Meteor.user()._id : '',
-    currentUsername: Meteor.user() ? Meteor.user().username : '',
-    sessions: Sessions.find({}).fetch(),
-    profile: Profiles.find({}).fetch(),
-    completedSessions: completedSessions,
-    ready: (subscription.ready() && subscription2.ready() && subscription3.ready()),
-  };
+
+return {
+  currentUser: currentUser,
+  currentUserId: Meteor.user() ? Meteor.user()._id : '',
+  currentUsername: Meteor.user() ? Meteor.user().username : '',
+  sessions: Sessions.find({}).fetch(),
+  profile: Profiles.find({}).fetch()[0],
+  completedSessions: completedSessions,
+  joinedSessions: joinedSessions,
+  ready: (subscription.ready() && subscription2.ready() && subscription3.ready()),
+};
 })(UserHomepage);
 
 export default withRouter(UserHomepageContainer);

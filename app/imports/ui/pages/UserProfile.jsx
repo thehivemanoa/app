@@ -33,10 +33,10 @@ class UserProfile extends React.Component {
       submittedAddCourse: '',
       submittedStatus: false,
       courses: [],
+      royal: [],
+      worker: [],
       validCourses: [],
     };
-
-    console.log(this.state);
     this.edit = this.edit.bind(this);
     this.save = this.save.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
@@ -60,15 +60,19 @@ class UserProfile extends React.Component {
   }
 
   submitInfo() {
-    const { firstName, lastName } = this.state;
+    const { firstName, lastName, email } = this.state;
+    const id = this.props.profile._id;
     this.setState({
       submittedFirstName: firstName,
       submittedLastName: lastName,
+      submittedEmail: email,
     });
 
-    const id = this.props.profile._id;
-
-    Profiles.update(id, { $set: { firstName, lastName } },
+    Profiles.update(id, {
+          $set: {
+            firstName: firstName,
+            lastName: lastName,
+          } },
         (error) => (error ?
             Alert.error(`Update failed: ${error.message}`, {
               effect: 'slide',
@@ -109,9 +113,15 @@ class UserProfile extends React.Component {
     const lastName = this.props.profile.lastName;
     const image = this.props.profile.image;
     const courses = this.props.profile.courses;
+    const pairCourses = _.pairs(courses);
     const email = this.props.currentUser;
     const allCourses = _.pluck(this.props.courses, 'course');
-    const validCourses = _.filter(allCourses, course => !_.contains(_.keys(courses), course));
+    const validCourses = _.clone(_.filter(allCourses,
+        course => !_.contains(_.keys(courses), course))).sort(function (a, b) {
+      if (a < b) return -1;
+      if (b < a) return 1;
+      return 0;
+    });
     this.setState({
       firstName: firstName,
       lastName: lastName,
@@ -121,31 +131,44 @@ class UserProfile extends React.Component {
       submittedLastName: lastName,
       submittedEmail: email,
       submittedImage: image,
-      courses: _.pairs(courses),
+      courses: pairCourses,
       validCourses: validCourses,
+    });
+    const royal = _.clone(_.map(_.filter(pairCourses,
+        pair => pair[1]), pair => pair[0])).sort(function (a, b) {
+      if (a < b) return -1;
+      if (b < a) return 1;
+      return 0;
+    });
+    const worker = _.clone(_.map(_.filter(pairCourses,
+        pair => !pair[1]), pair => pair[0])).sort(function (a, b) {
+      if (a < b) return -1;
+      if (b < a) return 1;
+      return 0;
+    });
+    this.setState({
+      royal: royal,
+      worker: worker,
     });
   }
 
   renderCourses() {
     if (this.state.activeIndex === 0) {
       return (
-          <Grid columns={'equal'} divided textAlign={'center'}>
+          <Grid columns={'equal'} divided textAlign={'center'} relaxed>
             <Grid.Row>
               <Grid.Column>
                 Worker Bee
-                <CourseCard course={'ICS 111'} admin={true}/>
-                <CourseCard course={'ICS 314'} admin={false}/>
+                {_.map(this.state.worker, course => <CourseCard course={course} admin={false}/>)}
               </Grid.Column>
               <Grid.Column>
                 Royal Bee
-                <CourseCard course={'ICS 211'} admin={false}/>
-                <CourseCard course={'ICS 311'} admin={false}/>
+                {_.map(this.state.royal, course => <CourseCard course={course} admin={false}/>)}
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Divider/>
-              <Button basic color={'green'}>Add</Button>
-              <Button basic color={'red'}>Delete</Button>
+              {_.map(this.state.validCourses, course => <CourseCard course={course} admin={false}/>)}
             </Grid.Row>
           </Grid>
       );
@@ -168,7 +191,6 @@ class UserProfile extends React.Component {
   }
 
   renderPage() {
-    console.log(this.state);
     const center = {
       position: 'absolute',
       left: '.8em',
@@ -391,7 +413,7 @@ UserProfile.propTypes = {
 
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
 export default withTracker(() => {
-  const subscription = Meteor.subscribe('Profiles');
+  const subscription = Meteor.subscribe('Profile');
   const subscription2 = Meteor.subscribe('Courses');
   return {
     profile: Profiles.find({}).fetch()[0],
