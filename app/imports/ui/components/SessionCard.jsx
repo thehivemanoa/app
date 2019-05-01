@@ -322,7 +322,6 @@ SessionCard.propTypes = {
   ready: PropTypes.bool.isRequired,
   currentUserId: PropTypes.string.isRequired,
   currentProfileId: PropTypes.string.isRequired,
-  attendeeProfiles: PropTypes.array.isRequired,
   currentProfile: PropTypes.object.isRequired,
 };
 

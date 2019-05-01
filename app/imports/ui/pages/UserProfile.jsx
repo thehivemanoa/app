@@ -237,8 +237,8 @@ class UserProfile extends React.Component {
             <Grid>
               <Grid.Row>
                 <Container fluid>
-                  {_.map(this.state.royal, course => <CourseCard course={course} admin={false}/>)}
-                  {_.map(this.state.worker, course => <CourseCard course={course} admin={false}/>)}
+                  {_.map(this.state.royal, course => <CourseCard course={course} admin={false} key={course}/>)}
+                  {_.map(this.state.worker, course => <CourseCard course={course} admin={false} key={course}/>)}
                 </Container>
               </Grid.Row>
               <Grid.Row>
@@ -267,7 +267,7 @@ class UserProfile extends React.Component {
                             placeholder={'Select Status'}
                             style={{ minWidth: 150 }}
                         />
-                        <Form.Button floated='right' color='green' circular icon='inverted plus'/>
+                        <Form.Button floated='right' color='green' circular icon='plus'/>
                       </Form.Group>
                     </Form>
                   </Container>
@@ -534,8 +534,12 @@ UserProfile.propTypes = {
 export default withTracker(() => {
   const subscription = Meteor.subscribe('Profile');
   const subscription2 = Meteor.subscribe('Courses');
+  let profile = {};
+  if (subscription.ready() && subscription2.ready() && Meteor.user()) {
+    profile = Profiles.findOne({ owner: Meteor.user().username });
+  }
   return {
-    profile: Profiles.find({}).fetch()[0],
+    profile: profile,
     courses: Courses.find({}).fetch(),
     currentUser: Meteor.user() ? Meteor.user().username : '',
     currentId: Meteor.user() ? Meteor.userId() : '',

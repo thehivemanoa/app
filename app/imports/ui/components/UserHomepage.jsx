@@ -197,10 +197,12 @@ const UserHomepageContainer = withTracker(() => {
   let currentUser = '';
   let completedSessions = [];
   let joinedSessions = [];
+  let profile = {};
   if (subscription.ready() && subscription2.ready() && subscription3.ready() && Meteor.user()) {
     currentUser = Meteor.user().username;
+    profile = Profiles.findOne({ owner: currentUser });
 
-    const joinedSessionIds = Profiles.findOne({ owner: currentUser }).joinedSessions;
+    const joinedSessionIds = profile.joinedSessions;
 
     completedSessions = Sessions.find({
       _id: { $in: joinedSessionIds },
@@ -217,7 +219,7 @@ const UserHomepageContainer = withTracker(() => {
     currentUserId: Meteor.user() ? Meteor.user()._id : '',
     currentUsername: Meteor.user() ? Meteor.user().username : '',
     sessions: Sessions.find({}).fetch(),
-    profile: Profiles.find({}).fetch()[0],
+    profile: profile,
     completedSessions: completedSessions,
     joinedSessions: joinedSessions,
     ready: (subscription.ready() && subscription2.ready() && subscription3.ready()),

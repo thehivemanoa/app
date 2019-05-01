@@ -41,7 +41,7 @@ class CourseCard extends React.Component {
       if (this.state.initialStatus === undefined) {
         // do nothing
       } else {
-        const user = Profiles.find({}).fetch()[0];
+        const user = this.props.user;
         Profiles.update(user._id, { $unset: { [`courses.${this.props.course}`]: '' } },
             (error) => (error ?
                 Alert.error(`Update failed: ${error.message}`, {
@@ -54,7 +54,7 @@ class CourseCard extends React.Component {
       }
     } else
       if (this.state.initialStatus !== this.state.royalBee) {
-        const user = Profiles.find({}).fetch()[0];
+        const user = this.props.user;
         Profiles.update(user._id, { $set: { [`courses.${this.props.course}`]: this.state.royalBee } },
             (error) => (error ?
                 Alert.error(`Update failed: ${error.message}`, {
@@ -69,7 +69,7 @@ class CourseCard extends React.Component {
 
   initializeState() {
     const data = Courses.find({ course: this.props.course }).fetch()[0];
-    const courses = Profiles.find({}).fetch()[0].courses;
+    const courses = this.props.user.courses;
     const course = _.pick(courses, this.props.course);
     const value = _.values(course)[0];
     console.log(value);
@@ -137,8 +137,7 @@ class CourseCard extends React.Component {
   }
 
   removeCard() {
-    const user = Profiles.find({}).fetch()[0];
-    Profiles.update(user._id, { $unset: { [`courses.${this.props.course}`]: '' } },
+    Profiles.update(this.props.user._id, { $unset: { [`courses.${this.props.course}`]: '' } },
         (error) => (error ?
             Alert.error(`Update failed: ${error.message}`, {
               effect: 'slide',
@@ -183,7 +182,7 @@ class CourseCard extends React.Component {
     return (
         <div>
           <Modal trigger={
-            <Item fitted key={1} style={{
+            <Item key={1} style={{
               float: 'left',
               width: '150px',
               position: 'relative',
@@ -204,7 +203,7 @@ class CourseCard extends React.Component {
               </Card>
             </Item>
           } onUnmount={this.refreshPage}>
-            <Modal.Header>'
+            <Modal.Header>
               {this.state.course}
               <Button.Group id='royalToggles' floated={'right'} size={'small'}>
                 <Button toggle basic active={this.state.workerBee} onClick={this.handleWorker}>
@@ -265,12 +264,18 @@ CourseCard.propTypes = {
   course: PropTypes.string.isRequired,
   admin: PropTypes.bool.isRequired,
   ready: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 export default withTracker(() => {
   // Get access to Stuff documents.
   const subscription = Meteor.subscribe('Profile');
+  let user = {};
+  if (subscription.ready() && Meteor.user()) {
+    user = Profiles.findOne({ owner: Meteor.user().username });
+  }
   return {
+    user: user,
     ready: (subscription.ready()),
   };
 })(CourseCard);
