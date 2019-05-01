@@ -29,7 +29,7 @@ export default class SessionList extends React.Component {
     // const events = this.props.sessions.map((session, index) => <SessionCard key={index} session={session} />);
 
     return (
-        <Card className="session_list" fluid>
+        <Card className="session_list" fluid style={{ height: '614px' }}>
           <Card.Content>
             <Card.Header>
               <Grid columns="equal">
@@ -52,7 +52,7 @@ export default class SessionList extends React.Component {
               </Grid>
             </Card.Header>
           </Card.Content>
-          <Card.Content>
+          <Card.Content style={{ overflowY: 'scroll', height: '550px' }}>
             <Card.Group>
               {sessionCards}
             </Card.Group>

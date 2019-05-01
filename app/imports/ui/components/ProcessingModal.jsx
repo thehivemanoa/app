@@ -22,7 +22,7 @@ export default class ProcessingModal extends React.Component {
         <Modal
             trigger={<Button style={headerButtonStyle}>Processing</Button>}
         >
-          <Modal.Content style={{ backgroundColor: '#FEC63B' }}>
+          <Modal.Content style={{ backgroundColor: '#FBCE11' }}>
             <Header as="h3" style={{ color: 'white' }}>{this.props.title}</Header>
           </Modal.Content>
           <Modal.Content>
@@ -31,14 +31,14 @@ export default class ProcessingModal extends React.Component {
                 value={this.props.respondents}
                 total={this.props.attendees}
                 progress="ratio"
-                style={{ color: '#FEC63B' }}/>
+                style={{ color: '#FBCE11' }}/>
           </Modal.Content>
           <Modal.Content>
             <Header as="h5">Time Elapsed</Header>
             <Progress
                 percent={this.props.percentElapsed}
                 progress
-                style={{ color: '#FEC63B' }}/>
+                style={{ color: '#FBCE11' }}/>
           </Modal.Content>
         </Modal>
     );

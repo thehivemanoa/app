@@ -120,7 +120,7 @@ class SessionCard extends React.Component {
     const attendees = Profiles.find({ owner: { $in: this.props.session.attendees } }).fetch();
     const royals = _.filter(attendees, attendee => attendee.courses[this.props.session.course]);
     const workers = _.filter(attendees, attendee => !attendee.courses[this.props.session.course]);
-    const creator = Profiles.find({ username: this.props.session.owner }).fetch();
+    const creator = Profiles.find({ owner: this.props.session.owner }).fetch();
     const royalLabels = this.usersToLabels(royals);
     const workerLabels = this.usersToLabels(workers);
     const creatorLabel = this.usersToLabels(creator);
@@ -234,6 +234,12 @@ class SessionCard extends React.Component {
       } else {
         button = <Button style={headerButtonStyle} onClick={this.props.handleUpdate}>Join</Button>;
       }
+      let timeInformation = '';
+      if (this.props.isCompleted) {
+        timeInformation = `Ended ${dateFns.differenceInHours(new Date(), this.props.session.endTime)} hrs ago`;
+      } else {
+        timeInformation = `${formattedStartTime} - ${formattedEndTime}`;
+      }
 
     return (
         <Card
@@ -257,7 +263,7 @@ class SessionCard extends React.Component {
               </Grid.Row>
               <Grid.Row centered columns="equal" style={{ paddingTop: '10px', paddingBottom: '10px' }}>
                 <Grid.Column>
-                  <p style={{ textAlign: 'left' }}>{`${formattedStartTime} - ${formattedEndTime}`}</p>
+                  <p style={{ textAlign: 'left' }}>{timeInformation}</p>
                 </Grid.Column>
                 <Grid.Column width={1}><Icon name="user times"/></Grid.Column>
                 <Grid.Column width={1}>{royals.length}</Grid.Column>

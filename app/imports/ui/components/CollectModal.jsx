@@ -32,19 +32,26 @@ export default class CollectModal extends React.Component {
       transform: 'translate(-50%,-50%)',
       color: 'white',
     };
+    const hasRespondedMessageStyle = { textAlign: 'center' };
+    if (this.props.hasResponded) {
+      hasRespondedMessageStyle.display = 'none';
+    }
     return (
         <Modal
             style={{ backgroundColor: '#FBCE11' }}
             trigger={<Button style={headerButtonStyle}>Collect</Button>}
             size="small"
         >
-          <Modal.Content style={{ backgroundColor: '#FEC63B' }}>
+          <Modal.Content style={{ backgroundColor: '#FBCE11' }}>
             <Header as="h3" style={{ color: 'white' }}>{this.props.title}</Header>
           </Modal.Content>
           <Modal.Content style={{ position: 'relative', backgroundColor: 'white', height: '190px' }}>
               <img src="/images/honey.png"
                    style={honeyStyle}/>
             <Header as="h1" style={honeyNumberStyle}>{`${this.props.honey}`}</Header>
+          </Modal.Content>
+          <Modal.Content style={hasRespondedMessageStyle}>
+            <p style={{ display: 'inline-block' }}>The hive society is built on generosity. To receive, honey please press the distribute button within 24 hrs of the end of the session.</p>
           </Modal.Content>
           <Modal.Content style={{ backgroundColor: '#FBCE11', paddingBottom: '20px' }}>
             <Button
