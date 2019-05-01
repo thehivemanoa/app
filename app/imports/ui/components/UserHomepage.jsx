@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import dateFns from 'date-fns';
-import { Grid, Container, Divider, Button, Card, Image, Header, } from 'semantic-ui-react';
+import { Grid, Container, Divider, Icon, Card, Image, Header, } from 'semantic-ui-react';
 import { Sessions } from '/imports/api/session/session';
 import { Profiles } from '/imports/api/profile/profile';
 import SessionCard from '/imports/ui/components/SessionCard';
@@ -111,39 +111,57 @@ class UserHomepage extends React.Component {
 
           {/** 2 column grid */}
           <Grid>
-              {/** *** COMPLETED SESSIONS **** */}
-              <Grid.Row>
-                <Grid columns='equal' verticalAlign='middle'>
-                  <Grid.Column>
-                    <Divider horizontal><h2> Completed Sessions </h2></Divider>
-                  </Grid.Column>
-                </Grid>
-              </Grid.Row>
-              <Grid.Row>
-                {/** Session Cards */}
-                <Header as="h3" style={noCompletedSessionsStyle}>You have no completed sessions</Header>
-                <Card.Group centered>
-                  {completedSessionCards}
-                </Card.Group>
-              </Grid.Row>
-              {/** *** UPCOMING SESSIONS **** */}
-              <Grid.Row>
-                <Grid columns='equal' verticalAlign='middle'>
-                  <Grid.Column>
-                    <Divider horizontal><h2> Upcoming Sessions </h2></Divider>
-                  </Grid.Column>
-                </Grid>
-              </Grid.Row>
-              <Grid.Row>
-                {/** Session Cards */}
-                <UpcomingSessionList
-                    sessions={this.props.joinedSessions}
-                    selectedDate={this.currentDate}
-                    handleLeave={this.handleLeave}
-                    handleJoin={this.handleJoin}
-                    isJoined={this.isJoined}
-                />
-              </Grid.Row>
+            {/** *** COMPLETED SESSIONS **** */}
+            <Grid.Row>
+              <Grid columns='equal' verticalAlign='middle'>
+                <Grid.Column>
+                  <Header as='h2'>
+                    <Icon name='check circle outline'/>
+                    <Header.Content>
+                      Completed Sessions
+                      <Header.Subheader>
+                        Collect and distribute honey <br/>
+                        from sessions you participated in.
+                      </Header.Subheader>
+                    </Header.Content>
+                  </Header>
+                </Grid.Column>
+              </Grid>
+            </Grid.Row>
+            <Grid.Row>
+              {/** Session Cards */}
+              <Header as="h3" style={noCompletedSessionsStyle}>You have no completed sessions</Header>
+              <Card.Group centered>
+                {completedSessionCards}
+              </Card.Group>
+            </Grid.Row>
+            <Divider/>
+            {/** *** UPCOMING SESSIONS **** */}
+            <Grid.Row>
+              <Grid columns='equal' verticalAlign='middle'>
+                <Grid.Column>
+                  <Header as='h2'>
+                    <Icon name='clock outline'/>
+                    <Header.Content>
+                      Upcoming Sessions
+                      <Header.Subheader>
+                        Here are sessions you plan on attending.
+                      </Header.Subheader>
+                    </Header.Content>
+                  </Header>
+                </Grid.Column>
+              </Grid>
+            </Grid.Row>
+            <Grid.Row>
+              {/** Session Cards */}
+              <UpcomingSessionList
+                  sessions={this.props.joinedSessions}
+                  selectedDate={this.currentDate}
+                  handleLeave={this.handleLeave}
+                  handleJoin={this.handleJoin}
+                  isJoined={this.isJoined}
+              />
+            </Grid.Row>
           </Grid>
         </Container>
     );
@@ -183,16 +201,16 @@ const UserHomepageContainer = withTracker(() => {
     }).fetch();
   }
 
-return {
-  currentUser: currentUser,
-  currentUserId: Meteor.user() ? Meteor.user()._id : '',
-  currentUsername: Meteor.user() ? Meteor.user().username : '',
-  sessions: Sessions.find({}).fetch(),
-  profile: Profiles.find({}).fetch()[0],
-  completedSessions: completedSessions,
-  joinedSessions: joinedSessions,
-  ready: (subscription.ready() && subscription2.ready() && subscription3.ready()),
-};
+  return {
+    currentUser: currentUser,
+    currentUserId: Meteor.user() ? Meteor.user()._id : '',
+    currentUsername: Meteor.user() ? Meteor.user().username : '',
+    sessions: Sessions.find({}).fetch(),
+    profile: Profiles.find({}).fetch()[0],
+    completedSessions: completedSessions,
+    joinedSessions: joinedSessions,
+    ready: (subscription.ready() && subscription2.ready() && subscription3.ready()),
+  };
 })(UserHomepage);
 
 export default withRouter(UserHomepageContainer);
