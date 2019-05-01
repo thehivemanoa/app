@@ -3,23 +3,10 @@ import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { withRouter, NavLink } from 'react-router-dom';
-import {
-  Menu,
-  Header,
-  Popup,
-  Label,
-  Divider,
-  Icon,
-  Modal,
-  Form,
-  Image,
-  Container,
-  Button, Loader,
-} from 'semantic-ui-react';
+import { Menu, Header, Popup, Label, Divider, Icon, Modal, Form, Image, Container, Button }
+  from 'semantic-ui-react';
 import { Profiles } from '/imports/api/profile/profile';
 import { Roles } from 'meteor/alanning:roles';
-
-// import { Roles } from 'meteor/alanning:roles';
 
 /** The NavBar appears at the top of every page. Rendered by the App Layout component. */
 class NavBar extends React.Component {
@@ -33,7 +20,8 @@ class NavBar extends React.Component {
       email: '',
       password: '',
       error: '',
-      redirectToReferer: false
+      ready: false,
+      redirectToReferer: false,
     };
     // Ensure that 'this' is bound to this component in these two functions.
     // https://medium.freecodecamp.org/react-binding-patterns-5-approaches-for-handling-this-92c651b5af56
@@ -42,9 +30,9 @@ class NavBar extends React.Component {
   }
 
   initialStates() {
-    const firstName = Profiles.find({}).fetch()[0].firstName;
-    const lastName = Profiles.find({}).fetch()[0].lastName;
-    const image = Profiles.find({}).fetch()[0].image;
+    const firstName = this.props.profile.firstName;
+    const lastName = this.props.profile.lastName;
+    const image = this.props.profile.image;
     this.setState({
       firstName: firstName,
       lastName: lastName,
@@ -62,7 +50,7 @@ class NavBar extends React.Component {
   }
 
   render() {
-    if (!this.props.ready) {
+    if (!this.state.ready) {
       this.setLoggedUser();
     }
     return this.renderNavbar();
@@ -281,7 +269,7 @@ class NavBar extends React.Component {
 /** Declare the types of all properties. */
 NavBar.propTypes = {
   currentUser: PropTypes.string,
-  profiles: PropTypes.object,
+  profile: PropTypes.object,
   ready: PropTypes.bool.isRequired,
 };
 
@@ -290,7 +278,7 @@ const NavBarContainer = withTracker(() => {
   const subscription = Meteor.subscribe('Profile');
   return {
     currentUser: Meteor.user() ? Meteor.user().username : '',
-    profiles: Profiles.find({}).fetch()[0],
+    profile: Profiles.find({}).fetch()[0],
     ready: (subscription.ready()),
   };
 })(NavBar);
