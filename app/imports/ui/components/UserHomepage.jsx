@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import dateFns from 'date-fns';
-import { Grid, Container, Divider, Button, Card, Image, Header, } from 'semantic-ui-react';
+import { Grid, Container, Divider, Icon, Card, Image, Header, Loader, } from 'semantic-ui-react';
 import { Sessions } from '/imports/api/session/session';
 import { Profiles } from '/imports/api/profile/profile';
 import SessionCard from '/imports/ui/components/SessionCard';
@@ -86,6 +86,18 @@ class UserHomepage extends React.Component {
   }
 
   render() {
+    return (this.props.ready) ? this.renderPage() :
+        <Container className="page-container">
+          <Loader active>Getting data</Loader>
+        </Container>;
+  }
+
+  renderPage() {
+    const firstName = this.props.profile.firstName;
+    const lastName = this.props.profile.lastName;
+    const image = this.props.profile.image;
+    const level = this.props.profile.level;
+    const exp = this.props.profile.exp;
     const completedSessionCards = _.map(this.props.completedSessions, session => {
       return <SessionCard key={session._id} session={session} isCompleted={true} isFluid={false}/>;
     });
@@ -102,72 +114,65 @@ class UserHomepage extends React.Component {
     return (
         <Container className="user-homepage" style={containerPadding}>
 
-          <Container textAlign='center' style={{ marginBottom: 50, padding: 20, backgroundColor: 'lightGrey' }}>
+          <Container textAlign='center' style={{ marginBottom: 50, padding: 20, backgroundColor: 'lightyellow' }}>
             <Header as='h2'>
-              <Image circular src='https://react.semantic-ui.com/images/avatar/large/patrick.png'/> Welcome Back, John
-              Smith!
+              <Image circular src={image}/> Welcome Back, {firstName} {lastName}!
             </Header>
           </Container>
 
           {/** 2 column grid */}
-          <Grid columns={2} divided>
-            <Grid.Column width={12} style={{ paddingLeft: 0 }}>
-              {/** *** COMPLETED SESSIONS **** */}
-              <Grid.Row>
-                <Grid columns='equal' verticalAlign='middle'>
-                  <Grid.Column>
-                    <Divider horizontal><h2> Completed Sessions </h2></Divider>
-                  </Grid.Column>
-                </Grid>
-              </Grid.Row>
-              <Grid.Row>
-                {/** Session Cards */}
-                <Header as="h3" style={noCompletedSessionsStyle}>You have no completed sessions</Header>
-                <Card.Group centered>
-                  {completedSessionCards}
-                </Card.Group>
-              </Grid.Row>
-              {/** *** UPCOMING SESSIONS **** */}
-              <Grid.Row>
-                <Grid columns='equal' verticalAlign='middle'>
-                  <Grid.Column>
-                    <Divider horizontal><h2> Upcoming Sessions </h2></Divider>
-                  </Grid.Column>
-                </Grid>
-              </Grid.Row>
-              <Grid.Row>
-                {/** Session Cards */}
-                <UpcomingSessionList
-                    sessions={this.props.joinedSessions}
-                    selectedDate={this.currentDate}
-                    handleLeave={this.handleLeave}
-                    handleJoin={this.handleJoin}
-                    isJoined={this.isJoined}
-                />
-              </Grid.Row>
-            </Grid.Column>
-            <Grid.Column width={4}>
-              {/** *** MY COURSES **** */}
-              <Divider horizontal><h2> My Courses </h2></Divider>
-
-              {/** Course Cards */}
-              <Card.Group>
-                <Card>
-                  <Card.Content>
-                    <Card.Header>ICS 314</Card.Header>
-                    <Card.Meta>Worker Bee</Card.Meta>
-                  </Card.Content>
-                </Card>
-                <Card>
-                  <Card.Content>
-                    <Card.Header>ICS 311</Card.Header>
-                    <Card.Meta>Royal Bee</Card.Meta>
-                  </Card.Content>
-                </Card>
+          <Grid>
+            {/** *** COMPLETED SESSIONS **** */}
+            <Grid.Row>
+              <Grid columns='equal' verticalAlign='middle'>
+                <Grid.Column>
+                  <Header as='h2'>
+                    <Icon name='check circle outline'/>
+                    <Header.Content>
+                      Completed Sessions
+                      <Header.Subheader>
+                        Collect and distribute honey <br/>
+                        from sessions you participated in.
+                      </Header.Subheader>
+                    </Header.Content>
+                  </Header>
+                </Grid.Column>
+              </Grid>
+            </Grid.Row>
+            <Grid.Row>
+              {/** Session Cards */}
+              <Header as="h3" style={noCompletedSessionsStyle}>You have no completed sessions</Header>
+              <Card.Group style={{ marginLeft: '3em' }}>
+                {completedSessionCards}
               </Card.Group>
-              <br/>
-              <Button content='Add Course'/>
-            </Grid.Column>
+            </Grid.Row>
+            <Divider/>
+            {/** *** UPCOMING SESSIONS **** */}
+            <Grid.Row>
+              <Grid columns='equal' verticalAlign='middle'>
+                <Grid.Column>
+                  <Header as='h2'>
+                    <Icon name='clock outline'/>
+                    <Header.Content>
+                      Upcoming Sessions
+                      <Header.Subheader>
+                        Here are sessions you plan on attending.
+                      </Header.Subheader>
+                    </Header.Content>
+                  </Header>
+                </Grid.Column>
+              </Grid>
+            </Grid.Row>
+            <Grid.Row>
+              {/** Session Cards */}
+              <UpcomingSessionList
+                  sessions={this.props.joinedSessions}
+                  selectedDate={this.currentDate}
+                  handleLeave={this.handleLeave}
+                  handleJoin={this.handleJoin}
+                  isJoined={this.isJoined}
+              />
+            </Grid.Row>
           </Grid>
         </Container>
     );
@@ -207,16 +212,16 @@ const UserHomepageContainer = withTracker(() => {
     }).fetch();
   }
 
-return {
-  currentUser: currentUser,
-  currentUserId: Meteor.user() ? Meteor.user()._id : '',
-  currentUsername: Meteor.user() ? Meteor.user().username : '',
-  sessions: Sessions.find({}).fetch(),
-  profile: Profiles.find({}).fetch()[0],
-  completedSessions: completedSessions,
-  joinedSessions: joinedSessions,
-  ready: (subscription.ready() && subscription2.ready() && subscription3.ready()),
-};
+  return {
+    currentUser: currentUser,
+    currentUserId: Meteor.user() ? Meteor.user()._id : '',
+    currentUsername: Meteor.user() ? Meteor.user().username : '',
+    sessions: Sessions.find({}).fetch(),
+    profile: Profiles.find({}).fetch()[0],
+    completedSessions: completedSessions,
+    joinedSessions: joinedSessions,
+    ready: (subscription.ready() && subscription2.ready() && subscription3.ready()),
+  };
 })(UserHomepage);
 
 export default withRouter(UserHomepageContainer);
