@@ -321,6 +321,20 @@ class UserProfile extends React.Component {
     const reports = ReportLog.find({ owner: this.props.currentUser }).fetch();
     const panes = [
       {
+        menuItem: 'Notifications',
+        pane: (
+            <Tab.Pane attached={false} key={'Notifications'}>
+              <Header as='h2'>
+                <Icon name='bell'/>
+                <Header.Content>
+                  Notifications
+                  <Header.Subheader>Here are the latest updates</Header.Subheader>
+                </Header.Content>
+              </Header>
+              <Divider/>
+            </Tab.Pane>),
+      },
+      {
         menuItem: 'Courses',
         pane: (
             <Tab.Pane attached={false} key={'Courses'}>
@@ -431,19 +445,6 @@ class UserProfile extends React.Component {
             </Tab.Pane>
         ),
       },
-      {
-        menuItem: 'Report Log',
-        pane: (
-            <Tab.Pane attached={false} key={'Report Log'}>
-              {reports.length === 0 ? (
-                  <p>Report Log is empty</p>
-              ) : (
-                  <Feed>
-                    {reports.map((data, index) => <ReportItem key={index} reportItem={data}/>)}
-                  </Feed>
-              )}
-            </Tab.Pane>),
-      },
     ];
 
     return (
@@ -525,7 +526,7 @@ class UserProfile extends React.Component {
             <Tab
                 id="profile-tabs"
                 menu={{ secondary: true, pointing: true, fluid: true, vertical: true }}
-                menuPosition={'left'}
+                menuPosition={'right'}
                 panes={panes}
                 grid={{ paneWidth: 12, tabWidth: 4 }}
                 renderActiveOnly={false}
