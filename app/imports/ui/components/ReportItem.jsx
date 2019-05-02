@@ -4,17 +4,13 @@ import PropTypes from 'prop-types';
 import { Feed, Image, Button, Label, Icon, Popup } from 'semantic-ui-react';
 import { ReportLog } from '../../api/reportLog/reportLog';
 import { Profiles } from '../../api/profile/profile';
+import { withTracker } from 'meteor/react-meteor-data';
 
 /** Renders the Page for adding a document. */
 class ReportItem extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.getUser = this.getUser.bind(this);
-  }
-
-  getUser() {
-    const user = Profiles.findOne({ owner: this.props.reportItem.target });
+  getUser = () => {
+    const user = Profiles.find({ owner: this.props.reportItem.target }).fetch()[0];
     console.log(`Got user: ${user}`);
   }
 
@@ -25,7 +21,7 @@ class ReportItem extends React.Component {
   handleBan() {
     /** Meteor.users.remove(this.getUser()._id);
     Profiles.remove(this.getUser()._id); */
-    this.getUser();
+    // getUser;
   }
 
 
@@ -62,7 +58,7 @@ class ReportItem extends React.Component {
                  }
           >
             <Button content={'Disregard'} onClick={this.handleDisregard}/>
-            <Button negative content={'Ban'} onClick={this.handleBan}/>
+            <Button negative content={'Ban'} onClick={this.getUser}/>
           </Popup>
         </Feed.Event>
     );
@@ -73,4 +69,14 @@ ReportItem.propTypes = {
   reportItem: PropTypes.object.isRequired,
 };
 
-export default ReportItem;
+export default withTracker(() => {
+  // Get access to Profile documents.
+  const profileSub = Meteor.subscribe('Profiles');
+
+  return {
+    profiles: Profiles.find({}, { sort: { exp: -1 } }).fetch(),
+    ready: (
+        profileSub.ready()
+    ),
+  };
+})(ReportItem);
