@@ -145,9 +145,13 @@ h2 {
   font-family: 'Montserrat', sans-serif !important;
 }
 
+#registration-form .ui.form .fields .field .ui.input input, .ui.form .field .ui.input input {
+  color: white;
+  font-family: 'Montserrat', sans-serif !important;
+}
+
 #login-modal textarea:focus, #login-modal input:focus {
   font-family: 'Montserrat', sans-serif !important;
-
 }
 
 #edit-account textarea:focus, #edit-account input:focus, #edit-account input[value] {
