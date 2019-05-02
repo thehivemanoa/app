@@ -1,10 +1,16 @@
 import React from 'react';
-import { List, Image, Header, Button, Grid } from 'semantic-ui-react';
+import { List, Image, Header, Button, Grid, Modal } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 const _ = require('underscore');
 
 export default class AttendeeReview extends React.Component {
+  state = { modalOpen: false };
+
+  handleOpen = () => this.setState({ modalOpen: true });
+
+  handleClose = () => this.setState({ modalOpen: false });
+
   render() {
     const honeyButtons = _.times(this.props.maxHoney, index => {
       const style = {
@@ -36,7 +42,23 @@ export default class AttendeeReview extends React.Component {
                 >
                   {`${this.props.attendee.firstName} ${this.props.attendee.lastName}`}
                 </Header>
-                <Button icon="flag" style={{ backgroundColor: 'Transparent', marginLeft: '10px', opacity: 0.20 }}/>
+                <Modal trigger={
+                  <Button icon="flag"
+                          open={this.handleOpen}
+                          onClose={this.handleClose}
+                          style={{ backgroundColor: 'Transparent', marginLeft: '10px', opacity: 0.20 }}/>
+                  }>
+                  <Header icon='flag' content='Report User' />
+                  <Modal.Content>
+                    <h3>What is your reason for reporting this user?</h3>
+                    <p> Sorry this feature has not been implemented yet. </p>
+                  </Modal.Content>
+                  <Modal.Actions>
+                    <Button color='red' floated='right' onClick={this.handleClose} inverted>
+                      Submit Report
+                    </Button>
+                  </Modal.Actions>
+                </Modal>
               </List.Content>
             </List.Item>
             <List.Item style={{ paddingLeft: '-10px' }}>
