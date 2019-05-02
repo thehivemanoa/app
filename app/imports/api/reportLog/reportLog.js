@@ -8,6 +8,7 @@ const ReportLog = new Mongo.Collection('ReportLog');
 /** Create a schema to constrain the structure of documents associated with this collection. */
 const ReportSchema = new SimpleSchema({
   owner: String,
+  target: String,
   description: String,
   createdAt: Date,
 }, { tracker: Tracker });
