@@ -366,6 +366,7 @@ class UserProfile extends React.Component {
                         <label style={{ float: 'left', fontSize: '1em' }}>Old Password:</label>
                         <span style={{ display: 'block', overflow: 'hidden', padding: '0 4px 0 6px' }}>
                         <Input fluid transparent
+                               type={'password'}
                                name={'oldPassword'}
                                value={oldPassword}
                                onChange={this.updateState}
@@ -376,6 +377,7 @@ class UserProfile extends React.Component {
                         <label style={{ float: 'left', fontSize: '1em' }}>New Password:</label>
                         <span style={{ display: 'block', overflow: 'hidden', padding: '0 4px 0 6px' }}>
                         <Input fluid transparent
+                               type={'password'}
                                name={'password'}
                                value={password}
                                onChange={this.updateState}
