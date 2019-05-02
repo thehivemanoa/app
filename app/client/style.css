@@ -145,7 +145,7 @@ h2 {
   font-family: 'Montserrat', sans-serif !important;
 }
 
-#registration-form .ui.form .fields .field .ui.input input, .ui.form .field .ui.input input {
+#registration-form input[type="text"] {
   color: white;
   font-family: 'Montserrat', sans-serif !important;
 }
