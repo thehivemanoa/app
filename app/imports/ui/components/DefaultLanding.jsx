@@ -31,7 +31,8 @@ class DefaultLanding extends React.Component {
     Profiles.insert({
           firstName: firstName,
           lastName: lastName,
-image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQ2wn18dnC8OmX7Qx49epjgoHREUBHEviB10griBGemOmkYQoK5g',          level: 0,
+          image: 'https://react.semantic-ui.com/images/avatar/large/matthew.png',
+          level: 0,
           exp: 0,
           rank: 0,
           courses: {},
