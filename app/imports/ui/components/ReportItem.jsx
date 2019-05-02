@@ -1,13 +1,33 @@
 import React from 'react';
+import Meteor from 'meteor/meteor';
 import PropTypes from 'prop-types';
 import { Feed, Image, Button, Label, Icon, Popup } from 'semantic-ui-react';
+import { ReportLog } from '../../api/reportLog/reportLog';
+import { Profiles } from '../../api/profile/profile';
 
 /** Renders the Page for adding a document. */
 class ReportItem extends React.Component {
 
-  handleClick() {
-    return (null);
+  constructor(props) {
+    super(props);
+    this.getUser = this.getUser.bind(this);
   }
+
+  getUser() {
+    const user = Profiles.findOne({ owner: this.props.reportItem.target });
+    console.log(`Got user: ${user}`);
+  }
+
+  handleDisregard() {
+    ReportLog.remove(this.Id);
+  }
+
+  handleBan() {
+    /** Meteor.users.remove(this.getUser()._id);
+    Profiles.remove(this.getUser()._id); */
+    this.getUser();
+  }
+
 
   render() {
     const reason = `Reason: ${this.props.reportItem.description}`;
@@ -28,9 +48,10 @@ class ReportItem extends React.Component {
             </Feed.Summary>
           </Feed.Content>
           <Popup basic
-                 className="collapsable"
+                 className={'collapsable'}
                  on={'click'}
                  hideOnScroll
+                 position={'bottom center'}
                  trigger={
                    <Button animated size={'mini'} style={{ height: '30px' }}>
                      <Button.Content visible>Resolve</Button.Content>
@@ -40,8 +61,8 @@ class ReportItem extends React.Component {
                    </Button>
                  }
           >
-            <Button content={'Disregard'}/>
-            <Button content={'Ban'}/>
+            <Button content={'Disregard'} onClick={this.handleDisregard}/>
+            <Button negative content={'Ban'} onClick={this.handleBan}/>
           </Popup>
         </Feed.Event>
     );
