@@ -47,6 +47,12 @@ export default class DistributeHoneyModal extends React.Component {
       backgroundColor: 'white',
       float: 'right',
     };
+    const noAttenbeeMessageStyle = {
+      textAlign: 'center',
+    };
+    if (this.props.attendeeProfiles.length !== 0) {
+      noAttenbeeMessageStyle.display = 'none';
+    }
 
     return (
         <Modal
@@ -66,7 +72,10 @@ export default class DistributeHoneyModal extends React.Component {
             </Label>
           </Modal.Content>
           <Modal.Content style={{ backgroundColor: 'white' }}>
-            <Grid columns={2}>
+            <Grid columns={2} centered>
+              <Grid.Column style={noAttenbeeMessageStyle}>
+                <Header as="h3" style={{ display: 'inline-block' }}>No Attenbees</Header>
+              </Grid.Column>
               {_.map(
                   this.props.attendeeProfiles,
                   attendee => <AttendeeReview
